@@ -34,6 +34,7 @@ public class CardUI : MonoBehaviour
     private void Start()
     {
         SetVisuals();
+        GetComponent<Canvas>().worldCamera=Camera.main;
     }
     private void OnValueChanged()
     {
