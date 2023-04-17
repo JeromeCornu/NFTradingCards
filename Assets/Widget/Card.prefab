@@ -339,7 +339,7 @@ Canvas:
   m_GameObject: {fileID: 2470173508695753517}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2274297037170024185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,6 +403,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b23465bc5b4b84393d414f3dfb1e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _card: {fileID: 0}
+  _quote: ''''
+  _descriptionPrefix: 'Description: '
   theName: {fileID: 8644464190832353266}
   color: {fileID: 6259979042978362326}
   image: {fileID: 8086535987310324459}
