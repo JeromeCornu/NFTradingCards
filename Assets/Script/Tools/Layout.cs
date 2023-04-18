@@ -26,7 +26,10 @@ public class Layout : MonoBehaviour
             {
                 var ch = transform.GetChild(i);
                 var pos = ch.transform.localPosition;
-                float val = Mathf.Lerp(layout.layout.x, layout.layout.y, (float)i / (count - 1));
+                //float offset = !layout.center ? 0f : .5f - (count - 1) / 2f / count;
+                float val = Mathf.Lerp(layout.layout.x, layout.layout.y, (count != 1 ? (float)i / (count - 1) : (layout.center ? .5f : 0f)));
+                /*if (float.IsNaN(val))
+                    return;*/
                 if ((layout.axis & Axis.X) != 0b0)
                     pos.x = val;
                 if ((layout.axis & Axis.Y) != 0b0)
@@ -42,8 +45,10 @@ public class Layout : MonoBehaviour
 [System.Serializable]
 public class LayoutElement
 {
-    [SerializeField,Tooltip("Will set x to -y")]
+    [SerializeField, Tooltip("Will set x to -y")]
     private bool _symetrize;
+    [SerializeField]
+    public bool center=false;
     [SerializeField, MinMaxSlider(-10, 10), OnValueChanged(nameof(Symetrize))]
     [Tooltip("Will set x to -y if symetrizez")]
     public Vector2 layout;
