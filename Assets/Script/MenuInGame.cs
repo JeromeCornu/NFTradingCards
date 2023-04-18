@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class MenuInGame : MonoBehaviour
 {
     [SerializeField]
+    private TurnManager _turn;
+    [SerializeField]
     private GameObject subMenu;
 
     [SerializeField]
@@ -34,6 +36,14 @@ public class MenuInGame : MonoBehaviour
     private bool visibility;
     private bool gameIsPaused;
 
+    private void Start()
+    {
+        _turn.TurnChanged.AddListener((b) =>
+        {
+            if (b) BeginTurn(); else FinishTurn();
+        });
+
+    }
     public void ToggleVisibilitySubMenu()
     {
         visibility = !visibility;
@@ -73,13 +83,13 @@ public class MenuInGame : MonoBehaviour
         Application.Quit();
     }
     //Call from button
-    public void FinishTurn()
+    private void FinishTurn()
     {
         WhosPlaying.enabled = false;
         WhosPlaying.GetComponent<Image>().sprite = notYourTurn;
     }
     //Call from bot
-    public void BeginTurn()
+    private void BeginTurn()
     {
         WhosPlaying.enabled = true;
         WhosPlaying.GetComponent<Image>().sprite = yourTurn;
