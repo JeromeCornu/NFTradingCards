@@ -7,7 +7,11 @@ using NaughtyAttributes;
 
 public class CardUI : MonoBehaviour
 {
+
+    [SerializeField] private GameObject cardGameObject;
+
     [Header("Common texts used")]
+
     [SerializeField]
     private string _quote = "'";
     [SerializeField]
@@ -15,7 +19,7 @@ public class CardUI : MonoBehaviour
     [SerializeField, Header("References")]
     private TextMeshProUGUI theName;
     [SerializeField]
-    private GameObject color;
+    private Color color;
     [SerializeField]
     private GameObject image;
     [SerializeField]
@@ -28,6 +32,7 @@ public class CardUI : MonoBehaviour
     private TextMeshProUGUI socialAmount;
     [SerializeField]
     private TextMeshProUGUI quote;
+
 
     public CardData Card
     {
@@ -45,52 +50,69 @@ public class CardUI : MonoBehaviour
     {
         if (_card == null)
             return;
-        setCardName(_card.Name);
-        setCardDescription(_card.Descrition);
-        setCardQuote(_card.Quote);
-        setCardImage(_card.Sprite);
-        setCardEconomieStat(_card[CardData.Pillar.Economic].Val);
-        setCardEcologieStat(_card[CardData.Pillar.Ecologic].Val);
-        setCardSocialStat(_card[CardData.Pillar.Social].Val);
-        setCardColor(_card.Color);
-    }
-    private void setCardName(string newName)
-    {
-        theName.text = newName.ToUpper();
+        SetCardName(_card.Name);
+        SetCardDescription(_card.Descrition);
+        SetCardQuote(_card.Quote);
+        SetCardImage(_card.Sprite);
+        SetCardEconomieStat(_card[CardData.Pillar.Economic].Val);
+        SetCardEcologieStat(_card[CardData.Pillar.Ecologic].Val);
+        SetCardSocialStat(_card[CardData.Pillar.Social].Val);
+        SetCardColor(_card.Color);
     }
 
-    private void setCardDescription(string newDescription)
+    private void SetCardName(string prmName)
     {
-        description.text = _descriptionPrefix + newDescription;
+        theName.text = prmName.ToUpper();
     }
 
-    private void setCardQuote(string newQuote)
+    private void SetCardDescription(string prmDescription)
     {
-        quote.text = _quote + newQuote + _quote;
+        description.text = _descriptionPrefix + prmDescription;
     }
 
-    private void setCardImage(Sprite newImage)
+    private void SetCardQuote(string prmQuote)
     {
-        image.GetComponent<Image>().sprite = newImage;
+        quote.text = _quote + prmQuote + _quote;
     }
 
-    private void setCardEcologieStat(int newEcologie)
+    private void SetCardImage(Sprite prmImage)
     {
-        ecologieAmount.text = newEcologie.ToString();
+        image.GetComponent<Image>().sprite = prmImage;
     }
 
-    private void setCardEconomieStat(int newEconomie)
+    private void SetCardEcologieStat(int prmEcologie)
     {
-        economieAmount.text = newEconomie.ToString();
+        ecologieAmount.text = prmEcologie.ToString();
     }
 
-    private void setCardSocialStat(int newSocial)
+    private void SetCardEconomieStat(int prmEconomie)
     {
-        socialAmount.text = newSocial.ToString();
+        economieAmount.text = prmEconomie.ToString();
     }
 
-    private void setCardColor(Color newColor)
+    private void SetCardSocialStat(int prmSocial)
     {
-        color.GetComponent<Image>().color = newColor;
+        socialAmount.text = prmSocial.ToString();
+    }
+
+    private void SetColor(Color prmColor)
+    {
+        color = prmColor;
+        SetCardColor(prmColor);
+    }
+    
+    private void SetCardColor(Color prmColor)
+    {
+        cardGameObject.GetComponent<SpriteRenderer>().material.SetColor("_Color", prmColor);
+    }
+
+    private void ActivateHolo()
+    {
+        cardGameObject.GetComponent<SpriteRenderer>().material.SetInteger("_ActivateHolo", 1);
+    }
+
+    private void DisableHolo()
+    {
+        cardGameObject.GetComponent<SpriteRenderer>().material.SetInteger("_ActivateHolo", 0);
     }
 }
