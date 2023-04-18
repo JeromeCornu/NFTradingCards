@@ -72,13 +72,13 @@ public class MenuInGame : MonoBehaviour
         print("Quit");
         Application.Quit();
     }
-
+    //Call from button
     public void FinishTurn()
     {
         WhosPlaying.enabled = false;
         WhosPlaying.GetComponent<Image>().sprite = notYourTurn;
     }
-
+    //Call from bot
     public void BeginTurn()
     {
         WhosPlaying.enabled = true;
