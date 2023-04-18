@@ -8,7 +8,11 @@ using UnityEngine.UI;
 public class MenuInGame : MonoBehaviour
 {
     [SerializeField]
-    private TurnManager _turn;
+    private GameSystem _game;
+    private TurnManager _turn => _game.TurnManager;
+
+
+
     [SerializeField]
     private GameObject subMenu;
 
@@ -38,6 +42,7 @@ public class MenuInGame : MonoBehaviour
 
     private void Start()
     {
+        _game.OnPlayerValuesUpdates.AddListener(null);
         _turn.TurnChanged.AddListener((b) =>
         {
             if (b) BeginTurn(); else FinishTurn();
