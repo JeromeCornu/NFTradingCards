@@ -13,10 +13,14 @@ public class Card : MonoBehaviour
     [SerializeField]
     SelectableCard _selectable;
     [SerializeField]
+    CardAnimator _animator;
+    [SerializeField]
     PlayerID _playerID;
     private void Start()
     {
         _cardUI.SetVisuals(_cardData);
+        _selectable.Animator = _animator;
+        _selectable.cardData = _cardData;
     }
     void UpdateCardData()
     {
