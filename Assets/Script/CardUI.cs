@@ -41,11 +41,6 @@ public class CardUI : MonoBehaviour
             SetVisuals(value);
         }
     }
-
-    private void Start()
-    {
-        GetComponent<Canvas>().worldCamera = Camera.main;
-    }
     public void SetVisuals(CardData _card)
     {
         if (_card == null)
@@ -100,7 +95,7 @@ public class CardUI : MonoBehaviour
         color = prmColor;
         SetCardColor(prmColor);
     }
-    
+
     private void SetCardColor(Color prmColor)
     {
         cardGameObject.GetComponent<SpriteRenderer>().material.SetColor("_Color", prmColor);
