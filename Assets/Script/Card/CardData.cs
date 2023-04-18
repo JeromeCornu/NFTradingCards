@@ -36,7 +36,7 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
                 case Pillar.Ecologic:
                     return _ecologic;
                 default:
-                    throw new KeyNotFoundException();
+                    throw new KeyNotFoundException(t + " Not founrd");
             }
         }
     }
@@ -55,7 +55,7 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
     [Flags]
     public enum Pillar
     {
-        Economic = 1 << 1, Social = 1 << 2, Ecologic = 1 << 3
+        Economic = 1 << 0, Social = 1 << 1, Ecologic = 1 << 2
     }
     public enum Effect
     {
@@ -64,65 +64,26 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
 
     public IEnumerator<Value> GetEnumerator()
     {
-        for (int i = 0; i < Enum.GetValues(typeof(Pillar)).Length; i++)
-        {
-            yield return this[(Pillar)i];
-        }
+        yield return this[Pillar.Economic];
+        yield return this[Pillar.Ecologic];
+        yield return this[Pillar.Social];
     }
     IEnumerator<(CardData.Pillar pillar, Value value)> IEnumerable<(CardData.Pillar pillar, Value value)>.GetEnumerator()
     {
-        for (int i = 0; i < Enum.GetValues(typeof(Pillar)).Length; i++)
-        {
-            yield return ((Pillar)i, this[(Pillar)i]);
-        }
+        yield return (Pillar.Economic, this[Pillar.Economic]);
+        yield return (Pillar.Ecologic, this[Pillar.Ecologic]);
+        yield return (Pillar.Social, this[Pillar.Social]);
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
         yield return GetEnumerator();
     }
-
-    /*public bool AssertUniqueKeys(List<Couple> toAssert)
-{
-return toAssert.GroupBy(c => c.type)
-         .All(g => g.Count() == 1);
-*//*
- HashSet<CardData.Type> seenTypes = new HashSet<CardData.Type>();
-foreach (Couple couple in toAssert)
-{
-if (seenTypes.Contains(couple.type))
-{
-    // We've already seen a couple with this type, so the assertion fails
-    return false;
-}
-seenTypes.Add(couple.type);
-}
-return true;
- *//*
-}*/
-}
-/*[System.Serializable]
-public class Couple
-{
-    public CardData.Type type;
-    public Value value;
-    public Couple(CardData.Type t, Value v)
+    public override string ToString()
     {
-        type = t;
-        value = v;
+        return _name + " cost : " + _cost + ", " + String.Join(',', this.Select(s => ("," + (s.pillar + " : " + s.value.ToString()))));
     }
 }
-[System.Serializable]
-public class KVP<T, V>
-{
-    public T V1;
-    public V V2;
-    public KVP(T t, V v)
-    {
-        V1 = t;
-        V2 = v;
-    }
-}*/
 [System.Serializable]
 public class Value
 {
@@ -139,4 +100,8 @@ public class Value
         _value < 0 ? CardData.Effect.Malus : CardData.Effect.Bonus;
 
     public int Val { get => _value; }
+    public override string ToString()
+    {
+        return _value.ToString();
+    }
 }

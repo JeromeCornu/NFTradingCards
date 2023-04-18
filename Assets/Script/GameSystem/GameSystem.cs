@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Events;
 public class GameSystem : MonoBehaviour
 {
-    public struct Player
+    public class Player
     {
         public List<Card> CardOnBoard;
         public int Temperature;
@@ -21,6 +21,11 @@ public class GameSystem : MonoBehaviour
             PeopleSatistfaction = iInitSatisfaction;
             HasLost = false;
         }
+        public override string ToString()
+        {
+            return "Temp : " + Temperature + ", £: " + Money + ", satist : " + PeopleSatistfaction +
+                " lost ? " + HasLost + " Board : " + string.Join('\n', CardOnBoard);
+        }
     }
 
     [SerializeField] int m_StartTemp = 60;
@@ -29,7 +34,7 @@ public class GameSystem : MonoBehaviour
     [SerializeField] int m_MaxTemperature = 100;
     [SerializeField] int m_MinSatisfaction = 10;
 
-    private List<Player> m_Players;
+    private List<Player> m_Players = new List<Player>();
     [SerializeField] int m_NbPlayer = 2;
 
     [SerializeField] TurnManager m_TurnManager;
@@ -54,16 +59,16 @@ public class GameSystem : MonoBehaviour
     void OnEndTurn(bool iWasPlayer)
     {
         if (iWasPlayer)
-            Produce(1);
-        else
             Produce(0);
+        else
+            Produce(1);
     }
 
     private void _UpdatePlayerRessources(Player iPlayer)
     {
         foreach (Card card in iPlayer.CardOnBoard)
         {
-            iPlayer.Temperature += card.CardData[CardData.Pillar.Ecologic].Val;
+            iPlayer.Temperature -= card.CardData[CardData.Pillar.Ecologic].Val;
             iPlayer.Money += card.CardData[CardData.Pillar.Economic].Val;
             iPlayer.PeopleSatistfaction += card.CardData[CardData.Pillar.Social].Val;
             iPlayer.PeopleSatistfaction = Mathf.Clamp(iPlayer.PeopleSatistfaction, 0, 100);
@@ -87,7 +92,7 @@ public class GameSystem : MonoBehaviour
             return true;
         }
 
-        return true;
+        return false;
     }
     // oDeadPlayerIndices return only indices of players that died in this turn
     public bool Produce(int iPlayerIndex)
@@ -98,6 +103,7 @@ public class GameSystem : MonoBehaviour
         bool hasDied = _HasPlayerJustDied(player);
         if (hasDied)
             OnPlayerLost.Invoke(iPlayerIndex);
+        Debug.Log(iPlayerIndex + " <index after producing : " + player.ToString());
         return hasDied;
     }
 
@@ -111,6 +117,7 @@ public class GameSystem : MonoBehaviour
 
         player.CardOnBoard.Add(iCard);
         player.Money -= iCard.CardData.Cost;
+        m_TurnManager.SwitchTurn();
         return true;
     }
 

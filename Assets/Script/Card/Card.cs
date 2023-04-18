@@ -37,4 +37,8 @@ public class Card : MonoBehaviour
             UpdateCardData();
         }
     }
+    public override string ToString()
+    {
+        return _cardData.ToString();
+    }
 }

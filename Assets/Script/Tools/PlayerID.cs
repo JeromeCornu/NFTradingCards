@@ -7,6 +7,7 @@ public class PlayerID : MonoBehaviour
 {
     [SerializeField/*,OnValueChanged(nameof(UpdateTags))*/]
     private bool _isPlayer;
+    public int AsInt => _isPlayer ? 0 : 1;
     private void Start()
     {
         UpdateTags();
@@ -22,8 +23,11 @@ public class PlayerID : MonoBehaviour
         foreach (Transform child in parent)
         {
             child.tag = tag;
+            //If we use the setter we gonna be recursive, but we already are so we don't wont
+            foreach (var id in GetComponents<PlayerID>())
+                id._isPlayer = this._isPlayer;
             // Call the TraverseChildren function recursively on the child object's transform
-            TraverseChildren(child,tag);
+            TraverseChildren(child, tag);
         }
     }
 }

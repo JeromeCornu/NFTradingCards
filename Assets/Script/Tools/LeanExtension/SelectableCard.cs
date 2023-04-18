@@ -45,24 +45,17 @@ public class SelectableCard : LeanSelectableBehaviour
 
     private void Release()
     {
-        if (ValidateCardCost(cardData.Cost))
+        if (CheckAreaToLockIn(out CardZone zone))
         {
-            if (CheckAreaToLockIn(out CardZone zone))
+            if (zone.AddCard(this))
             {
-                zone.AddCard(this);
                 return;
             }
+            else
+                _animator.CostTooHigh(cardData.Cost);
         }
-        else
-            _animator.CostTooHigh(cardData.Cost);
         _animator.Reparent(_origin);
     }
-
-    private bool ValidateCardCost(int cost)
-    {
-        return UnityEngine.Random.Range(0f, 1f) > .25f;
-    }
-
     private bool CheckAreaToLockIn(out CardZone zone)
     {
         zone = null;

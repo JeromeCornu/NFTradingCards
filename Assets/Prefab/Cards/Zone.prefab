@@ -94,6 +94,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _layout: {fileID: 6735684541038841635}
+  _game: {fileID: 0}
+  _id: {fileID: 779671679453876582}
 --- !u!1 &8473957587344927294
 GameObject:
   m_ObjectHideFlags: 0

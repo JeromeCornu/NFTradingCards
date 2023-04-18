@@ -155,6 +155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5351817351438109159}
   - component: {fileID: 5636537035856427195}
+  - component: {fileID: 1805808944087978867}
   - component: {fileID: 7751249182568791266}
   - component: {fileID: 2590060779301471362}
   - component: {fileID: 3087127727918718448}
@@ -198,7 +199,20 @@ MonoBehaviour:
   _cardUI: {fileID: 1484573300279283179}
   _selectable: {fileID: 7751249182568791266}
   _animator: {fileID: 2590060779301471362}
-  _playerID: {fileID: 0}
+  _playerID: {fileID: 1805808944087978867}
+--- !u!114 &1805808944087978867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8515557775924957622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ac8be8364f10a47901eb4196c34d4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isPlayer: 0
 --- !u!114 &7751249182568791266
 MonoBehaviour:
   m_ObjectHideFlags: 0
