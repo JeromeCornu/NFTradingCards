@@ -3,14 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
-
-public enum EndCode
-{
-    OnGoing, // there are at least two players alive
-    Victory, // there is only one player still alive
-    Draw, // no alive player anymore, the players who lastly died are taken as winners
-}
-
 public class GameSystem : MonoBehaviour
 {
     public struct Player
@@ -40,15 +32,14 @@ public class GameSystem : MonoBehaviour
     private List<Player> m_Players;
     [SerializeField] int m_NbPlayer = 2;
 
-    private EndCode m_CurrentStatus = EndCode.OnGoing;
     [SerializeField] TurnManager m_TurnManager;
 
     public UnityEvent<int> OnPlayerLost;
 
     void Awake()
     {
-        if(OnPlayerLost == null)
-            OnPlayerLost = new ();
+        if (OnPlayerLost == null)
+            OnPlayerLost = new();
     }
 
     // Start is called before the first frame update
@@ -90,7 +81,7 @@ public class GameSystem : MonoBehaviour
             return true;
         }
 
-        if (iPlayer.Temperature> m_MaxTemperature)
+        if (iPlayer.Temperature > m_MaxTemperature)
         {
             iPlayer.HasLost = true;
             return true;
@@ -98,36 +89,6 @@ public class GameSystem : MonoBehaviour
 
         return true;
     }
-
-    private EndCode _ComputeGameStatus(out List<int> oDeadPlayerIndices)
-    {
-        oDeadPlayerIndices = new();
-        int nPlayerAlive = 0;
-        int playerIndex = 0;
-        foreach (Player player in m_Players)
-        {
-            _UpdatePlayerRessources(player);
-            if (_HasPlayerJustDied(player))
-            {
-                oDeadPlayerIndices.Add(playerIndex);
-                nPlayerAlive++;
-            }
-
-            playerIndex++;
-        }
-
-        if (nPlayerAlive == 1)
-            return EndCode.Victory;
-        if (nPlayerAlive == 0)
-            return EndCode.Draw;
-        return EndCode.OnGoing;
-    }
-
-    // oDeadPlayerIndices return only indices of players that died in this turn
-    public EndCode Produce(out List<int> oDeadPlayerIndices)
-    {
-        m_CurrentStatus = _ComputeGameStatus(out oDeadPlayerIndices);
-        return m_CurrentStatus;
     // oDeadPlayerIndices return only indices of players that died in this turn
     public bool Produce(int iPlayerIndex)
     {
