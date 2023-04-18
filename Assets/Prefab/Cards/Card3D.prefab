@@ -154,9 +154,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5351817351438109159}
+  - component: {fileID: 5636537035856427195}
+  - component: {fileID: 7751249182568791266}
   - component: {fileID: 3087127727918718448}
   - component: {fileID: 6426841523429503556}
-  - component: {fileID: 7751249182568791266}
   m_Layer: 6
   m_Name: Card3D
   m_TagString: Player
@@ -180,6 +181,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5636537035856427195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8515557775924957622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb1f7ec0648a27840974613b19934a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardData: {fileID: 11400000, guid: b47ab100b3d9bbc489029793bacc7e1c, type: 2}
+  _cardUI: {fileID: 1484573300279283179}
+  _selectable: {fileID: 7751249182568791266}
+  _playerID: {fileID: 0}
+--- !u!114 &7751249182568791266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8515557775924957622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13609ede0759c7f47b66c46c09f11167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isSelectable: 1
+  _drag: {fileID: 6426841523429503556}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &3087127727918718448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,23 +269,6 @@ MonoBehaviour:
   damping: -1
   inertia: 0
   remainingTranslation: {x: 0, y: 0, z: 0}
---- !u!114 &7751249182568791266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8515557775924957622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13609ede0759c7f47b66c46c09f11167, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isSelectable: 1
-  _drag: {fileID: 6426841523429503556}
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1001 &3735659185931130140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -445,6 +462,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3925c4c7d1f88e24393fd82282de2d1b, type: 3}
+--- !u!114 &1484573300279283179 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2832194282334755063, guid: 3925c4c7d1f88e24393fd82282de2d1b, type: 3}
+  m_PrefabInstance: {fileID: 3735659185931130140}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7b23465bc5b4b84393d414f3dfb1e0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2484413278446367557 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1273905759802271321, guid: 3925c4c7d1f88e24393fd82282de2d1b, type: 3}
