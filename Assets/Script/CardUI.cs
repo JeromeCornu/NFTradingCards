@@ -7,9 +7,6 @@ using NaughtyAttributes;
 
 public class CardUI : MonoBehaviour
 {
-    [Header("Data")]
-    [SerializeField, OnValueChanged(nameof(SetVisuals)), AllowNesting()]
-    private CardData _card;
     [Header("Common texts used")]
     [SerializeField]
     private string _quote = "'";
@@ -31,16 +28,23 @@ public class CardUI : MonoBehaviour
     private TextMeshProUGUI socialAmount;
     [SerializeField]
     private TextMeshProUGUI quote;
+
+    public CardData Card
+    {
+        set
+        {
+            SetVisuals(value);
+        }
+    }
+
     private void Start()
     {
-        SetVisuals();
+        GetComponent<Canvas>().worldCamera = Camera.main;
     }
-    private void OnValueChanged()
+    public void SetVisuals(CardData _card)
     {
-        SetVisuals();
-    }
-    public void SetVisuals()
-    {
+        if (_card == null)
+            return;
         setCardName(_card.Name);
         setCardDescription(_card.Descrition);
         setCardQuote(_card.Quote);
