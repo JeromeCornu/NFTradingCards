@@ -10,18 +10,17 @@ public class CardAnimator : MonoBehaviour
 {
     [SerializeField, Label("Transform override")]
     private new Transform transform;
-    [MinMaxSlider(-10f, 10f),SerializeField]
-    private Vector2 _depthPlanes;
     public void Flip(bool upwards)
     {
         float dir = upwards ? 180f : 0f;
         transform.eulerAngles = new Vector3(0, dir, 0);
     }
 
-    internal void AdjustDepth(bool closePlane)
+    internal void AdjustDepth(float newPosZ)
     {
         var pos = transform.position;
-        pos.z = closePlane ? _depthPlanes.x : _depthPlanes.y;
+        pos.z = newPosZ;
+        //Debug.Log(pos.z);
         transform.position = pos;
     }
 
