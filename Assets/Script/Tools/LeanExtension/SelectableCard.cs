@@ -18,6 +18,12 @@ public class SelectableCard : LeanSelectableBehaviour
     [HideInInspector]
     public CardData cardData;
 
+    [Header("Deph of the card")]
+    [SerializeField]
+    public float normalDepth;
+    [SerializeField]
+    public float selectedDepth;
+
     public CardAnimator Animator { get => _animator; set => _animator = value; }
 
     public bool IsSelectable
@@ -33,13 +39,12 @@ public class SelectableCard : LeanSelectableBehaviour
     {
         base.OnSelected(select);
         _origin = transform.parent;
-        _animator.AdjustDepth(true);
+        _animator.AdjustDepth(selectedDepth);
         transform.parent = null;
     }
     protected override void OnDeselected(LeanSelect select)
     {
         base.OnDeselected(select);
-        _animator.AdjustDepth(false);
         Release();
     }
 
@@ -50,11 +55,13 @@ public class SelectableCard : LeanSelectableBehaviour
             if (CheckAreaToLockIn(out CardZone zone))
             {
                 zone.AddCard(this);
+                _animator.AdjustDepth(normalDepth);
                 return;
             }
         }
         else
             _animator.CostTooHigh(cardData.Cost);
+        
         _animator.Reparent(_origin);
     }
 
@@ -66,16 +73,17 @@ public class SelectableCard : LeanSelectableBehaviour
     private bool CheckAreaToLockIn(out CardZone zone)
     {
         zone = null;
-        return CastBoxUpAndDown(out RaycastHit info)
-               && info.transform.gameObject.CompareTag(gameObject.tag)
+        return CastBoxUpAndDown(out RaycastHit info) && info.transform.gameObject.CompareTag(gameObject.tag)
                && info.transform.parent.TryGetComponent<CardZone>(out zone);
     }
 
     private bool CastBoxUpAndDown(out RaycastHit info)
     {
-        return Physics.BoxCast(transform.position, .33f * transform.lossyScale, -transform.forward, out info, Quaternion.identity, 2f, _layerMask.value)
-               || Physics.BoxCast(transform.position, .33f * transform.lossyScale, transform.forward, out info, Quaternion.identity, 2f, _layerMask.value);
+        return Physics.BoxCast(transform.position, .33f * Vector3.one, -transform.forward, out info, Quaternion.identity, 10f, _layerMask.value)
+               || Physics.BoxCast(transform.position, .33f * Vector3.one, transform.forward, out info, Quaternion.identity, 10f, _layerMask.value);
     }
+
+
     /*[SerializeField]
 LeanSelectable[] _selectablesToForward;
 public void ForwardSelect(LeanSelect l)
