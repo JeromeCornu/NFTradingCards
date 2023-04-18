@@ -106,7 +106,7 @@ public class GameSystem : MonoBehaviour
         Debug.Log(iPlayerIndex + " <index after producing : " + player.ToString());
         return hasDied;
     }
-
+    public bool TryPlayCard(int iPlayerIndex, Card iCard) => AddCard(iPlayerIndex, iCard);
     // return if player can afford the the card cost
     public bool AddCard(int iPlayerIndex, Card iCard)
     {
