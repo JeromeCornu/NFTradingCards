@@ -42,6 +42,8 @@ public class CardUI : MonoBehaviour
     }
     public void SetVisuals()
     {
+        if (_card == null)
+            return;
         setCardName(_card.Name);
         setCardDescription(_card.Descrition);
         setCardQuote(_card.Quote);
