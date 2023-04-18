@@ -316,7 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 875895015}
   m_Layer: 0
-  m_Name: CardHolo
+  m_Name: CardHoloTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,8 +329,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875895014}
-  m_LocalRotation: {x: -0.08289378, y: -0.23402838, z: -0.037962146, w: 0.96794534}
-  m_LocalPosition: {x: 549.0416, y: 314.77188, z: -1.959436}
+  m_LocalRotation: {x: -0.081557736, y: -0.20104408, z: -0.040753484, w: 0.9753301}
+  m_LocalPosition: {x: 549.0416, y: 314.77188, z: -1.9593624}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -339,7 +339,7 @@ Transform:
   - {fileID: 1767169532}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -10.267, y: -27.003, z: -2.02}
+  m_LocalEulerAnglesHint: {x: -10.106, y: -23.054, z: -2.719}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

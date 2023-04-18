@@ -20,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Cubemap:
+        m_Texture: {fileID: 8900000, guid: 504242157d8353b47ba971ea2b4a306f, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _holoTexture:
         m_Texture: {fileID: 2800000, guid: 54c66963ac904214ba701d16fa4be0fe, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -48,7 +52,7 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _distortionAmount: 31
+    - _distortionAmount: 37.4
     - _offsetAmount: -0.4
     m_Colors: []
   m_BuildTextureStacks: []
