@@ -1,13 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Menu : MonoBehaviour
+public class MenuInGame : MonoBehaviour
 {
     [SerializeField]
     private GameObject subMenu;
+
+    [SerializeField]
+    private Button WhosPlaying;
+    [SerializeField]
+    private Sprite yourTurn;
+    [SerializeField]
+    private Sprite notYourTurn;
 
     [SerializeField]
     private Button subMenuBtn;
@@ -63,5 +71,17 @@ public class Menu : MonoBehaviour
     {
         print("Quit");
         Application.Quit();
+    }
+
+    public void FinishTurn()
+    {
+        WhosPlaying.enabled = false;
+        WhosPlaying.GetComponent<Image>().sprite = notYourTurn;
+    }
+
+    public void BeginTurn()
+    {
+        WhosPlaying.enabled = true;
+        WhosPlaying.GetComponent<Image>().sprite = yourTurn;
     }
 }
