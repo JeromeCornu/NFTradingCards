@@ -3,19 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using NaughtyAttributes;
 
 public class CardUI : MonoBehaviour
 {
-    [Header("Data")]
-    [SerializeField, OnValueChanged(nameof(SetVisuals)), AllowNesting()]
-    private CardData _card;
-    [Header("Common texts used")]
     [SerializeField]
-    private string _quote = "'";
-    [SerializeField]
-    private string _descriptionPrefix = "Description: ";
-    [SerializeField, Header("References")]
     private TextMeshProUGUI theName;
     [SerializeField]
     private GameObject color;
@@ -31,25 +22,7 @@ public class CardUI : MonoBehaviour
     private TextMeshProUGUI socialAmount;
     [SerializeField]
     private TextMeshProUGUI quote;
-    private void Start()
-    {
-        SetVisuals();
-    }
-    private void OnValueChanged()
-    {
-        SetVisuals();
-    }
-    public void SetVisuals()
-    {
-        setCardName(_card.Name);
-        setCardDescription(_card.Descrition);
-        setCardQuote(_card.Quote);
-        setCardImage(_card.Sprite);
-        setCardEconomieStat(_card[CardData.Pillar.Economic].Val);
-        setCardEcologieStat(_card[CardData.Pillar.Ecologic].Val);
-        setCardSocialStat(_card[CardData.Pillar.Social].Val);
-        setCardColor(_card.Color);
-    }
+
     private void setCardName(string newName)
     {
         theName.text = newName.ToUpper();
@@ -57,12 +30,12 @@ public class CardUI : MonoBehaviour
 
     private void setCardDescription(string newDescription)
     {
-        description.text = _descriptionPrefix + newDescription;
+        description.text = "Description: " + newDescription;
     }
 
     private void setCardQuote(string newQuote)
     {
-        quote.text = _quote + newQuote + _quote;
+        quote.text = "'" + newQuote + "'";
     }
 
     private void setCardImage(Sprite newImage)
