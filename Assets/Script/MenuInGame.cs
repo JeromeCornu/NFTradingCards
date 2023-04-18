@@ -34,8 +34,17 @@ public class MenuInGame : MonoBehaviour
     private bool visibility;
     private bool gameIsPaused;
 
+
+    [SerializeField]
+    private SoundManager soundManager;
+    public AudioClip pauseSound;
+    public AudioClip subSound;
+    public AudioClip nextSound;
+
     public void ToggleVisibilitySubMenu()
     {
+        soundManager.PlaySound(subSound);
+
         visibility = !visibility;
         subMenu.SetActive(visibility);
 
@@ -47,6 +56,8 @@ public class MenuInGame : MonoBehaviour
 
     public void ClickOnPause()
     {
+        soundManager.PlaySound(pauseSound);
+
         if (gameIsPaused)
             ResumeGame();
         else
@@ -69,18 +80,21 @@ public class MenuInGame : MonoBehaviour
 
     public void Quit()
     {
+        soundManager.PlaySound(pauseSound);
         print("Quit");
         Application.Quit();
     }
 
     public void FinishTurn()
     {
+        soundManager.PlaySound(nextSound);
         WhosPlaying.enabled = false;
         WhosPlaying.GetComponent<Image>().sprite = notYourTurn;
     }
 
     public void BeginTurn()
     {
+        soundManager.PlaySound(nextSound);
         WhosPlaying.enabled = true;
         WhosPlaying.GetComponent<Image>().sprite = yourTurn;
     }
