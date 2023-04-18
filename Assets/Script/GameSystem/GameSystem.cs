@@ -56,7 +56,11 @@ public class GameSystem : MonoBehaviour
     void Start()
     {
         for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
-            m_Players.Add(new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction));
+        {
+            Player p = new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction);
+            m_Players.Add(p);
+            OnPlayerValuesUpdates.Invoke((playerIndex, p));
+        }
 
         m_TurnManager.TurnChanged.AddListener(OnEndTurn);
     }
