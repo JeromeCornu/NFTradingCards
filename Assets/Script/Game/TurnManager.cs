@@ -15,6 +15,7 @@ public class TurnManager : MonoBehaviour
     public static string PlayerTag;
     [SerializeField]
     public static string OtherTag;
+    public const string Untagged = "Untagged";
     public static string GetTag(bool playerTag) => playerTag ? PlayerTag : OtherTag;
     public string GetTag() => GetTag(_isPlayerTurn);
     private void Awake()
