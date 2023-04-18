@@ -40,11 +40,16 @@ public class GameSystem : MonoBehaviour
     [SerializeField] TurnManager m_TurnManager;
 
     public UnityEvent<int> OnPlayerLost;
+    public UnityEvent<(int, Player)> OnPlayerValuesUpdates;
+
+    public TurnManager TurnManager { get => m_TurnManager; set => m_TurnManager = value; }
 
     void Awake()
     {
         if (OnPlayerLost == null)
             OnPlayerLost = new();
+        if (OnPlayerValuesUpdates == null)
+            OnPlayerValuesUpdates = new();
     }
 
     // Start is called before the first frame update
@@ -104,6 +109,7 @@ public class GameSystem : MonoBehaviour
         if (hasDied)
             OnPlayerLost.Invoke(iPlayerIndex);
         Debug.Log(iPlayerIndex + " <index after producing : " + player.ToString());
+        OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         return hasDied;
     }
 
