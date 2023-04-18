@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 public enum EndCode
 {
@@ -40,12 +41,31 @@ public class GameSystem : MonoBehaviour
     [SerializeField] int m_NbPlayer = 2;
 
     private EndCode m_CurrentStatus = EndCode.OnGoing;
+    [SerializeField] TurnManager m_TurnManager;
+
+    public UnityEvent<int> OnPlayerLost;
+
+    void Awake()
+    {
+        if(OnPlayerLost == null)
+            OnPlayerLost = new ();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
             m_Players.Add(new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction));
+
+        m_TurnManager.TurnChanged.AddListener(OnEndTurn);
+    }
+
+    void OnEndTurn(bool iWasPlayer)
+    {
+        if (iWasPlayer)
+            Produce(1);
+        else
+            Produce(0);
     }
 
     private void _UpdatePlayerRessources(Player iPlayer)
@@ -108,6 +128,16 @@ public class GameSystem : MonoBehaviour
     {
         m_CurrentStatus = _ComputeGameStatus(out oDeadPlayerIndices);
         return m_CurrentStatus;
+    // oDeadPlayerIndices return only indices of players that died in this turn
+    public bool Produce(int iPlayerIndex)
+    {
+        Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
+        Player player = m_Players[iPlayerIndex];
+        _UpdatePlayerRessources(player);
+        bool hasDied = _HasPlayerJustDied(player);
+        if (hasDied)
+            OnPlayerLost.Invoke(iPlayerIndex);
+        return hasDied;
     }
 
     // return if player can afford the the card cost
