@@ -32,10 +32,15 @@ public class SelectableCard : LeanSelectableBehaviour
     protected override void OnDeselected(LeanSelect select)
     {
         base.OnDeselected(select);
-        if (Physics.BoxCast(transform.position, .33f * transform.lossyScale, -transform.forward, out RaycastHit info, Quaternion.identity, 2f, _layerMask.value)
-            && info.transform.gameObject.CompareTag(gameObject.tag))
+        if ((Physics.BoxCast(transform.position, .33f * transform.lossyScale, -transform.forward, out RaycastHit info, Quaternion.identity, 2f, _layerMask.value)
+                ||
+                Physics.BoxCast(transform.position, .33f * transform.lossyScale, transform.forward, out info, Quaternion.identity, 2f, _layerMask.value)
+            )
+            && info.transform.gameObject.CompareTag(gameObject.tag)
+            && info.transform.parent.TryGetComponent<CardZone>(out CardZone zone)
+            )
         {
-            transform.parent = info.transform.parent.GetComponentInChildren<Layout>().transform;
+            zone.AddCard(this);
         }
         else
             transform.parent = _origin;
