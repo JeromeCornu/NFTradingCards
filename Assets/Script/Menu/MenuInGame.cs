@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MenuInGame : MonoBehaviour
 {
@@ -55,16 +53,15 @@ public class MenuInGame : MonoBehaviour
     public AudioClip subSound;
     public AudioClip nextSound;
 
+    [SerializeField]
+    private GameObject endMenu;
+    [SerializeField]
+    private TextMeshProUGUI endSentence;
+
     private void Awake()
     {
         if (OnGameStart == null)
             OnGameStart = new();
-
-        _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
-        _turn.TurnChanged.AddListener((b) =>
-        {
-            if (b) BeginTurn(); else FinishTurn();
-        });
     }
 
     // On start, pausing so that we can play only once we clicked on start button
@@ -72,6 +69,14 @@ public class MenuInGame : MonoBehaviour
     {
         PauseGame();
         WhosPlaying.gameObject.SetActive(false);
+        endMenu.SetActive(false);
+
+        _game.OnPlayerLost.AddListener(OnPlayerLost);
+        _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
+        _turn.TurnChanged.AddListener((b) =>
+        {
+            if (b) BeginTurn(); else FinishTurn();
+        });
     }
 
     public void OnPlayerUpdates((int, GameSystem.Player p) player)
@@ -147,5 +152,23 @@ public class MenuInGame : MonoBehaviour
         WhosPlaying.gameObject.SetActive(true);
         startButton.SetActive(false);
         hasStarted = true;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    // since game is 1vs1 only, if one player lost, the game is over
+    public void OnPlayerLost(int iPlayerIndexLost)
+    {
+        subMenuBtn.gameObject.SetActive(false);
+        WhosPlaying.gameObject.SetActive(false);
+        endMenu.SetActive(true);
+
+        if (iPlayerIndexLost == PlayerID.IsPlayerAsInt(true))
+            endSentence.text = "You failed to sustainably manage your planet.";
+        else
+            endSentence.text = "Sustainable development has no secret for you, congrats !";
     }
 }
