@@ -21,7 +21,7 @@ public abstract class PillardCalculation : Action
         _aggro = BT_Blackboard.Bools[AggroKey];
         _game = BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>();
         player = _game[PlayerIndex()];
-        BT_Blackboard.Floats[outputKey] = DeterminOutputPriority();
+        BT_Blackboard.Floats[outputKey] = Mathf.Clamp01(DeterminOutputPriority());
         return Status.Success;
     }
 

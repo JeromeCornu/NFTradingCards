@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class EconomicPrio : PillardCalculation
 {
-    [SerializeField,Label("MaxNbOfPlayableCardPerTurnToConsiderTooMuchMoney")]
+    [SerializeField, Label("MaxNbOfPlayableCardPerTurnToConsiderTooMuchMoney")]
     private int _nbOfCard = 6;
 
     protected override string outputKey => "EconomicP";
@@ -17,6 +17,6 @@ public class EconomicPrio : PillardCalculation
         var avgCost = _game.getDeckBehaviour(1).CalculateAverageCost();
         var currentMoney = player.Money;
         int playableCard = (int)(currentMoney / avgCost);
-        return (Mathf.Clamp01(playableCard / (float)_nbOfCard));
+        return playableCard / (float)_nbOfCard;
     }
 }
