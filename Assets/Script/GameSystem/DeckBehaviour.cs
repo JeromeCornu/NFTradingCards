@@ -7,15 +7,18 @@ public class DeckBehaviour : MonoBehaviour
 {
     [SerializeField] GameObject m_HandObject;
 
-    private Stack<Card> m_CardsStack = new ();
-    private List<Card> m_Hand = new ();
-
+    private Stack<Card> m_CardsStack = new();
+    private List<Card> m_Hand = new();
+    public float CalculateAverageCost()
+    {
+        return m_CardsStack.Sum((c) => c.CardData.Cost) / (float)m_CardsStack.Count;
+    }
     public List<Card> MHand => m_Hand;
 
     private void Start()
     {
         Card[] childrenCards = GetComponentsInChildren<Card>();
-        List<Card> cards = new ();
+        List<Card> cards = new();
         foreach (Card card in childrenCards)
             cards.Add(card);
 
@@ -27,7 +30,7 @@ public class DeckBehaviour : MonoBehaviour
         List<Card> cards = iCards;
         var randomList = cards.OrderBy(card => Random.Range(0.0f, 1.0f));
         m_CardsStack.Clear();
-        foreach(Card card in randomList)
+        foreach (Card card in randomList)
         {
             m_CardsStack.Push(card);
             card.gameObject.transform.parent = transform;
@@ -44,7 +47,7 @@ public class DeckBehaviour : MonoBehaviour
     // return the number of drawn cards
     public List<Card> DrawCards(int iNbCardsToDraw)
     {
-        if(iNbCardsToDraw > m_CardsStack.Count)
+        if (iNbCardsToDraw > m_CardsStack.Count)
         {
             return _DrawCards(m_CardsStack.Count);
         }
@@ -54,8 +57,8 @@ public class DeckBehaviour : MonoBehaviour
 
     private List<Card> _DrawCards(int iNbCardsToDraw)
     {
-        List<Card> drawnCards = new ();
-        for(int i = 0; i < iNbCardsToDraw; i++)
+        List<Card> drawnCards = new();
+        for (int i = 0; i < iNbCardsToDraw; i++)
         {
             Card card = m_CardsStack.Pop();
             card.transform.parent = m_HandObject.transform;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,6 +11,8 @@ public class GameSystem : MonoBehaviour
 {
     public class Player
     {
+        public const int NbOfCardDrawTreshold = 3;
+        private const int treshold = 100 / NbOfCardDrawTreshold;
         public List<Card> CardOnBoard;
         public int Temperature;
         public int Money;
@@ -35,6 +38,10 @@ public class GameSystem : MonoBehaviour
             return "Temp : " + Temperature + ", �: " + Money + ", satist : " + PeopleSatistfaction +
                 " lost ? " + HasLost + " Board : " + string.Join('\n', CardOnBoard);
         }
+
+        internal int NbOfCardToDraw() => PeopleSatistfaction / treshold /*+ 1*/;
+
+
     }
 
     [SerializeField] int m_StartTemp = 60;
@@ -48,9 +55,11 @@ public class GameSystem : MonoBehaviour
     public int MStartMoney => m_StartMoney;
 
     public int MStartSatisfaction => m_StartSatisfaction;
+    public int MMaxTemperature { get => m_MaxTemperature; }
+    public int MMinSatisfaction { get => m_MinSatisfaction; }
 
     private List<Player> m_Players = new List<Player>();
-    public Player this[int i]=> m_Players[i];
+    public Player this[int i] => m_Players[i];
     [SerializeField] int m_NbPlayer = 2;
 
     [SerializeField] TurnManager m_TurnManager;
@@ -62,7 +71,7 @@ public class GameSystem : MonoBehaviour
         Assert.IsTrue(0 <= prmIndex && prmIndex < m_NbPlayer);
         return m_PlayersDeck[prmIndex];
     }
-        
+
     public UnityEvent<int> OnPlayerLost;
     public UnityEvent<(int, Player)> OnPlayerValuesUpdates;
 
@@ -72,7 +81,8 @@ public class GameSystem : MonoBehaviour
     {
         if (OnPlayerLost == null)
             OnPlayerLost = new();
-        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++){
+        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
+        {
             Player p = new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction);
             m_Players.Add(p);
             OnPlayerValuesUpdates.Invoke((playerIndex, p));
@@ -143,7 +153,7 @@ public class GameSystem : MonoBehaviour
     {
         Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
         Player player = m_Players[iPlayerIndex];
-        int nCardToDraw = player.PeopleSatistfaction / 33 + 1;
+        int nCardToDraw = player.NbOfCardToDraw();
         if (!player.HasStarted)
             nCardToDraw = 4;
         m_PlayersDeck[iPlayerIndex].DrawCardsWithoutReturn(nCardToDraw);
