@@ -54,7 +54,6 @@ public class SelectableCard : LeanSelectableBehaviour
         {
             if (zone.AddCard(this))
             {
-                zone.AddCard(this);
                 _animator.AdjustDepth(normalDepth);
                 return;
             }
