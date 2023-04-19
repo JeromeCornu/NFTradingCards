@@ -69,7 +69,7 @@ public class MenuInGame : MonoBehaviour
     {
         PauseGame();
         WhosPlaying.gameObject.SetActive(false);
-        endMenu.SetActive(false);
+        endMenu?.SetActive(false);
 
         _game.OnPlayerLost.AddListener(OnPlayerLost);
         _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
