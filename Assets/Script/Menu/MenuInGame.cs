@@ -48,10 +48,23 @@ public class MenuInGame : MonoBehaviour
 
     public UnityEvent OnGameStart;
 
+    [Header("Sound")]
+    [SerializeField]
+    private SoundManager soundManager;
+    public AudioClip pauseSound;
+    public AudioClip subSound;
+    public AudioClip nextSound;
+
     private void Awake()
     {
         if (OnGameStart == null)
-            OnGameStart = new ();
+            OnGameStart = new();
+
+        _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
+        _turn.TurnChanged.AddListener((b) =>
+        {
+            if (b) BeginTurn(); else FinishTurn();
+        });
     }
 
     // On start, pausing so that we can play only once we clicked on start button
@@ -61,23 +74,6 @@ public class MenuInGame : MonoBehaviour
         WhosPlaying.gameObject.SetActive(false);
     }
 
-
-    [Header("Sound")]
-    [SerializeField]
-    private SoundManager soundManager;
-    public AudioClip pauseSound;
-    public AudioClip subSound;
-    public AudioClip nextSound;
-
-
-    private void Awake()
-    {
-        _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
-        _turn.TurnChanged.AddListener((b) =>
-        {
-            if (b) BeginTurn(); else FinishTurn();
-        });
-    }
     public void OnPlayerUpdates((int, GameSystem.Player p) player)
     {
         (player.Item1 == 0 ? _playerStat : _opponentStat).UpdateView(player.p);
@@ -98,12 +94,10 @@ public class MenuInGame : MonoBehaviour
 
     public void ClickOnPause()
     {
-<<<<<<< HEAD:Assets/Script/Menu/MenuInGame.cs
-        soundManager.PlaySound(pauseSound);
-=======
         if (!hasStarted)
             return;
->>>>>>> 9ad9498 (Added start button):Assets/Script/MenuInGame.cs
+
+        soundManager.PlaySound(pauseSound);
 
         if (gameIsPaused)
             ResumeGame();
