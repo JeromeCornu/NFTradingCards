@@ -50,7 +50,7 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
                 .Aggregate((curr, next) => curr &= next);
 
     public string Quote { get => _quote; }
-    public Color Color { get => new Color(1f, 215f / 255f, 0); }
+    public Color Color { get => new Color(0, 0, 1f, 1f); }
 
     [Flags]
     public enum Pillar
