@@ -168,6 +168,7 @@ public class GameSystem : MonoBehaviour
             return false;
 
         player.CardOnBoard.Add(iCard);
+        m_PlayersDeck[iPlayerIndex].RemoveCardFromHand(iCard);
         player.Money -= iCard.CardData.Cost;
         OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         //m_TurnManager.SwitchTurn();
