@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using static GameSystem;
+
 public class GameSystem : MonoBehaviour
 {
     public class Player
@@ -40,18 +42,27 @@ public class GameSystem : MonoBehaviour
     [SerializeField] TurnManager m_TurnManager;
 
     public UnityEvent<int> OnPlayerLost;
+    public UnityEvent<(int, Player)> OnPlayerValuesUpdates;
+
+    public TurnManager TurnManager { get => m_TurnManager; set => m_TurnManager = value; }
 
     void Awake()
     {
         if (OnPlayerLost == null)
             OnPlayerLost = new();
+        if (OnPlayerValuesUpdates == null)
+            OnPlayerValuesUpdates = new();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
-            m_Players.Add(new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction));
+        {
+            Player p = new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction);
+            m_Players.Add(p);
+            OnPlayerValuesUpdates.Invoke((playerIndex, p));
+        }
 
         m_TurnManager.TurnChanged.AddListener(OnEndTurn);
     }
@@ -91,7 +102,6 @@ public class GameSystem : MonoBehaviour
             iPlayer.HasLost = true;
             return true;
         }
-
         return false;
     }
     // oDeadPlayerIndices return only indices of players that died in this turn
@@ -104,9 +114,10 @@ public class GameSystem : MonoBehaviour
         if (hasDied)
             OnPlayerLost.Invoke(iPlayerIndex);
         Debug.Log(iPlayerIndex + " <index after producing : " + player.ToString());
+        OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         return hasDied;
     }
-
+    public bool TryPlayCard(int iPlayerIndex, Card iCard) => AddCard(iPlayerIndex, iCard);
     // return if player can afford the the card cost
     public bool AddCard(int iPlayerIndex, Card iCard)
     {
@@ -117,7 +128,8 @@ public class GameSystem : MonoBehaviour
 
         player.CardOnBoard.Add(iCard);
         player.Money -= iCard.CardData.Cost;
-        m_TurnManager.SwitchTurn();
+        OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
+        //m_TurnManager.SwitchTurn();
         return true;
     }
 

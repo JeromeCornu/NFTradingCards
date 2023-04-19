@@ -69,7 +69,6 @@ public class SelectableCard : LeanSelectableBehaviour
             if (zone.AddCard(this))
             {
                 soundManager.PlaySound(placeCardSound);
-                zone.AddCard(this);
                 _animator.AdjustDepth(normalDepth);
                 return;
             }
