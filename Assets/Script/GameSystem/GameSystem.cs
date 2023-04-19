@@ -35,6 +35,7 @@ public class GameSystem : MonoBehaviour
     [SerializeField] int m_MinSatisfaction = 10;
 
     private List<Player> m_Players = new List<Player>();
+    public Player this[int i]=> m_Players[i];
     [SerializeField] int m_NbPlayer = 2;
 
     [SerializeField] TurnManager m_TurnManager;
@@ -45,13 +46,13 @@ public class GameSystem : MonoBehaviour
     {
         if (OnPlayerLost == null)
             OnPlayerLost = new();
+        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
+            m_Players.Add(new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction));
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
-            m_Players.Add(new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction));
 
         m_TurnManager.TurnChanged.AddListener(OnEndTurn);
     }
