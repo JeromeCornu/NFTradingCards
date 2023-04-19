@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class CardGenerator : EditorWindow
 {
@@ -33,7 +34,8 @@ public class CardGenerator : EditorWindow
             "Water privatization initiatives",
             "Planned obsolescence technology companies",
             "Massive industrial agriculture",
-            "Sustainable development consulting firms"
+            "Sustainable development consulting firms",
+            "A cow"
         };
 
     private string[] _descriptions =
@@ -60,7 +62,8 @@ public class CardGenerator : EditorWindow
             "Drinking water for the rich",
             "Obsolete on arrival",
             "Destroying our soil",
-            "Greenwashing for profit"
+            "Greenwashing for profit",
+            "The most chaostic animal for environment"
         };
 
     private string[] _quotes =
@@ -87,15 +90,36 @@ public class CardGenerator : EditorWindow
             "Monetizing a human right",
             "Making garbage, not products",
             "Putting profits over people",
-            "Sustainability sold separately"
+            "Sustainability sold separately",
+            "Mooh....?"
         };
 
-    private int[] _economic = { -2, 2, -1, 4, -2, 5, 2, 3, 4, 1, 4, 3, 4, 2, -1, 1, 2, -3, -1, -3, -4, -3, -2 };
+    private int[] _economic = { -2, 2, -1, 4, -2, 5, 2, 3, 4, 1, 4, 3, 4, 2, -1, 1, 2, -3, -1, -3, -4, -3, -2, 0 };
 
-    private int[] _social = { 3, 4, 5, 3, 3, -3, -2, -1, -3, -1, -2, -1, 2, 3, 4, 3, 3, -5, -1, -2, -2, -4, 0 };
+    private int[] _social = { 3, 4, 5, 3, 3, -3, -2, -1, -3, -1, -2, -1, 2, 3, 4, 3, 3, -5, -1, -2, -2, -4, 0, 0 };
 
-    private int[] _ecologic = { 4, 4, 2, 1, 3, -5, -4, -3, -5, -3, 0, -4, 4, 4, 1, 3, 4, 2, -5, -2, -2, -3, -5, -1 };
+    private int[] _ecologic = { 4, 4, 2, 1, 3, -5, -4, -3, -5, -3, 0, -4, 4, 4, 1, 3, 4, 2, -5, -2, -2, -3, -5, -1, 10 };
 
+    private Sprite[] loadedIcons;
+
+
+    private bool LoadSprites()
+    {
+        loadedIcons = Resources.LoadAll<Sprite>("Icons");
+        SortArrayByName();
+
+        if (loadedIcons.Length != 0) { return true; }
+        else { return false; };
+    }
+
+    private void SortArrayByName()
+    {
+        var sortedList = loadedIcons.OrderBy(go => go.name).ToList();
+        for (int x = 0; x < sortedList.Count; x++)
+        {
+            Debug.Log(sortedList[x]);
+        }
+    }
 
 
     [MenuItem("Custom/Card Generator")]
@@ -106,9 +130,15 @@ public class CardGenerator : EditorWindow
 
     private void OnGUI()
     {
+        if (GUILayout.Button("Load Sprites"))
+        {
+            var loaded = LoadSprites();
+            Debug.Log(loaded);
+        }
+
         if (GUILayout.Button("Generate Cards"))
         {
-            GenerateCards();
+             GenerateCards(); 
         }
     }
 
@@ -125,7 +155,7 @@ public class CardGenerator : EditorWindow
             CardData card = ScriptableObject.CreateInstance<CardData>();
             var cardT = card.GetType();
             SetField("_name", card, _names[i], cardT);
-            SetField("_sprite", card, null, cardT);
+            SetField("_sprite", card, (Sprite)loadedIcons[i], cardT);
             SetField("_description", card, _descriptions[i], cardT);
             SetField("_quote", card, _quotes[i], cardT);
             SetField("_cost", card, price, cardT);
