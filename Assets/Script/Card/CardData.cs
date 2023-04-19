@@ -15,14 +15,14 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
     [SerializeField]
     private Sprite _sprite;
     [SerializeField]
-    private string _descrition = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.";
+    private string _description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.";
     [SerializeField]
     private string _quote = "Ut velit mauris, egestas sed, gravida nec, ornare ut, mi.Aenean ut orci vel massa suscipit pulvinar.";
     [Header("Values")]
     [SerializeField] private int _cost;
-    [SerializeField] private Value _economic;
-    [SerializeField] private Value _social;
-    [SerializeField] private Value _ecologic;
+    [SerializeField] private Value _economic = new Value(0);
+    [SerializeField] private Value _social = new Value(0);
+    [SerializeField] private Value _ecologic = new Value(0);
     public Value this[Pillar t]
     {
         get
@@ -42,7 +42,7 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
     }
     public Sprite Sprite { get => _sprite; }
     public string Name { get => _name; }
-    public string Descrition { get => _descrition; }
+    public string Descrition { get => _description; }
     public int Cost { get => _cost; }
     //First will shortcut all the ordering after the first as been ordered
     public Pillar _majorTypes => this.Where(kv => kv.value.Val == this.Max((v) => Mathf.Abs(v.value.Val)))
@@ -90,7 +90,7 @@ public class Value
     public const int MAX = 99;
     [Range(-MAX, MAX), SerializeField]
     private int _value;
-    private Value(int value)
+    public Value(int value)
     {
         _value = value;
     }
