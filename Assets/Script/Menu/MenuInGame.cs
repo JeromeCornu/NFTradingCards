@@ -62,6 +62,7 @@ public class MenuInGame : MonoBehaviour
     {
         if (OnGameStart == null)
             OnGameStart = new();
+        WhosPlaying.onClick.AddListener(_turn.SwitchTurn);
     }
 
     // On start, pausing so that we can play only once we clicked on start button
@@ -69,7 +70,7 @@ public class MenuInGame : MonoBehaviour
     {
         PauseGame();
         WhosPlaying.gameObject.SetActive(false);
-        endMenu?.SetActive(false);
+        endMenu.SetActive(false);
 
         _game.OnPlayerLost.AddListener(OnPlayerLost);
         _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
