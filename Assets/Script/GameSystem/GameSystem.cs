@@ -117,7 +117,7 @@ public class GameSystem : MonoBehaviour
         OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         return hasDied;
     }
-
+    public bool TryPlayCard(int iPlayerIndex, Card iCard) => AddCard(iPlayerIndex, iCard);
     // return if player can afford the the card cost
     public bool AddCard(int iPlayerIndex, Card iCard)
     {
