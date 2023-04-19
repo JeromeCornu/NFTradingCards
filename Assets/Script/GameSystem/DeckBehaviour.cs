@@ -13,8 +13,7 @@ public class DeckBehaviour : MonoBehaviour
     {
         return m_CardsStack.Sum((c) => c.CardData.Cost) / (float)m_CardsStack.Count;
     }
-    public List<Card> MHand => m_Hand;
-
+    
     public List<Card> MHand => m_Hand;
 
     private void Start()
