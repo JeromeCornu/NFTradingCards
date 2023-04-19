@@ -21,9 +21,13 @@ public class SelectableCard : LeanSelectableBehaviour
 
     [Header("Deph of the card")]
     [SerializeField]
-    public float normalDepth;
+    private float normalDepth;
     [SerializeField]
-    public float selectedDepth;
+    private float selectedDepth;
+
+
+    [SerializeField]
+    private CardZoomer cardZoomer;
 
     [Header("Sound")]
     [SerializeField]
@@ -46,11 +50,12 @@ public class SelectableCard : LeanSelectableBehaviour
     private void Start()
     {
         soundManager = Camera.main.GetComponent<SoundManager>();
+        cardZoomer = GameObject.Find("PlayerHand").GetComponent<CardZoomer>();
     }
 
     protected override void OnSelected(LeanSelect select)
     {
-        if (!_isSelectable)
+        if (!_isSelectable || !cardZoomer._zoomEnabled)
             return;
 
         base.OnSelected(select);
