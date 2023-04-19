@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MenuInGame : MonoBehaviour
@@ -38,8 +39,27 @@ public class MenuInGame : MonoBehaviour
     [SerializeField]
     private Sprite spritePlay;
 
+    [SerializeField]
+    private GameObject startButton; // clickable only once
+
     private bool visibility;
     private bool gameIsPaused;
+    private bool hasStarted;
+
+    public UnityEvent OnGameStart;
+
+    private void Awake()
+    {
+        if (OnGameStart == null)
+            OnGameStart = new ();
+    }
+
+    // On start, pausing so that we can play only once we clicked on start button
+    private void Start()
+    {
+        PauseGame();
+        WhosPlaying.gameObject.SetActive(false);
+    }
 
 
     [Header("Sound")]
@@ -78,7 +98,12 @@ public class MenuInGame : MonoBehaviour
 
     public void ClickOnPause()
     {
+<<<<<<< HEAD:Assets/Script/Menu/MenuInGame.cs
         soundManager.PlaySound(pauseSound);
+=======
+        if (!hasStarted)
+            return;
+>>>>>>> 9ad9498 (Added start button):Assets/Script/MenuInGame.cs
 
         if (gameIsPaused)
             ResumeGame();
@@ -119,5 +144,14 @@ public class MenuInGame : MonoBehaviour
         soundManager.PlaySound(nextSound);
         WhosPlaying.enabled = true;
         WhosPlaying.GetComponent<Image>().sprite = yourTurn;
+    }
+
+    public void StartGame()
+    {
+        OnGameStart.Invoke();
+        ResumeGame();
+        WhosPlaying.gameObject.SetActive(true);
+        startButton.SetActive(false);
+        hasStarted = true;
     }
 }
