@@ -28,10 +28,8 @@ public class SocialPrio : PillardCalculation
             currPrio = 1;
         else if (Mathf.Abs(normalized - tresh2) < _percentTreshold)
             currPrio = 2;
-        else if (normalized < tresh2 + _percentTreshold)
+        else if (normalized > tresh2 + _percentTreshold)
             currPrio = 0;
-        else
-            Debug.LogError("Ratio");
         Debug.Log(normalized + " gave test value : " + currPrio);
         return currPrio / maxPrio;
     }
