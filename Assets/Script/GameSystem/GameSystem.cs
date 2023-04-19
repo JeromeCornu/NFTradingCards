@@ -43,6 +43,12 @@ public class GameSystem : MonoBehaviour
     [SerializeField] int m_MaxTemperature = 100;
     [SerializeField] int m_MinSatisfaction = 10;
 
+    public int MStartTemp => m_StartTemp;
+
+    public int MStartMoney => m_StartMoney;
+
+    public int MStartSatisfaction => m_StartSatisfaction;
+
     private List<Player> m_Players = new List<Player>();
     public Player this[int i]=> m_Players[i];
     [SerializeField] int m_NbPlayer = 2;
