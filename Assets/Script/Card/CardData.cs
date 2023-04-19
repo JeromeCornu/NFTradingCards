@@ -23,6 +23,10 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
     [SerializeField] private Value _economic = new Value(0);
     [SerializeField] private Value _social = new Value(0);
     [SerializeField] private Value _ecologic = new Value(0);
+
+    [SerializeField]
+    private int drawSize;
+
     public Value this[Pillar t]
     {
         get
