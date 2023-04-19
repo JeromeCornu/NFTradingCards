@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SelectableCard : LeanSelectableBehaviour
 {
@@ -24,6 +25,13 @@ public class SelectableCard : LeanSelectableBehaviour
     [SerializeField]
     public float selectedDepth;
 
+    [Header("Sound")]
+    [SerializeField]
+    private SoundManager soundManager;
+    public AudioClip placeCardSound;
+    public AudioClip SelectCardSound;
+
+
     public CardAnimator Animator { get => _animator; set => _animator = value; }
 
     public bool IsSelectable
@@ -33,6 +41,11 @@ public class SelectableCard : LeanSelectableBehaviour
             _isSelectable = value;
             _drag.enabled = _isSelectable;
         }
+    }
+
+    private void Start()
+    {
+        soundManager = Camera.main.GetComponent<SoundManager>();
     }
 
     protected override void OnSelected(LeanSelect select)
@@ -48,12 +61,14 @@ public class SelectableCard : LeanSelectableBehaviour
         Release();
     }
 
+
     private void Release()
     {
         if (CheckAreaToLockIn(out CardZone zone))
         {
             if (zone.AddCard(this))
             {
+                soundManager.PlaySound(placeCardSound);
                 zone.AddCard(this);
                 _animator.AdjustDepth(normalDepth);
                 return;

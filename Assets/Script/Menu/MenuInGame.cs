@@ -34,7 +34,7 @@ public class MenuInGame : MonoBehaviour
     private bool visibility;
     private bool gameIsPaused;
 
-
+    [Header("Sound")]
     [SerializeField]
     private SoundManager soundManager;
     public AudioClip pauseSound;
