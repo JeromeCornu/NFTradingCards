@@ -18,22 +18,24 @@ public class DeckBehaviour : MonoBehaviour
     }
 
     // return the number of drawn cards
-    public int DrawCards(int iNbCardsToDraw)
+    public List<Card> DrawCards(int iNbCardsToDraw)
     {
         if(iNbCardsToDraw > m_CardsStack.Count)
         {
-            _DrawCards(m_CardsStack.Count);
-            return m_CardsStack.Count;
+            return _DrawCards(m_CardsStack.Count);
         }
 
-        _DrawCards(iNbCardsToDraw);
-        return iNbCardsToDraw;
+        return _DrawCards(iNbCardsToDraw);
     }
 
-    private void _DrawCards(int iNbCardsToDraw)
+    private List<Card> _DrawCards(int iNbCardsToDraw)
     {
+        List<Card> drawnCards = new ();
         for(int i = 0; i < iNbCardsToDraw; i++)
-            m_Hand.Add(m_CardsStack.Pop());
+            drawnCards.Add(m_CardsStack.Pop());
+
+        m_Hand.AddRange(drawnCards);
+        return drawnCards;
     }
 
     public bool RemoveCardFromHand(Card iCard)
