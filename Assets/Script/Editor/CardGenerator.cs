@@ -1,11 +1,7 @@
 using System;
-using System.Numerics;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using Random = UnityEngine.Random;
 using System.Linq;
 
 public class CardGenerator : EditorWindow
@@ -98,7 +94,7 @@ public class CardGenerator : EditorWindow
 
     private int[] _social = { 3, 4, 5, 3, 3, -3, -2, -1, -3, -1, -2, -1, 2, 3, 4, 3, 3, -5, -1, -2, -2, -4, 0, 0 };
 
-    private int[] _ecologic = { 4, 4, 2, 1, 3, -5, -4, -3, -5, -3, 0, -4, 4, 4, 1, 3, 4, 2, -5, -2, -2, -3, -5, -1, 10 };
+    private int[] _ecologic = { 4, 4, 2, 1, 3, -5, -4, -3, -5, -3, 0, -4, 4, 4, 1, 3, 4, 2, -5, -2, -2, -3, -5, -10 };
 
     private Sprite[] loadedIcons;
 
@@ -166,7 +162,7 @@ public class CardGenerator : EditorWindow
             valueField.SetValue(card[CardData.Pillar.Social], _social[i]);
             valueField.SetValue(card[CardData.Pillar.Economic], _economic[i]);
 
-            AssetDatabase.CreateAsset(card, "Assets/Data/Generated/" + card.Name + ".asset");
+            AssetDatabase.CreateAsset(card, "Resources/Data/" + card.Name + ".asset");
         }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
