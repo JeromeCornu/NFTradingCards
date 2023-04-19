@@ -6,7 +6,7 @@ namespace BehaviourTreeNodes
     public class DefOrAggro : Action
     {
         
-        private static GameSystem gameSystem;
+        private static GameSystem _gameSystem;
         private int _playerCardNumber;
         private int _aiCardNumber;
         //Order in list : Money, Temp, Satisfacion;
@@ -19,34 +19,34 @@ namespace BehaviourTreeNodes
         protected override Status OnUpdate()
         {
             
-            gameSystem ??= BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>();
-            if (gameSystem==null)return Status.Failure;
+            _gameSystem ??= BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>();
+            if (_gameSystem==null)return Status.Failure;
             
            
-            _playerCardNumber = gameSystem.getDeckBehaviour(0).MHand.Count;
-            _aiCardNumber = gameSystem.getDeckBehaviour(1).MHand.Count;
+            _playerCardNumber = _gameSystem.getDeckBehaviour(0).MHand.Count;
+            _aiCardNumber = _gameSystem.getDeckBehaviour(1).MHand.Count;
             
-            _playerStats.Add(gameSystem[0].Money);
-            _playerStats.Add(gameSystem[0].Temperature);
-            _playerStats.Add(gameSystem[0].PeopleSatistfaction);
-            _aiStats.Add(gameSystem[1].Money);
-            _aiStats.Add(gameSystem[1].Temperature);
-            _aiStats.Add(gameSystem[1].PeopleSatistfaction);
+            _playerStats.Add(_gameSystem[0].Money);
+            _playerStats.Add(_gameSystem[0].Temperature);
+            _playerStats.Add(_gameSystem[0].PeopleSatistfaction);
+            _aiStats.Add(_gameSystem[1].Money);
+            _aiStats.Add(_gameSystem[1].Temperature);
+            _aiStats.Add(_gameSystem[1].PeopleSatistfaction);
 
             float averagePlayerStat;
             float averageAiStat;
 
-            float avrgMoney = (float)(_playerStats[0] - gameSystem.MStartMoney)/gameSystem.MStartMoney;
-            float avrgTemp = (float)(_playerStats[1] - gameSystem.MStartTemp)/gameSystem.MStartTemp;
-            float avrgPplSat = (float)(_playerStats[2] - gameSystem.MStartSatisfaction)/gameSystem.MStartSatisfaction;
+            float avrgMoney = (float)(_playerStats[0] - _gameSystem.MStartMoney)/_gameSystem.MStartMoney;
+            float avrgTemp = (float)(_playerStats[1] - _gameSystem.MStartTemp)/_gameSystem.MStartTemp;
+            float avrgPplSat = (float)(_playerStats[2] - _gameSystem.MStartSatisfaction)/_gameSystem.MStartSatisfaction;
             
             //(va-vi)/vi
             
             averagePlayerStat = (avrgMoney + avrgTemp + avrgPplSat)/_playerStats.Count;
             
-            avrgMoney = (float)(_aiStats[0] - gameSystem.MStartMoney)/gameSystem.MStartMoney;
-            avrgTemp = (float)(_aiStats[1] - gameSystem.MStartTemp)/gameSystem.MStartTemp;
-            avrgPplSat = (float)(_aiStats[2] - gameSystem.MStartSatisfaction)/gameSystem.MStartSatisfaction;
+            avrgMoney = (float)(_aiStats[0] - _gameSystem.MStartMoney)/_gameSystem.MStartMoney;
+            avrgTemp = (float)(_aiStats[1] - _gameSystem.MStartTemp)/_gameSystem.MStartTemp;
+            avrgPplSat = (float)(_aiStats[2] - _gameSystem.MStartSatisfaction)/_gameSystem.MStartSatisfaction;
            
             averageAiStat = (avrgMoney + avrgTemp + avrgPplSat)/_aiStats.Count;
             
