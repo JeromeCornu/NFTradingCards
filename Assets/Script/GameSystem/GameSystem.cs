@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using static GameSystem;
+
 public class GameSystem : MonoBehaviour
 {
     public class Player
@@ -100,7 +102,6 @@ public class GameSystem : MonoBehaviour
             iPlayer.HasLost = true;
             return true;
         }
-
         return false;
     }
     // oDeadPlayerIndices return only indices of players that died in this turn
@@ -127,7 +128,8 @@ public class GameSystem : MonoBehaviour
 
         player.CardOnBoard.Add(iCard);
         player.Money -= iCard.CardData.Cost;
-        m_TurnManager.SwitchTurn();
+        OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
+        //m_TurnManager.SwitchTurn();
         return true;
     }
 
