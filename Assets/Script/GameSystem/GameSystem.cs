@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -24,6 +25,10 @@ public class GameSystem : MonoBehaviour
             PeopleSatistfaction = iInitSatisfaction;
             HasStarted = false;
             HasLost = false;
+        }
+        public bool CanAffordCard(Card iCard)
+        {
+            return iCard.CardData.Cost <= this.Money;
         }
         public override string ToString()
         {
@@ -144,7 +149,7 @@ public class GameSystem : MonoBehaviour
     {
         Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
         Player player = m_Players[iPlayerIndex];
-        if (iCard.CardData.Cost > player.Money)
+        if (!player.CanAffordCard(iCard))
             return false;
 
         player.CardOnBoard.Add(iCard);
@@ -153,7 +158,6 @@ public class GameSystem : MonoBehaviour
         //m_TurnManager.SwitchTurn();
         return true;
     }
-
     // return if deletion happened
     public bool RemoveCard(int iPlayerIndex, Card iCard)
     {
