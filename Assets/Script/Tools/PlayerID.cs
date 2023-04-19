@@ -7,7 +7,7 @@ public class PlayerID : MonoBehaviour
 {
     [SerializeField/*,OnValueChanged(nameof(UpdateTags))*/]
     private bool _isPlayer;
-    public int AsInt => _isPlayer ? 0 : 1;
+    public int AsInt => IsPlayerAsInt(_isPlayer);
     private void Start()
     {
         UpdateTags();
@@ -29,5 +29,10 @@ public class PlayerID : MonoBehaviour
             // Call the TraverseChildren function recursively on the child object's transform
             TraverseChildren(child, tag);
         }
+    }
+
+    public static int IsPlayerAsInt(bool iIsPlayer)
+    {
+        return iIsPlayer ? 0 : 1;
     }
 }

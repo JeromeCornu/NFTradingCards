@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MenuInGame : MonoBehaviour
@@ -38,9 +39,14 @@ public class MenuInGame : MonoBehaviour
     [SerializeField]
     private Sprite spritePlay;
 
+    [SerializeField]
+    private GameObject startButton; // clickable only once
+
     private bool visibility;
     private bool gameIsPaused;
+    private bool hasStarted;
 
+    public UnityEvent OnGameStart;
 
     [Header("Sound")]
     [SerializeField]
@@ -49,15 +55,25 @@ public class MenuInGame : MonoBehaviour
     public AudioClip subSound;
     public AudioClip nextSound;
 
-
     private void Awake()
     {
+        if (OnGameStart == null)
+            OnGameStart = new();
+
         _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
         _turn.TurnChanged.AddListener((b) =>
         {
             if (b) BeginTurn(); else FinishTurn();
         });
     }
+
+    // On start, pausing so that we can play only once we clicked on start button
+    private void Start()
+    {
+        PauseGame();
+        WhosPlaying.gameObject.SetActive(false);
+    }
+
     public void OnPlayerUpdates((int, GameSystem.Player p) player)
     {
         (player.Item1 == 0 ? _playerStat : _opponentStat).UpdateView(player.p);
@@ -78,6 +94,9 @@ public class MenuInGame : MonoBehaviour
 
     public void ClickOnPause()
     {
+        if (!hasStarted)
+            return;
+
         soundManager.PlaySound(pauseSound);
 
         if (gameIsPaused)
@@ -119,5 +138,14 @@ public class MenuInGame : MonoBehaviour
         soundManager.PlaySound(nextSound);
         WhosPlaying.enabled = true;
         WhosPlaying.GetComponent<Image>().sprite = yourTurn;
+    }
+
+    public void StartGame()
+    {
+        OnGameStart.Invoke();
+        ResumeGame();
+        WhosPlaying.gameObject.SetActive(true);
+        startButton.SetActive(false);
+        hasStarted = true;
     }
 }
