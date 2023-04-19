@@ -10,6 +10,9 @@ public class DecidePillarWeight : Action
     private bool _aggro;
     private string key => "bAggro";
     private string outputKey = "Weights";
+    public const string socKey = "SocialP";
+    public const string econKey = "EconomicP";
+    public const string ecoLKey = "EcologicP";
     Dictionary<Pillar, float> weights;
     public override void Awake()
     {
@@ -20,14 +23,15 @@ public class DecidePillarWeight : Action
     protected override Status OnUpdate()
     {
         _aggro = BT_Blackboard.Bools[key];
-        GameSystem.Player player = BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>()[_aggro ? 0 : 1];
+        Fill(BT_Blackboard.Floats[ecoLKey], BT_Blackboard.Floats[econKey], BT_Blackboard.Floats[socKey]);
         BT_Blackboard.Objects[outputKey] = weights;
         return Status.Success;
     }
     private void Fill(float ecolo, float econo, float social)
     {
-        weights[Pillar.Economic] = econo;
-        weights[Pillar.Ecologic] = ecolo;
-        weights[Pillar.Social] = social;
+        var sum = ecolo + econo + social;
+        weights[Pillar.Economic] = econo / sum;
+        weights[Pillar.Ecologic] = ecolo / sum;
+        weights[Pillar.Social] = social / sum;
     }
 }

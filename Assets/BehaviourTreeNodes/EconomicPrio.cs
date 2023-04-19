@@ -9,7 +9,7 @@ public class EconomicPrio : PillardCalculation
     [SerializeField, Label("MaxNbOfPlayableCardPerTurnToConsiderTooMuchMoney")]
     private int _nbOfCard = 6;
 
-    protected override string outputKey => "EconomicP";
+    protected override string outputKey => DecidePillarWeight.econKey;
 
     protected override float DeterminOutputPriority()
     {

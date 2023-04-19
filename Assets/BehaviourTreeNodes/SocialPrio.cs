@@ -6,7 +6,7 @@ public class SocialPrio : PillardCalculation
 {
     [SerializeField]
     private float _percentTreshold = .08f;
-    protected override string outputKey => "SocialP";
+    protected override string outputKey => DecidePillarWeight.socKey;
     public override void Awake()
     {
         base.Awake();

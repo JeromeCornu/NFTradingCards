@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EcologicPrio : PillardCalculation
 {
-    protected override string outputKey => "EcologicP";
+
+    protected override string outputKey => DecidePillarWeight.ecoLKey;
 
     protected override float DeterminOutputPriority()
     {
