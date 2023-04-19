@@ -7,9 +7,7 @@ using static CardData;
 
 public class DecidePillarWeight : Action
 {
-    private bool _aggro;
-    private string key => "bAggro";
-    private string outputKey = "Weights";
+    public const string weightsKey = "Weights";
     public const string socKey = "SocialP";
     public const string econKey = "EconomicP";
     public const string ecoLKey = "EcologicP";
@@ -22,9 +20,8 @@ public class DecidePillarWeight : Action
     }
     protected override Status OnUpdate()
     {
-        _aggro = BT_Blackboard.Bools[key];
         Fill(BT_Blackboard.Floats[ecoLKey], BT_Blackboard.Floats[econKey], BT_Blackboard.Floats[socKey]);
-        BT_Blackboard.Objects[outputKey] = weights;
+        BT_Blackboard.Objects[weightsKey] = weights;
         return Status.Success;
     }
     private void Fill(float ecolo, float econo, float social)
