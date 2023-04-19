@@ -50,6 +50,9 @@ public class SelectableCard : LeanSelectableBehaviour
 
     protected override void OnSelected(LeanSelect select)
     {
+        if (!_isSelectable)
+            return;
+
         base.OnSelected(select);
         _origin = transform.parent;
         _animator.AdjustDepth(selectedDepth);
@@ -57,6 +60,9 @@ public class SelectableCard : LeanSelectableBehaviour
     }
     protected override void OnDeselected(LeanSelect select)
     {
+        if (!_isSelectable)
+            return;
+
         base.OnDeselected(select);
         Release();
     }
@@ -80,8 +86,7 @@ public class SelectableCard : LeanSelectableBehaviour
     private bool CheckAreaToLockIn(out CardZone zone)
     {
         zone = null;
-        return CastBoxUpAndDown(out RaycastHit info) && info.transform.gameObject.CompareTag(gameObject.tag)
-               && info.transform.parent.TryGetComponent<CardZone>(out zone);
+        return CastBoxUpAndDown(out RaycastHit info) && info.transform.parent.TryGetComponent<CardZone>(out zone);
     }
 
     private bool CastBoxUpAndDown(out RaycastHit info)
