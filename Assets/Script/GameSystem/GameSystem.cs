@@ -13,6 +13,7 @@ public class GameSystem : MonoBehaviour
         public int Temperature;
         public int Money;
         public int PeopleSatistfaction;
+        public bool HasStarted;
         public bool HasLost;
 
         public Player(int iInitTemp, int iInitMoney, int iInitSatisfaction)
@@ -21,6 +22,7 @@ public class GameSystem : MonoBehaviour
             Temperature = iInitTemp;
             Money = iInitMoney;
             PeopleSatistfaction = iInitSatisfaction;
+            HasStarted = false;
             HasLost = false;
         }
         public override string ToString()
@@ -41,6 +43,14 @@ public class GameSystem : MonoBehaviour
 
     [SerializeField] TurnManager m_TurnManager;
 
+    [SerializeField] DeckBehaviour[] m_PlayersDeck;
+
+    public DeckBehaviour getDeckBehaviour(int prmIndex)
+    {
+        Assert.IsTrue(0 <= prmIndex && prmIndex < m_NbPlayer);
+        return m_PlayersDeck[prmIndex];
+    }
+        
     public UnityEvent<int> OnPlayerLost;
     public UnityEvent<(int, Player)> OnPlayerValuesUpdates;
 
@@ -63,16 +73,15 @@ public class GameSystem : MonoBehaviour
             m_Players.Add(p);
             OnPlayerValuesUpdates.Invoke((playerIndex, p));
         }
+        Assert.AreEqual(m_Players.Count, m_PlayersDeck.Length);
 
         m_TurnManager.TurnChanged.AddListener(OnEndTurn);
     }
 
-    void OnEndTurn(bool iWasPlayer)
+    void OnEndTurn(bool iIsPlayer)
     {
-        if (iWasPlayer)
-            Produce(0);
-        else
-            Produce(1);
+        Produce(PlayerID.IsPlayerAsInt(iIsPlayer)); // proc for new player
+        DrawCardForPlayer(PlayerID.IsPlayerAsInt(iIsPlayer));
     }
 
     private void _UpdatePlayerRessources(Player iPlayer)
@@ -117,7 +126,20 @@ public class GameSystem : MonoBehaviour
         OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         return hasDied;
     }
+
     public bool TryPlayCard(int iPlayerIndex, Card iCard) => AddCard(iPlayerIndex, iCard);
+
+    public void DrawCardForPlayer(int iPlayerIndex)
+    {
+        Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
+        Player player = m_Players[iPlayerIndex];
+        int nCardToDraw = player.PeopleSatistfaction / 33 + 1;
+        if (!player.HasStarted)
+            nCardToDraw = 4;
+        m_PlayersDeck[iPlayerIndex].DrawCardsWithoutReturn(nCardToDraw);
+        player.HasStarted = true;
+    }
+
     // return if player can afford the the card cost
     public bool AddCard(int iPlayerIndex, Card iCard)
     {
