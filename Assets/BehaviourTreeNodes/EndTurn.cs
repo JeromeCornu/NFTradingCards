@@ -12,12 +12,11 @@ namespace BehaviourTreeNodes
             _turnManager ??= BT_Blackboard.GameObjects?["Game"].GetComponent<TurnManager>();
             if (_turnManager == null)
             {
-                return Status.Failure;
+                return Status.Running;
             }
 
             _turnManager.SwitchTurn();
             return Status.Success;
         }
-
     }
 }

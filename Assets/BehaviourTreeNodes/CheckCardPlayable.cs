@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UniBT;
 using UnityEngine;
 using System.Linq;
+using Debug = System.Diagnostics.Debug;
 
 public class CheckCardPlayable : Action
 {
@@ -14,12 +15,15 @@ public class CheckCardPlayable : Action
     }
     protected override Status OnUpdate()
     {
-        if (_game == null)
+        _game = BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>();
+        _player = _game?[1];
+        
+        if (_game == null || _player == null)
         {
-            _game = BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>();
-            _player = _game[1];
-            return Status.Failure;
+
+            return Status.Running;
         }
+        
         if (_game.getDeckBehaviour(1).MHand.Any((c) => _player.CanAffordCard(c)))
         {
             return Status.Success;

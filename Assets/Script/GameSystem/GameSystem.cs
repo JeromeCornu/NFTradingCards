@@ -71,7 +71,6 @@ public class GameSystem : MonoBehaviour
         Assert.IsTrue(0 <= prmIndex && prmIndex < m_NbPlayer);
         return m_PlayersDeck[prmIndex];
     }
-
     public UnityEvent<int> OnPlayerLost;
     public UnityEvent<(int, Player)> OnPlayerValuesUpdates;
 

@@ -15,6 +15,8 @@ public class DeckBehaviour : MonoBehaviour
     }
     public List<Card> MHand => m_Hand;
 
+    public List<Card> MHand => m_Hand;
+
     private void Start()
     {
         Card[] childrenCards = GetComponentsInChildren<Card>();

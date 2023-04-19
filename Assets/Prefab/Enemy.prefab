@@ -1,0 +1,171 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4084106204522271204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4084106204522271206}
+  - component: {fileID: 4084106204522271207}
+  - component: {fileID: 4084106204522271225}
+  m_Layer: 0
+  m_Name: Enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4084106204522271206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4084106204522271204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.466602, y: -3.7028484, z: -3.1309674}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4084106204522271207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4084106204522271204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbdc14eea9651417792898b3298a5cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  root:
+    rid: 3730702764682772498
+  updateType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3730702764682772498
+      type: {class: Root, ns: UniBT, asm: UniBT}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: -27
+          y: 17
+          width: 73
+          height: 77
+        description: 
+        child:
+          rid: 3730702764682772499
+    - rid: 3730702764682772499
+      type: {class: Sequence, ns: UniBT, asm: UniBT}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 85
+          y: 37
+          width: 180
+          height: 139
+        description: 
+        children:
+        - rid: 3730702764682772500
+        - rid: 3730702764682772501
+        abortOnConditionChanged: 1
+    - rid: 3730702764682772500
+      type: {class: CheckIsTurn, ns: , asm: Assembly-CSharp}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 341
+          y: -80
+          width: 118
+          height: 97
+        description: 
+    - rid: 3730702764682772501
+      type: {class: Selector, ns: UniBT, asm: UniBT}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 290
+          y: 166
+          width: 180
+          height: 139
+        description: 
+        children:
+        - rid: 3730702764682772502
+        - rid: 3730702764682772503
+        abortOnConditionChanged: 1
+    - rid: 3730702764682772502
+      type: {class: Sequence, ns: UniBT, asm: UniBT}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 497
+          y: 84
+          width: 180
+          height: 139
+        description: 
+        children:
+        - rid: 3730702764682772504
+        - rid: 3730702764682772505
+        abortOnConditionChanged: 1
+    - rid: 3730702764682772503
+      type: {class: EndTurn, ns: BehaviourTreeNodes, asm: Assembly-CSharp}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 497
+          y: 257
+          width: 94
+          height: 97
+        description: 
+    - rid: 3730702764682772504
+      type: {class: CheckCardPlayable, ns: , asm: Assembly-CSharp}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 718
+          y: -13
+          width: 158
+          height: 97
+        description: 
+    - rid: 3730702764682772505
+      type: {class: DeterminAggro, ns: BehaviourTreeNodes, asm: Assembly-CSharp}
+      data:
+        graphPosition:
+          serializedVersion: 2
+          x: 718
+          y: 128
+          width: 133
+          height: 97
+        description: 
+--- !u!114 &4084106204522271225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4084106204522271204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07ee70ced3d7891419e62f42e7dd406f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameObjects:
+  - key: Game
+    value: {fileID: 0}
+  - key: AiZone
+    value: {fileID: 0}
+  _floats:
+  - key: Aggro
+    value: -1
+  _bools:
+  - key: bAggro
+    value: 0
+  _objects: []

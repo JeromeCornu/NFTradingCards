@@ -13,7 +13,12 @@ public class CheckIsTurn : Action
     protected override Status OnUpdate()
     {
         _game ??= BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>();
-        if (_game == null || _game.TurnManager.IsPlayerTurn)
+        if (_game == null)
+        {
+            return Status.Running;
+        }
+
+        if (_game.TurnManager.IsPlayerTurn)
         {
             return Status.Failure;
         }
