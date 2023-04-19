@@ -46,6 +46,12 @@ public class GameSystem : MonoBehaviour
 
     [SerializeField] DeckBehaviour[] m_PlayersDeck;
 
+    public DeckBehaviour getDeckBehaviour(int prmIndex)
+    {
+        Assert.IsTrue(0 <= prmIndex && prmIndex < m_NbPlayer);
+        return m_PlayersDeck[prmIndex];
+    }
+        
     public UnityEvent<int> OnPlayerLost;
     public UnityEvent<(int, Player)> OnPlayerValuesUpdates;
 

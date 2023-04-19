@@ -10,6 +10,8 @@ public class DeckBehaviour : MonoBehaviour
     private Stack<Card> m_CardsStack = new ();
     private List<Card> m_Hand = new ();
 
+    public List<Card> MHand => m_Hand;
+
     private void Start()
     {
         Card[] childrenCards = GetComponentsInChildren<Card>();
