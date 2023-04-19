@@ -66,27 +66,24 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
         Neutral = 0, Bonus = -1, Malus = 1
     }
 
-    public IEnumerator<Value> GetEnumerator()
-    {
-        yield return this[Pillar.Economic];
-        yield return this[Pillar.Ecologic];
-        yield return this[Pillar.Social];
-    }
-    IEnumerator<(CardData.Pillar pillar, Value value)> IEnumerable<(CardData.Pillar pillar, Value value)>.GetEnumerator()
+    
+    IEnumerator<(CardData.Pillar pillar, Value value)> IEnumerable<(Pillar pillar, Value value)>.GetEnumerator()
     {
         yield return (Pillar.Economic, this[Pillar.Economic]);
         yield return (Pillar.Ecologic, this[Pillar.Ecologic]);
         yield return (Pillar.Social, this[Pillar.Social]);
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
+    public IEnumerator GetEnumerator()
     {
-        yield return GetEnumerator();
+        return GetEnumerator();
     }
+    
     public override string ToString()
     {
         return _name + " cost : " + _cost + ", " + String.Join(',', this.Select(s => ("," + (s.pillar + " : " + s.value.ToString()))));
     }
+
 }
 [System.Serializable]
 public class Value
