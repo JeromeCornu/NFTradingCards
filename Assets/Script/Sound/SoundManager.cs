@@ -5,10 +5,23 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioSource audioSource;
+    public AudioSource SFXSource;
+    public AudioSource MusicSource;
+    [SerializeField]
+    private AudioClip BGM;
+
+    public void Start()
+    {
+        PlayMusic(BGM);
+    }
 
     public void PlaySound(AudioClip sound)
     {
-        audioSource.PlayOneShot(sound);
+        SFXSource.PlayOneShot(sound);
+    }
+
+    public void PlayMusic(AudioClip music)
+    {
+        MusicSource.PlayOneShot(music);
     }
 }

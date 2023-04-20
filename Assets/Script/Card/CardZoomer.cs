@@ -10,12 +10,12 @@ public class CardZoomer : MonoBehaviour
     private Card _card;
 
     [Header("Sound")]
+    [SerializeField]
     private SoundManager soundManager;
     public AudioClip zoomBeginSound;
 
     private void Start()
     {
-        soundManager = Camera.main.GetComponent<SoundManager>();
         _newScale = new Vector3(1.5f, 1.5f, 1.5f);
         _cardToDisplayInfo.gameObject.SetActive(false);
         _mainCamera = Camera.main;
