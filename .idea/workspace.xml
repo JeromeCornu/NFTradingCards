@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0d7de571-f391-467c-8625-d35933dac18b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/BehaviourTreeNodes/DefOrAggro.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/BehaviourTreeNodes/DefOrAggro.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ElvDev2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ElvDev2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/GameSystem/GameSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/GameSystem/GameSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Menu/MenuInGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Menu/MenuInGame.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/PlayerStatUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/PlayerStatUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Widget/UIMain.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Widget/UIMain.prefab" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2OfloaCGT5bP2X5IOtOBHMk2F6I" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d7de571-f391-467c-8625-d35933dac18b" name="Changes" comment="" />
+      <created>1681959695061</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681959695061</updated>
+      <workItem from="1681959698873" duration="30000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

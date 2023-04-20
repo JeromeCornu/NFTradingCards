@@ -19,6 +19,8 @@ public class CardUI : MonoBehaviour
     [SerializeField, Header("References")]
     private TextMeshProUGUI theName;
     [SerializeField]
+    private TextMeshProUGUI price;
+    [SerializeField]
     private Color color;
     [SerializeField]
     private GameObject image;
@@ -46,6 +48,7 @@ public class CardUI : MonoBehaviour
         if (_card == null)
             return;
         SetCardName(_card.Name);
+        SetCardCost(_card.Cost);
         SetCardDescription(_card.Descrition);
         SetCardQuote(_card.Quote);
         SetCardImage(_card.Sprite);
@@ -59,6 +62,11 @@ public class CardUI : MonoBehaviour
     private void SetCardName(string prmName)
     {
         theName.text = prmName.ToUpper();
+    }
+
+    private void SetCardCost(int prmCost)
+    {
+        price.text = prmCost.ToString() + "M";
     }
 
     private void SetCardDescription(string prmDescription)
