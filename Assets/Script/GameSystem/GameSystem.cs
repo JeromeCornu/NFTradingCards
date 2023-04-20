@@ -145,9 +145,6 @@ public class GameSystem : MonoBehaviour
         OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         return hasDied;
     }
-
-    public bool TryPlayCard(int iPlayerIndex, Card iCard) => AddCard(iPlayerIndex, iCard);
-
     public void DrawCardForPlayer(int iPlayerIndex)
     {
         Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
@@ -160,17 +157,18 @@ public class GameSystem : MonoBehaviour
     }
 
     // return if player can afford the the card cost
-    public bool AddCard(int iPlayerIndex, Card iCard)
+    public bool AddCard(int boardID, Card iCard)
     {
-        Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
-        Player player = m_Players[iPlayerIndex];
-        if (!player.CanAffordCard(iCard))
+        int cardID = iCard.PlayerID.AsInt;
+        Assert.IsTrue(0 <= cardID && cardID < m_NbPlayer);
+        Player playerOwningCard = m_Players[cardID];
+        if (!playerOwningCard.CanAffordCard(iCard))
             return false;
 
-        player.CardOnBoard.Add(iCard);
-        m_PlayersDeck[iPlayerIndex].RemoveCardFromHand(iCard);
-        player.Money -= iCard.CardData.Cost;
-        OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
+        m_Players[boardID].CardOnBoard.Add(iCard);
+        m_PlayersDeck[cardID].RemoveCardFromHand(iCard);
+        playerOwningCard.Money -= iCard.CardData.Cost;
+        OnPlayerValuesUpdates.Invoke((cardID, playerOwningCard));
         //m_TurnManager.SwitchTurn();
         return true;
     }

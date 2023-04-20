@@ -24,7 +24,7 @@ public class CardZone : MonoBehaviour
     internal bool AddCard(SelectableCard selectableCard)
     {
         var card = selectableCard.GetComponentInParent<Card>();
-        if (!_game.AddCard(card.PlayerID.AsInt, card))
+        if (!_game.AddCard(_id.AsInt, card))
             return false;
         selectableCard.transform.parent = _layout.transform;
         selectableCard.tag = TurnManager.Untagged;

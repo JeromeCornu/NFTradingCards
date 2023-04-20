@@ -15,7 +15,7 @@ public class SocialPrio : PillardCalculation
     {
         float maxPrio = 4;
         int currPrio = 0;
-        float normalized = UnityEngine.Random.Range(0f, 1f);//player.PeopleSatistfaction / 100f;
+        float normalized = player.PeopleSatistfaction / 100f;
         const float tresh1 = 1f / GameSystem.Player.NbOfCardDrawTreshold;
         const float tresh2 = 2f * tresh1;
         if (normalized < (_game.MMinSatisfaction / 100f) + _percentTreshold)
@@ -30,7 +30,7 @@ public class SocialPrio : PillardCalculation
             currPrio = 2;
         else if (normalized > tresh2 + _percentTreshold)
             currPrio = 0;
-        Debug.Log(normalized + " gave test value : " + currPrio);
+        //Debug.Log(normalized + " gave test value : " + currPrio);
         return currPrio / maxPrio;
     }
 }
