@@ -65,7 +65,7 @@ public class DeckBehaviour : MonoBehaviour
             card.transform.parent = m_HandObject.transform;
             card.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             card.gameObject.GetComponent<SelectableCard>().IsSelectable = true;
-            card.GetComponent<CardAnimator>().Flip(true);
+            card.GetComponent<CardAnimator>().Flip(card.PlayerID.IsPlayer);
             drawnCards.Add(card);
         }
         m_HandObject.GetComponent<Layout>().UpdateLayout();

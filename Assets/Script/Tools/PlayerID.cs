@@ -7,7 +7,10 @@ public class PlayerID : MonoBehaviour
 {
     [SerializeField/*,OnValueChanged(nameof(UpdateTags))*/]
     private bool _isPlayer;
-    public int AsInt => IsPlayerAsInt(_isPlayer);
+    public int AsInt => IsPlayerAsInt(IsPlayer);
+
+    public bool IsPlayer { get => _isPlayer;}
+
     private void Start()
     {
         UpdateTags();
