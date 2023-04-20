@@ -115,6 +115,23 @@ public class GameSystem : MonoBehaviour
         }
     }
 
+    public Vector3 GetResourcesForNextRound(GameSystem.Player prmPlayer) 
+    {
+        int Money = 0;
+        int Temp = 0;
+        int PplSat = 0;
+
+        foreach (Card card in prmPlayer.CardOnBoard)
+        {
+            Money += card.CardData[CardData.Pillar.Economic].Val;
+            Temp -= card.CardData[CardData.Pillar.Ecologic].Val;
+            PplSat += card.CardData[CardData.Pillar.Social].Val;
+        }
+
+        return new Vector3(Money, Temp, PplSat);
+
+    }
+
     private bool _HasPlayerJustDied(Player iPlayer)
     {
         if (iPlayer.HasLost)

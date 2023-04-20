@@ -30,6 +30,52 @@ public class PlayerStatUI : MonoBehaviour
             t.UpdateValue(val);
         }
     }
+
+    internal void UpdateView(Vector3 prmStats)
+    {
+        foreach (var t in _texts)
+        {
+            object val = null;
+            switch (t._pillar)
+            {
+                case CardData.Pillar.Economic:
+                    if (prmStats.x < 0) 
+                    { 
+                        val = prmStats.x; 
+                    }
+                    else
+                    {
+                        val = "+" + prmStats.x;
+                    }
+                    
+                    break;
+                case CardData.Pillar.Social:
+                    if (prmStats.z < 0)
+                    {
+                        val = prmStats.z;
+                    }
+                    else
+                    {
+                        val = "+" + prmStats.z;
+                    }
+                    break;
+                case CardData.Pillar.Ecologic:
+                    if (prmStats.y < 0)
+                    {
+                        val = prmStats.y;
+                    }
+                    else
+                    {
+                        val = "+" + prmStats.y;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            t.UpdateValue(val);
+        }
+    }
+
     [System.Serializable]
     private class StatText
     {
