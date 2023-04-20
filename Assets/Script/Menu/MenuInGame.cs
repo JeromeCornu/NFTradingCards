@@ -52,7 +52,6 @@ public class MenuInGame : MonoBehaviour
     public UnityEvent OnGameStart;
 
     [Header("Sound")]
-    [SerializeField]
     private SoundManager soundManager;
     public AudioClip pauseSound;
     public AudioClip subSound;
@@ -73,6 +72,7 @@ public class MenuInGame : MonoBehaviour
     // On start, pausing so that we can play only once we clicked on start button
     private void Start()
     {
+        soundManager = Camera.main.GetComponent<SoundManager>();
         PauseGame();
         mainUIElements.SetActive(false);
         WhosPlaying.gameObject.SetActive(false);
@@ -154,7 +154,7 @@ public class MenuInGame : MonoBehaviour
 
     public void StartGame()
     {
-
+        soundManager.PlaySound(pauseSound);
         mainMenu.SetActive(false);
         mainUIElements.SetActive(true);
         OnGameStart.Invoke();

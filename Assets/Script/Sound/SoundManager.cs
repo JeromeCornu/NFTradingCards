@@ -7,11 +7,6 @@ public class SoundManager : MonoBehaviour
 {
     public AudioSource audioSource;
 
-    public void Start()
-    {
-        audioSource = gameObject.AddComponent<AudioSource>();
-    }
-
     public void PlaySound(AudioClip sound)
     {
         audioSource.PlayOneShot(sound);

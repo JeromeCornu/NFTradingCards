@@ -9,8 +9,13 @@ public class CardZoomer : MonoBehaviour
 
     private Card _card;
 
+    [Header("Sound")]
+    private SoundManager soundManager;
+    public AudioClip zoomBeginSound;
+
     private void Start()
     {
+        soundManager = Camera.main.GetComponent<SoundManager>();
         _newScale = new Vector3(1.5f, 1.5f, 1.5f);
         _cardToDisplayInfo.gameObject.SetActive(false);
         _mainCamera = Camera.main;
@@ -28,6 +33,7 @@ public class CardZoomer : MonoBehaviour
 
                 if (_card.transform.parent.name == "PlayerHand")
                 {
+                    soundManager.PlaySound(zoomBeginSound);
                     _cardToDisplayInfo.CardData = _card.CardData;
                     _cardToDisplayInfo.gameObject.SetActive(true);
                     // Add a zoom-in animation to the CardOnlyDisplay game object
