@@ -27,11 +27,11 @@ public class CardZoomer : MonoBehaviour
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Player"))
+            if (Physics.Raycast(ray, out hit, 1<<6))
             {
                 _card = hit.collider.transform.parent.parent.GetComponent<Card>();
 
-                if (_card.transform.parent.name == "PlayerHand")
+                if (_card.transform.parent.name == "PlayerHand" || _card.transform.parent.parent.name == "Zone")
                 {
                     soundManager.PlaySound(zoomBeginSound);
                     _cardToDisplayInfo.CardData = _card.CardData;
@@ -40,7 +40,6 @@ public class CardZoomer : MonoBehaviour
                     _cardToDisplayInfo.transform.localScale = Vector3.zero;
                     _cardToDisplayInfo.transform.DOScale(_newScale, 0.5f);
                 }
-
             }
         }
         else if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
