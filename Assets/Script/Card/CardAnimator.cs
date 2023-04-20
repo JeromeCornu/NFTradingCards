@@ -3,30 +3,61 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/// <summary>
-/// Implement feedback and animation (eitheir with animator or tweening engine) instead of the draft implementation
-/// </summary>
+using DG.Tweening;
+
 public class CardAnimator : MonoBehaviour
 {
     [SerializeField, Label("Transform override")]
     private new Transform transform;
+    private new Vector3 transformInit;
+
+    private void Start()
+    {
+        transformInit = transform.localScale;
+    }
+
     public void Flip(bool upwards)
     {
         float dir = upwards ? 180f : 0f;
-        transform.eulerAngles = new Vector3(0, dir, 0);
+        transform.DOScale(Vector3.zero, 0.2f)
+            .SetEase(Ease.InQuad)
+            .OnComplete(() =>
+            {
+                transform.DORotate(new Vector3(0, 0, dir), 0.5f)
+                    .SetEase(Ease.OutBack)
+                    .OnComplete(() =>
+                    {
+                        transform.DOScale(Vector3.one * 1.2f, 0.2f)
+                            .SetEase(Ease.InQuad)
+                            .OnComplete(() =>
+                            {
+                                transform.DOScale(transformInit, 0.2f)
+                                    .SetEase(Ease.OutBounce)
+                                    .OnComplete(() =>
+                                    {
+                                        Debug.Log("Card flipped");
+                                    });
+                            });
+                    });
+            });
     }
+
+
 
     internal void AdjustDepth(float newPosZ)
     {
         var pos = transform.position;
         pos.z = newPosZ;
-        //Debug.Log(pos.z);
+
         transform.position = pos;
     }
 
     internal void CostTooHigh(int cost)
     {
         Debug.Log("Cost " + cost + " too high to play this card");
+
+        // Add shake animation
+        transform.DOShakePosition(1f, 0.4f, 20, 90f, false);
     }
 
     internal void Reparent(Transform parent)
