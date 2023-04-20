@@ -31,7 +31,15 @@ public class CardGenerator : EditorWindow
             "Planned obsolescence technology companies",
             "Massive industrial agriculture",
             "Sustainable development consulting firms",
-            "A cow"
+            "A cow",
+            "Tom Saury",
+            "Elvyn Wakeford -ShaderMan-",
+            "Florentin Eraud -3DMaybe-",
+            "Jérôme Cornu -AnimFighter-",
+            "Kevin Roussel -TheMedic-",
+            "Louis Clerc -ImageBegetter-",
+            "Arthur Bouffay -AFriend-",
+            "Robin Douet -AFriend-"
         };
 
     private string[] _descriptions =
@@ -59,7 +67,15 @@ public class CardGenerator : EditorWindow
             "Obsolete on arrival",
             "Destroying our soil",
             "Greenwashing for profit",
-            "The most chaostic animal for environment"
+            "The most chaostic animal for environment",
+            "A dev paid like a real professional",
+            "A dev paid like a real professional",
+            "A dev paid like a real professional",
+            "A dev paid like a real professional",
+            "A real professional paid like a real professional",
+            "An artist paid like a real professional",
+            "A friend paid like a real professional",
+            "A friend paid like a real professional"
         };
 
     private string[] _quotes =
@@ -87,14 +103,22 @@ public class CardGenerator : EditorWindow
             "Making garbage, not products",
             "Putting profits over people",
             "Sustainability sold separately",
-            "Mooh....?"
+            "Mooh....?",
+            "I didn't want to be a card.",
+            "Game nearly started : Can i do a shader??",
+            "J-1 : Wait, it's 2D or 3D?",
+            "Every days : I had Cookies for florentin",
+            "So is your game 2D or 3D?",
+            "Stop asking for Midjourney services!",
+            "Random numbers = Procedual generation",
+            "I'm the true Kiwi, not you!"
         };
 
-    private int[] _economic = { -2, 2, -1, 4, -2, 5, 2, 3, 4, 1, 4, 3, 4, 2, -1, 1, 2, -3, -1, -3, -4, -3, -2, 0 };
+    private int[] _economic = { -2, 2, -1, 4, -2, 5, 2, 3, 4, 1, 4, 3, 4, 2, -1, 1, 2, -3, -1, -3, -4, -3, -2, 0, 0, 2, 0, 0, 1, 1, 0, 0 };
 
-    private int[] _social = { 3, 4, 5, 3, 3, -3, -2, -1, -3, -1, -2, -1, 2, 3, 4, 3, 3, -5, -1, -2, -2, -4, 0, 0 };
+    private int[] _social = { 3, 4, 5, 3, 3, -3, -2, -1, -3, -1, -2, -1, 2, 3, 4, 3, 3, -5, -1, -2, -2, -4, 0, 0, -2, 0, 2, 0, 1, 0, 1, 0 };
 
-    private int[] _ecologic = { 4, 4, 2, 1, 3, -5, -4, -3, -5, -3, 0, -4, 4, 4, 1, 3, 4, 2, -5, -2, -2, -3, -5, -10 };
+    private int[] _ecologic = { 4, 4, 2, 1, 3, -5, -4, -3, -5, -3, 0, -4, 4, 4, 1, 3, 4, 2, -5, -2, -2, -3, -5, -10, 0, 0, 0, 2, 1, 0, 0, 1 };
 
     private Sprite[] loadedIcons;
 
@@ -162,7 +186,7 @@ public class CardGenerator : EditorWindow
             valueField.SetValue(card[CardData.Pillar.Social], _social[i]);
             valueField.SetValue(card[CardData.Pillar.Economic], _economic[i]);
 
-            AssetDatabase.CreateAsset(card, "Resources/Data/" + card.Name + ".asset");
+            AssetDatabase.CreateAsset(card, "Assets/Resources/Data/" + card.Name + ".asset");
         }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
