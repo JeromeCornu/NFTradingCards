@@ -9,7 +9,7 @@ public class CardAnimator : MonoBehaviour
 {
     [SerializeField, Label("Transform override")]
     private new Transform transform;
-    private new Vector3 transformInit;
+    private Vector3 transformInit;
 
     private void Start()
     {
@@ -19,7 +19,7 @@ public class CardAnimator : MonoBehaviour
     public void Flip(bool upwards)
     {
         float dir = upwards ? 180f : 0f;
-        transform.DOScale(Vector3.zero, 0.2f)
+        transform.DOScale(.5f*Vector3.one, 0.2f)
             .SetEase(Ease.InQuad)
             .OnComplete(() =>
             {

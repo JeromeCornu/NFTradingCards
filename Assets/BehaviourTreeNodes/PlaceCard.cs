@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UniBT;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace BehaviourTreeNodes
     {
         private SelectableCard _card;
         public const string CtPkey = "CardToPlay";
+        private const Status ErrorStatus = Status.Failure; //for go next turn but not ruin exe Status.Running;//For debug, and 
 
         protected override Status OnUpdate()
         {
@@ -21,13 +23,21 @@ namespace BehaviourTreeNodes
             if (BT_Blackboard.Bools["bAggro"])
             {
                 if (!BT_Blackboard.GameObjects["PlayerZone"].GetComponent<CardZone>().AddCard(_card))
-                    return Status.Running;
+                {
+                    var score = DecideCard.PonderateSumCard(_card.GetComponent<Card>().CardData, BT_Blackboard.Objects[DecidePillarWeight.weightsKey] as Dictionary<CardData.Pillar, float>);
+                    Debug.Log(_card.GetComponent<Card>() + "Error card with score ; " + score);
+                    return ErrorStatus;
+                }
 
             }
             else
             {
                 if (!BT_Blackboard.GameObjects["AiZone"].GetComponent<CardZone>().AddCard(_card))
-                    return Status.Running;
+                {
+                    var score = DecideCard.PonderateSumCard(_card.GetComponent<Card>().CardData, BT_Blackboard.Objects[DecidePillarWeight.weightsKey] as Dictionary<CardData.Pillar, float>);
+                    Debug.Log(_card.GetComponent<Card>() + "Error card with score ; " + score);
+                    return ErrorStatus;
+                }
             }
 
             Debug.Log("CardPlaced");
