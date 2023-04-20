@@ -10,6 +10,7 @@ public class CardOnlyDisplay : MonoBehaviour
     [Header("References")]
     [SerializeField]
     CardUI _cardUI;
+    internal object canvasGroup;
 
     private void Start()
     {
