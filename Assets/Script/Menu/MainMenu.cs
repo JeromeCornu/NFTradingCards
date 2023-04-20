@@ -33,6 +33,7 @@ public class MainMenu : MonoBehaviour
     private AudioSource MusicManager;
     [SerializeField]
     private AudioSource SFXManager;
+
     public AudioClip volumeChangeSound;
     public AudioClip buttonSound;
 
@@ -44,6 +45,7 @@ public class MainMenu : MonoBehaviour
 
     public void ChangeVolumeSFX()
     {
+        Debug.Log("Ca commence sfx");
         float volumeSFX = volumeSliderSFX.value;
         // set sound in game
 
@@ -72,7 +74,6 @@ public class MainMenu : MonoBehaviour
             volumeImageMusic.sprite = spriteMute;
 
         MusicManager.volume = volumeMusic;
-        soundManager.PlaySound(volumeChangeSound);
     }
 
     private void LoadVolume()
