@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.github.yoshidan.unibt": {
+      "version": "https://github.com/yoshidan/UniBT.git?path=Assets/UniBT/Scripts",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "aa4b79845f5c3e0996081f922665ccf483e69b2e"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.10",
       "depth": 1,
@@ -144,7 +151,7 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.18",
+      "version": "3.0.20",
       "depth": 0,
       "source": "registry",
       "dependencies": {

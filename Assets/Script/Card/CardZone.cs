@@ -13,8 +13,8 @@ public class CardZone : MonoBehaviour
     private PlayerID _id;
     private void OnValidate()
     {
-        if(_game == null)
-            _game=FindObjectOfType<GameSystem>();
+        if (_game == null)
+            _game = FindObjectOfType<GameSystem>();
     }
     /// <summary>
     /// 
@@ -24,7 +24,7 @@ public class CardZone : MonoBehaviour
     internal bool AddCard(SelectableCard selectableCard)
     {
         var card = selectableCard.GetComponentInParent<Card>();
-        if(!_game.AddCard(_id.AsInt, card))
+        if (!_game.AddCard(_id.AsInt, card))
             return false;
         selectableCard.transform.parent = _layout.transform;
         selectableCard.tag = TurnManager.Untagged;

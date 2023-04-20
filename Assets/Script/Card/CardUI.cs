@@ -52,7 +52,8 @@ public class CardUI : MonoBehaviour
         SetCardEconomieStat(_card[CardData.Pillar.Economic].Val);
         SetCardEcologieStat(_card[CardData.Pillar.Ecologic].Val);
         SetCardSocialStat(_card[CardData.Pillar.Social].Val);
-        SetCardColor(_card.Color);
+        SetColor(_card.Color);
+        Debug.Log(_card.Color.ToString());
     }
 
     private void SetCardName(string prmName)
@@ -93,7 +94,7 @@ public class CardUI : MonoBehaviour
     private void SetColor(Color prmColor)
     {
         color = prmColor;
-        SetCardColor(prmColor);
+        SetCardColor(color);
     }
 
     private void SetCardColor(Color prmColor)

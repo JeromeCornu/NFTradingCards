@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -9,6 +11,8 @@ public class GameSystem : MonoBehaviour
 {
     public class Player
     {
+        public const int NbOfCardDrawTreshold = 3;
+        private const int treshold = 100 / NbOfCardDrawTreshold;
         public List<Card> CardOnBoard;
         public int Temperature;
         public int Money;
@@ -25,11 +29,19 @@ public class GameSystem : MonoBehaviour
             HasStarted = false;
             HasLost = false;
         }
+        public bool CanAffordCard(Card iCard)
+        {
+            return iCard.CardData.Cost <= this.Money;
+        }
         public override string ToString()
         {
-            return "Temp : " + Temperature + ", £: " + Money + ", satist : " + PeopleSatistfaction +
+            return "Temp : " + Temperature + ", ï¿½: " + Money + ", satist : " + PeopleSatistfaction +
                 " lost ? " + HasLost + " Board : " + string.Join('\n', CardOnBoard);
         }
+
+        internal int NbOfCardToDraw() => PeopleSatistfaction / treshold /*+ 1*/;
+
+
     }
 
     [SerializeField] int m_StartTemp = 60;
@@ -38,7 +50,16 @@ public class GameSystem : MonoBehaviour
     [SerializeField] int m_MaxTemperature = 100;
     [SerializeField] int m_MinSatisfaction = 10;
 
+    public int MStartTemp => m_StartTemp;
+
+    public int MStartMoney => m_StartMoney;
+
+    public int MStartSatisfaction => m_StartSatisfaction;
+    public int MMaxTemperature { get => m_MaxTemperature; }
+    public int MMinSatisfaction { get => m_MinSatisfaction; }
+
     private List<Player> m_Players = new List<Player>();
+    public Player this[int i] => m_Players[i];
     [SerializeField] int m_NbPlayer = 2;
 
     [SerializeField] TurnManager m_TurnManager;
@@ -50,7 +71,6 @@ public class GameSystem : MonoBehaviour
         Assert.IsTrue(0 <= prmIndex && prmIndex < m_NbPlayer);
         return m_PlayersDeck[prmIndex];
     }
-        
     public UnityEvent<int> OnPlayerLost;
     public UnityEvent<(int, Player)> OnPlayerValuesUpdates;
 
@@ -60,6 +80,12 @@ public class GameSystem : MonoBehaviour
     {
         if (OnPlayerLost == null)
             OnPlayerLost = new();
+        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
+        {
+            Player p = new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction);
+            m_Players.Add(p);
+            OnPlayerValuesUpdates.Invoke((playerIndex, p));
+        }
         if (OnPlayerValuesUpdates == null)
             OnPlayerValuesUpdates = new();
     }
@@ -67,14 +93,7 @@ public class GameSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
-        {
-            Player p = new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction);
-            m_Players.Add(p);
-            OnPlayerValuesUpdates.Invoke((playerIndex, p));
-        }
         Assert.AreEqual(m_Players.Count, m_PlayersDeck.Length);
-
         m_TurnManager.TurnChanged.AddListener(OnEndTurn);
     }
 
@@ -126,14 +145,11 @@ public class GameSystem : MonoBehaviour
         OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         return hasDied;
     }
-
-    public bool TryPlayCard(int iPlayerIndex, Card iCard) => AddCard(iPlayerIndex, iCard);
-
     public void DrawCardForPlayer(int iPlayerIndex)
     {
         Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
         Player player = m_Players[iPlayerIndex];
-        int nCardToDraw = player.PeopleSatistfaction / 33 + 1;
+        int nCardToDraw = player.NbOfCardToDraw();
         if (!player.HasStarted)
             nCardToDraw = 4;
         m_PlayersDeck[iPlayerIndex].DrawCardsWithoutReturn(nCardToDraw);
@@ -141,20 +157,21 @@ public class GameSystem : MonoBehaviour
     }
 
     // return if player can afford the the card cost
-    public bool AddCard(int iPlayerIndex, Card iCard)
+    public bool AddCard(int boardID, Card iCard)
     {
-        Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
-        Player player = m_Players[iPlayerIndex];
-        if (iCard.CardData.Cost > player.Money)
+        int cardID = iCard.PlayerID.AsInt;
+        Assert.IsTrue(0 <= cardID && cardID < m_NbPlayer);
+        Player playerOwningCard = m_Players[cardID];
+        if (!playerOwningCard.CanAffordCard(iCard))
             return false;
 
-        player.CardOnBoard.Add(iCard);
-        player.Money -= iCard.CardData.Cost;
-        OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
+        m_Players[boardID].CardOnBoard.Add(iCard);
+        m_PlayersDeck[cardID].RemoveCardFromHand(iCard);
+        playerOwningCard.Money -= iCard.CardData.Cost;
+        OnPlayerValuesUpdates.Invoke((cardID, playerOwningCard));
         //m_TurnManager.SwitchTurn();
         return true;
     }
-
     // return if deletion happened
     public bool RemoveCard(int iPlayerIndex, Card iCard)
     {
