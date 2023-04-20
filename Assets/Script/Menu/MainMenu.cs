@@ -11,52 +11,78 @@ public class MainMenu : MonoBehaviour
 {
 
     [SerializeField]
-    private Slider volumeSlider;
+    private Slider volumeSliderSFX;
+    [SerializeField]
+    private Slider volumeSliderMusic;
 
     [SerializeField]
-    private Image volumeImage;
+    private Image volumeImageSFX;
+    [SerializeField]
+    private Image volumeImageMusic;
     [SerializeField]
     private Sprite spriteMute;
     [SerializeField]
     private Sprite spriteDemute;
 
     [Header("Sound")]
+    [SerializeField]
     private SoundManager soundManager;
     [SerializeField]
     private AudioSource cowAudio;
+    [SerializeField]
+    private AudioSource MusicManager;
+    [SerializeField]
+    private AudioSource SFXManager;
+
     public AudioClip volumeChangeSound;
     public AudioClip buttonSound;
 
 
     public void Start()
     {
-        soundManager = Camera.main.GetComponent<SoundManager>();
         LoadVolume();
     }
 
-    public void ChangeVolume()
+    public void ChangeVolumeSFX()
     {
-        float volume = volumeSlider.value;
+        Debug.Log("Ca commence sfx");
+        float volumeSFX = volumeSliderSFX.value;
         // set sound in game
 
-        PlayerPrefs.SetFloat("musicVolume", volume);
+        PlayerPrefs.SetFloat("musicVolumeSFX", volumeSFX);
 
-        if(volume > 0)
-            volumeImage.sprite = spriteDemute;
+        if(volumeSFX > 0)
+            volumeImageSFX.sprite = spriteDemute;
         else
-            volumeImage.sprite = spriteMute;
+            volumeImageSFX.sprite = spriteMute;
         
-        Camera.main.GetComponent<AudioSource>().volume = volume;
-        cowAudio.volume = volume;
-        Debug.Log(Camera.main.GetComponent<AudioSource>().volume);
+        cowAudio.volume = volumeSFX;
+        SFXManager.volume = volumeSFX;
         soundManager.PlaySound(volumeChangeSound);
+    }
+
+    public void ChangeVolumeMusic()
+    {
+        float volumeMusic = volumeSliderMusic.value;
+        // set sound in game
+
+        PlayerPrefs.SetFloat("musicVolumeMusic", volumeMusic);
+
+        if (volumeMusic > 0)
+            volumeImageMusic.sprite = spriteDemute;
+        else
+            volumeImageMusic.sprite = spriteMute;
+
+        MusicManager.volume = volumeMusic;
     }
 
     private void LoadVolume()
     {
-        volumeSlider.value = PlayerPrefs.GetFloat("musicVolume");
+        volumeSliderSFX.value = PlayerPrefs.GetFloat("musicVolumeSFX");
+        volumeSliderMusic.value = PlayerPrefs.GetFloat("musicVolumeMusic");
 
-        ChangeVolume();
+        ChangeVolumeSFX();
+        ChangeVolumeMusic();
     }
 
     public void Quit()
