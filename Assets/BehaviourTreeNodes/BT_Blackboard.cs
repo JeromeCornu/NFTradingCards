@@ -18,6 +18,7 @@ public class BT_Blackboard : MonoBehaviour
     {
         GameObjects = new Dictionary<string, GameObject>(_gameObjects.Select(kvp => new KeyValuePair<string, GameObject>(kvp.key, kvp.value)));
         Floats = new Dictionary<string, float>(_floats.Select(kvp => new KeyValuePair<string, float>(kvp.key, kvp.value)));
+        Floats[DifficultyKey] = .15f;
         Bools = new Dictionary<string, bool>(_bools.Select(kvp => new KeyValuePair<string, bool>(kvp.key, kvp.value)));
         Objects = new Dictionary<string, object>(_objects.Select(kvp => new KeyValuePair<string, object>(kvp.key, kvp.value)));
     }

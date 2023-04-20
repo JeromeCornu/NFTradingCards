@@ -23,7 +23,7 @@ public class CardAnimator : MonoBehaviour
             .SetEase(Ease.InQuad)
             .OnComplete(() =>
             {
-                transform.DORotate(new Vector3(0, 0, dir), 0.5f)
+                transform.DORotate(new Vector3(0, dir, 0), 0.5f)
                     .SetEase(Ease.OutBack)
                     .OnComplete(() =>
                     {
@@ -40,6 +40,7 @@ public class CardAnimator : MonoBehaviour
                             });
                     });
             });
+        
     }
 
 

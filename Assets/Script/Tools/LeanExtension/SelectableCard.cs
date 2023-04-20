@@ -14,6 +14,8 @@ public class SelectableCard : LeanSelectableBehaviour
     private LeanDragTranslate _drag;
     [SerializeField]
     private LayerMask _layerMask;
+    [SerializeField,Range(.01f,2f)]
+    private float BoxCastSize = .75f;
     Transform _origin;
     private CardAnimator _animator;
     [HideInInspector]
@@ -91,8 +93,8 @@ public class SelectableCard : LeanSelectableBehaviour
 
     private bool CastBoxUpAndDown(out RaycastHit info)
     {
-        return Physics.BoxCast(transform.position, .33f * Vector3.one, -transform.forward, out info, Quaternion.identity, 10f, _layerMask.value)
-               || Physics.BoxCast(transform.position, .33f * Vector3.one, transform.forward, out info, Quaternion.identity, 10f, _layerMask.value);
+        return Physics.BoxCast(transform.position, BoxCastSize * Vector3.one, -transform.forward, out info, Quaternion.identity, 10f, _layerMask.value)
+               || Physics.BoxCast(transform.position, BoxCastSize * Vector3.one, transform.forward, out info, Quaternion.identity, 10f, _layerMask.value);
     }
 
 
