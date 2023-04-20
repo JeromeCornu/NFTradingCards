@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
-using static GameSystem;
 
 public class GameSystem : MonoBehaviour
 {
@@ -150,19 +149,82 @@ public class GameSystem : MonoBehaviour
         }
         return false;
     }
-    // oDeadPlayerIndices return only indices of players that died in this turn
+
+    private void _CheckNbLeftCards(int iPlayerIndex)
+    {
+        if (m_PlayersDeck[iPlayerIndex].MHand.Count > 0)
+            return;
+        if (m_PlayersDeck[iPlayerIndex].MStack.Count > 0)
+            return;
+
+        // no card left, end of the game
+        // computing who lost and send events
+        int minTemperature = m_MaxTemperature + 1;
+        List<int> playerIdsWithMinTemp = new ();
+
+        Action<int, Player> newMinScore = (int playerId, Player player) =>
+        {
+            foreach (int playerLostId in playerIdsWithMinTemp)
+            {
+                m_Players[playerLostId].HasLost = true;
+                OnPlayerLost.Invoke(playerLostId);
+            }
+            playerIdsWithMinTemp.Clear();
+            playerIdsWithMinTemp.Add(playerId);
+            minTemperature = player.Temperature;
+        };
+
+        int playerId = -1;
+        foreach (Player player in m_Players)
+        {
+            playerId++;
+
+            if (player.HasLost)
+                continue;
+
+            if (player.Temperature < minTemperature)
+                newMinScore(playerId, player);
+            else if (player.Temperature == minTemperature)
+            {
+                if (player.PeopleSatistfaction > GetPlayerPeopleSatisfaction(playerIdsWithMinTemp[0]))
+                    newMinScore(playerId, player);
+                else if (player.PeopleSatistfaction == GetPlayerPeopleSatisfaction(playerIdsWithMinTemp[0]))
+                    playerIdsWithMinTemp.Add(playerId);
+                else
+                {
+                    player.HasLost = true;
+                    OnPlayerLost.Invoke(playerId);
+                }
+            }
+            else
+            {
+                player.HasLost = true;
+                OnPlayerLost.Invoke(playerId);
+            }
+        }
+    }
+
+    // return if player has died in this turn
+    // if game ends because there is no card anymore and the player lost,
+    // true is still returned
     public bool Produce(int iPlayerIndex)
     {
         Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);
         Player player = m_Players[iPlayerIndex];
+        if (player.HasLost)
+            return false;
+
         _UpdatePlayerRessources(player);
         bool hasDied = _HasPlayerJustDied(player);
         if (hasDied)
             OnPlayerLost.Invoke(iPlayerIndex);
+        else
+            _CheckNbLeftCards(iPlayerIndex);
         Debug.Log(iPlayerIndex + " <index after producing : " + player.ToString());
         OnPlayerValuesUpdates.Invoke((iPlayerIndex, player));
         return hasDied;
     }
+
     public void DrawCardForPlayer(int iPlayerIndex)
     {
         Assert.IsTrue(0 <= iPlayerIndex && iPlayerIndex < m_NbPlayer);

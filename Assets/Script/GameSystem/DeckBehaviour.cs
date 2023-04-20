@@ -15,6 +15,7 @@ public class DeckBehaviour : MonoBehaviour
     }
     
     public List<Card> MHand => m_Hand;
+    public Stack<Card> MStack => m_CardsStack;
 
     private void Start()
     {
