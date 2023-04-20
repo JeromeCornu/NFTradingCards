@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using static GameSystem;
 
 public class GameSystem : MonoBehaviour
 {
@@ -98,6 +99,8 @@ public class GameSystem : MonoBehaviour
 
     void OnEndTurn(bool iIsPlayer)
     {
+        Player playerEndedTurn = m_Players[PlayerID.IsPlayerAsInt(!iIsPlayer)];
+        playerEndedTurn.HasStarted = true;
         Produce(PlayerID.IsPlayerAsInt(iIsPlayer)); // proc for new player
         DrawCardForPlayer(PlayerID.IsPlayerAsInt(iIsPlayer));
     }
@@ -231,7 +234,7 @@ public class GameSystem : MonoBehaviour
         Player player = m_Players[iPlayerIndex];
         int nCardToDraw = player.NbOfCardToDraw();
         if (!player.HasStarted)
-            nCardToDraw = 4;
+            nCardToDraw = 0;
         m_PlayersDeck[iPlayerIndex].DrawCardsWithoutReturn(nCardToDraw);
         player.HasStarted = true;
     }
