@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -26,10 +27,12 @@ public class Layout : MonoBehaviour
             {
                 var ch = transform.GetChild(i);
                 var pos = ch.transform.localPosition;
-                //float offset = !layout.center ? 0f : .5f - (count - 1) / 2f / count;
-                float val = Mathf.Lerp(layout.layout.x, layout.layout.y, (count != 1 ? (float)i / (count - 1) : (layout.center ? .5f : 0f)));
-                /*if (float.IsNaN(val))
-                    return;*/
+                float dir = i % 2 == 0 ? 1f : -1f;
+                int step = (i + 1) / 2;
+                float val = layout.layout.x + layout.layout.y * dir * step;
+                if (count % 2 == 0)
+                    val += layout.layout.y / 2f;
+                //Mathf.Lerp(layout.layout.x, layout.layout.y, (count != 1 ? (float)i / (count - 1) : (layout.center ? .5f : 0f)));
                 if ((layout.axis & Axis.X) != 0b0)
                     pos.x = val;
                 if ((layout.axis & Axis.Y) != 0b0)
@@ -45,19 +48,15 @@ public class Layout : MonoBehaviour
 [System.Serializable]
 public class LayoutElement
 {
-    [SerializeField, Tooltip("Will set x to -y")]
-    private bool _symetrize;
     [SerializeField]
-    public bool center=false;
-    [SerializeField, MinMaxSlider(-10, 10), OnValueChanged(nameof(Symetrize))]
+    public bool center = false;
+    [SerializeField, MinMaxSlider(-10, 10)/*, OnValueChanged(nameof(Symetrize))*/]
     [Tooltip("Will set x to -y if symetrizez")]
     public Vector2 layout;
     [SerializeField]
     public Axis axis;
     public void Symetrize()
     {
-        if (!_symetrize)
-            return;
         layout.x = -layout.y;
     }
 }
