@@ -11,15 +11,16 @@ namespace BehaviourTreeNodes
         protected override Status OnUpdate()
         {
 
-            _card = BT_Blackboard.GameObjects?[CtPkey].GetComponent<SelectableCard>();
+            _card = BT_Blackboard.GameObjects[CtPkey]?.GetComponent<SelectableCard>();
+            //Card is null means we skip (and hopefully we didn't jus loose ref hihi)
             if (_card == null)
             {
-                return Status.Running;
+                return Status.Failure;
             }
 
             if (BT_Blackboard.Bools["bAggro"])
             {
-                if(!BT_Blackboard.GameObjects["PlayerZone"].GetComponent<CardZone>().AddCard(_card))                
+                if (!BT_Blackboard.GameObjects["PlayerZone"].GetComponent<CardZone>().AddCard(_card))
                     return Status.Running;
 
             }
