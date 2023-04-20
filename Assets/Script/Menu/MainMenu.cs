@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,14 +19,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private Sprite spriteDemute;
 
+    [SerializeField]
+    private AudioSource cowAudio;
+
     public void Start()
     {
         LoadVolume();
-    }
-
-    public void PlayGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void ChangeVolume()
@@ -39,6 +38,9 @@ public class MainMenu : MonoBehaviour
             volumeImage.sprite = spriteDemute;
         else
             volumeImage.sprite = spriteMute;
+        
+        Camera.main.GetComponent<AudioSource>().volume = volume;
+        cowAudio.volume = volume;
     }
 
     private void LoadVolume()

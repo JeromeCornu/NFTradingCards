@@ -11,10 +11,15 @@ public class MenuInGame : MonoBehaviour
     private TurnManager _turn => _game.TurnManager;
 
     [SerializeField]
+    private GameObject mainUIElements;
+
+    [SerializeField]
     private PlayerStatUI _playerStat, _opponentStat;
 
     [SerializeField]
     private GameObject subMenu;
+    [SerializeField]
+    private GameObject mainMenu;
 
     [SerializeField]
     private Button WhosPlaying;
@@ -68,6 +73,7 @@ public class MenuInGame : MonoBehaviour
     private void Start()
     {
         PauseGame();
+        mainUIElements.SetActive(false);
         WhosPlaying.gameObject.SetActive(false);
         endMenu.SetActive(false);
 
@@ -147,6 +153,9 @@ public class MenuInGame : MonoBehaviour
 
     public void StartGame()
     {
+
+        mainMenu.SetActive(false);
+        mainUIElements.SetActive(true);
         OnGameStart.Invoke();
         ResumeGame();
         WhosPlaying.gameObject.SetActive(true);
