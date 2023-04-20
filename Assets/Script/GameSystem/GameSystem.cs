@@ -79,12 +79,7 @@ public class GameSystem : MonoBehaviour
     {
         if (OnPlayerLost == null)
             OnPlayerLost = new();
-        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
-        {
-            Player p = new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction);
-            m_Players.Add(p);
-            OnPlayerValuesUpdates.Invoke((playerIndex, p));
-        }
+        
         if (OnPlayerValuesUpdates == null)
             OnPlayerValuesUpdates = new();
     }
@@ -92,6 +87,13 @@ public class GameSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int playerIndex = 0; playerIndex < m_NbPlayer; playerIndex++)
+        {
+            Player p = new Player(m_StartTemp, m_StartMoney, m_StartSatisfaction);
+            m_Players.Add(p);
+            OnPlayerValuesUpdates.Invoke((playerIndex, p));
+        }
+        
         Assert.AreEqual(m_Players.Count, m_PlayersDeck.Length);
         m_TurnManager.TurnChanged.AddListener(OnEndTurn);
     }

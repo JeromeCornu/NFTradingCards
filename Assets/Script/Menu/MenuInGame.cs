@@ -80,6 +80,9 @@ public class MenuInGame : MonoBehaviour
 
         _game.OnPlayerLost.AddListener(OnPlayerLost);
         _game.OnPlayerValuesUpdates.AddListener(OnPlayerUpdates);
+        _game.OnPlayerValuesUpdates.Invoke((0,_game[0]));
+        _game.OnPlayerValuesUpdates.Invoke((1,_game[1]));
+
         _turn.TurnChanged.AddListener((b) =>
         {
             if (b) BeginTurn(); else FinishTurn();
