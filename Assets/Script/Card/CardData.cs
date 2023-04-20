@@ -19,6 +19,12 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
     [SerializeField]
     private string _quote = "Ut velit mauris, egestas sed, gravida nec, ornare ut, mi.Aenean ut orci vel massa suscipit pulvinar.";
     [Header("Values")]
+
+    [EnumFlags]
+    [SerializeField] private Rarity rarity;
+
+    public Rarity GetRarity => rarity;
+
     [SerializeField] private int _cost;
     [SerializeField] private Value _economic = new Value(0);
     [SerializeField] private Value _social = new Value(0);
@@ -54,7 +60,8 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
                 .Aggregate((curr, next) => curr &= next);
 
     public string Quote { get => _quote; }
-    public Color Color { get => new Color(0, 0, 1f, 1f); }
+    public Color Color;
+    
 
     [Flags]
     public enum Pillar
@@ -65,8 +72,11 @@ public class CardData : ScriptableObject, /*IEnumerable<Value>, */IEnumerable<(C
     {
         Neutral = 0, Bonus = -1, Malus = 1
     }
+    public enum Rarity
+    {
+        Common, Uncomon, Rare
+    }
 
-    
     IEnumerator<(CardData.Pillar pillar, Value value)> IEnumerable<(Pillar pillar, Value value)>.GetEnumerator()
     {
         yield return (Pillar.Economic, this[Pillar.Economic]);

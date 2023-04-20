@@ -36,6 +36,10 @@ public class CardUI : MonoBehaviour
     private TextMeshProUGUI quote;
 
 
+    [SerializeField]
+    private List<BT_Blackboard.KVP<CardData.Rarity, Color>> Colors;
+
+
     public CardData Card
     {
         set
@@ -55,7 +59,7 @@ public class CardUI : MonoBehaviour
         SetCardEconomieStat(_card[CardData.Pillar.Economic].Val);
         SetCardEcologieStat(_card[CardData.Pillar.Ecologic].Val);
         SetCardSocialStat(_card[CardData.Pillar.Social].Val);
-        SetColor(_card.Color);
+        SetColor(Colors[(int)_card.GetRarity].value);
         Debug.Log(_card.Color.ToString());
     }
 
