@@ -29,6 +29,7 @@ public class CardZone : MonoBehaviour
         selectableCard.transform.parent = _layout.transform;
         selectableCard.tag = TurnManager.Untagged;
         selectableCard.Animator.Flip(true);
+        selectableCard.AdjustDepth(true);
         return true;
         // Debug try : FindObjectOfType<TurnManager>().SwitchTurn();
     }

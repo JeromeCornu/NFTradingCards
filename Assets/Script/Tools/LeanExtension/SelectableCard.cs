@@ -14,7 +14,7 @@ public class SelectableCard : LeanSelectableBehaviour
     private LeanDragTranslate _drag;
     [SerializeField]
     private LayerMask _layerMask;
-    [SerializeField,Range(.01f,2f)]
+    [SerializeField, Range(.01f, 2f)]
     private float BoxCastSize = .75f;
     Transform _origin;
     private CardAnimator _animator;
@@ -57,7 +57,7 @@ public class SelectableCard : LeanSelectableBehaviour
 
         base.OnSelected(select);
         _origin = transform.parent;
-        _animator.AdjustDepth(selectedDepth);
+        AdjustDepth(false);
         transform.parent = null;
     }
     protected override void OnDeselected(LeanSelect select)
@@ -69,7 +69,10 @@ public class SelectableCard : LeanSelectableBehaviour
         Release();
     }
 
-
+    public void AdjustDepth(bool normal)
+    {
+        _animator.AdjustDepth(normal ? normalDepth : selectedDepth);
+    }
     private void Release()
     {
         if (CheckAreaToLockIn(out CardZone zone))
@@ -77,7 +80,7 @@ public class SelectableCard : LeanSelectableBehaviour
             if (zone.AddCard(this))
             {
                 soundManager.PlaySound(placeCardSound);
-                _animator.AdjustDepth(normalDepth);
+                AdjustDepth(true);
                 return;
             }
             else
