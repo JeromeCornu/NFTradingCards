@@ -145,7 +145,7 @@ public class MenuInGame : MonoBehaviour
     private void FinishTurn()
     {
         soundManager.PlaySound(nextSound);
-        // WhosPlaying.enabled = false;
+        WhosPlaying.enabled = false;
         WhosPlaying.GetComponent<Image>().sprite = notYourTurn;
     }
     //Call from bot
