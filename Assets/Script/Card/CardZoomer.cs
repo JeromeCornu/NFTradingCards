@@ -5,12 +5,13 @@ public class CardZoomer : MonoBehaviour
 {
     private Camera _mainCamera;
     [SerializeField] private CardOnlyDisplay _cardToDisplayInfo;
-    [SerializeField] Vector3 _newScale;
+    private Vector3 _newScale;
 
     private Card _card;
 
     private void Start()
     {
+        _newScale = new Vector3(1.5f, 1.5f, 1.5f);
         _cardToDisplayInfo.gameObject.SetActive(false);
         _mainCamera = Camera.main;
     }
