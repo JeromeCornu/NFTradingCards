@@ -21,20 +21,13 @@ namespace BehaviourTreeNodes
             _gameSystem = BT_Blackboard.GameObjects["Game"].GetComponent<GameSystem>();
             if (_gameSystem == null) return Status.Failure;
 
-            int Money = 0;
-            int Temp = 0;
-            int PplSat = 0;
+            
 
             GameSystem.Player player = _gameSystem[1];
+            Vector3 stats = _gameSystem.GetResourcesForNextRound(_gameSystem[1]);
 
-            foreach (Card card in player.CardOnBoard)
-            {
-                Money += card.CardData[CardData.Pillar.Economic].Val;
-                Temp -= card.CardData[CardData.Pillar.Ecologic].Val;
-                PplSat += card.CardData[CardData.Pillar.Social].Val;
-            }
 
-            if(Money > MoneyThresholdForDefence && Temp < TemperatureThresholdForDefence && PplSat > PplSatThresholdForDefence) 
+            if (stats.x > MoneyThresholdForDefence && stats.y < TemperatureThresholdForDefence && stats.z > PplSatThresholdForDefence) 
             {
                 BT_Blackboard.Bools[DecideCard.aggroKey] = true;
             }

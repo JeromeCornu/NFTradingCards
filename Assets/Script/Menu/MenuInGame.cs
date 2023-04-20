@@ -11,7 +11,7 @@ public class MenuInGame : MonoBehaviour
     private TurnManager _turn => _game.TurnManager;
 
     [SerializeField]
-    private PlayerStatUI _playerStat, _opponentStat;
+    private PlayerStatUI _playerStat, _opponentStat, _statPerTurn;
 
     [SerializeField]
     private GameObject subMenu;
@@ -83,6 +83,7 @@ public class MenuInGame : MonoBehaviour
     public void OnPlayerUpdates((int, GameSystem.Player p) player)
     {
         (player.Item1 == 0 ? _playerStat : _opponentStat).UpdateView(player.p);
+        _statPerTurn.UpdateView(_game.GetResourcesForNextRound(player.p));
     }
 
     public void ToggleVisibilitySubMenu()
