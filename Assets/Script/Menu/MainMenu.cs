@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviour
 {
 
     [SerializeField]
+    private GameObject rulesPanel;
+    [SerializeField]
     private Slider volumeSliderSFX;
     [SerializeField]
     private Slider volumeSliderMusic;
@@ -33,6 +35,8 @@ public class MainMenu : MonoBehaviour
     private AudioSource MusicManager;
     [SerializeField]
     private AudioSource SFXManager;
+    [SerializeField]
+    private AudioClip okayBtnSound;
 
     public AudioClip volumeChangeSound;
     public AudioClip buttonSound;
@@ -83,6 +87,18 @@ public class MainMenu : MonoBehaviour
 
         ChangeVolumeSFX();
         ChangeVolumeMusic();
+    }
+
+    public void OpenRules()
+    {
+        soundManager.PlaySound(okayBtnSound);
+        rulesPanel.gameObject.SetActive(true);
+    }
+
+    public void Return()
+    {
+        soundManager.PlaySound(okayBtnSound);
+        rulesPanel.gameObject.SetActive(false);
     }
 
     public void Quit()
