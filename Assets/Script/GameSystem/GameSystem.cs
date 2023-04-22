@@ -109,19 +109,17 @@ public class GameSystem : MonoBehaviour
 
     private void _UpdatePlayerRessources(Player iPlayer)
     {
-        foreach (Card card in iPlayer.CardOnBoard)
-        {
-            iPlayer.Temperature -= card.CardData[CardData.Pillar.Ecologic].Val;
-            iPlayer.Money += card.CardData[CardData.Pillar.Economic].Val;
-            Mathf.Clamp(iPlayer.Money, 1, iPlayer.Money);
-            iPlayer.PeopleSatistfaction += card.CardData[CardData.Pillar.Social].Val;
-            Mathf.Clamp(iPlayer.PeopleSatistfaction, 0, 100);
-        }
+        Vector3Int resourceToAdd = GetResourcesForNextRound(iPlayer);
+       
+            iPlayer.Temperature += resourceToAdd.y;
+            iPlayer.Money += resourceToAdd.x;
+            iPlayer.PeopleSatistfaction += resourceToAdd.z;
+
     }
 
-    public Vector3 GetResourcesForNextRound(GameSystem.Player prmPlayer) 
+    public Vector3Int GetResourcesForNextRound(Player prmPlayer) 
     {
-        int Money = 0;
+        int Money = 1;
         int Temp = 0;
         int PplSat = 0;
 
@@ -131,8 +129,10 @@ public class GameSystem : MonoBehaviour
             Temp -= card.CardData[CardData.Pillar.Ecologic].Val;
             PplSat += card.CardData[CardData.Pillar.Social].Val;
         }
+        Mathf.Clamp(Money, 1, Money);
+        Mathf.Clamp(PplSat, 0, 100);
 
-        return new Vector3(Money, Temp, PplSat);
+        return new Vector3Int(Money, Temp, PplSat);
 
     }
 
