@@ -51,7 +51,7 @@ namespace BehaviourTreeNodes
 
             BT_Blackboard.GameObjects[PlaceCard.CtPkey] = cardToPlay.gameObject;
             
-            Debug.Log(_defCard?.name +  " | " + _offCard?.name);
+            Debug.Log(_defCard?.CardData.name +  " | " + _offCard?.CardData.name);
 
             //Force ; BT_Blackboard.Bools["bAggro"] = true;
             return Status.Success;

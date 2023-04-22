@@ -129,7 +129,8 @@ public class GameSystem : MonoBehaviour
             Temp -= card.CardData[CardData.Pillar.Ecologic].Val;
             PplSat += card.CardData[CardData.Pillar.Social].Val;
         }
-        Mathf.Clamp(Money, 1, Money);
+
+        Money = Money <= 0 ? 1 : Money;
         Mathf.Clamp(PplSat, 0, 100);
 
         return new Vector3Int(Money, Temp, PplSat);
