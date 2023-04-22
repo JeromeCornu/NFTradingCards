@@ -113,9 +113,9 @@ public class GameSystem : MonoBehaviour
         {
             iPlayer.Temperature -= card.CardData[CardData.Pillar.Ecologic].Val;
             iPlayer.Money += card.CardData[CardData.Pillar.Economic].Val;
-            iPlayer.Money = Mathf.Clamp(iPlayer.Money, 0, iPlayer.Money);
+            Mathf.Clamp(iPlayer.Money, 1, iPlayer.Money);
             iPlayer.PeopleSatistfaction += card.CardData[CardData.Pillar.Social].Val;
-            iPlayer.PeopleSatistfaction = Mathf.Clamp(iPlayer.PeopleSatistfaction, 0, 100);
+            Mathf.Clamp(iPlayer.PeopleSatistfaction, 0, 100);
         }
     }
 
