@@ -12,6 +12,9 @@ public class DecideCard : UniBT.Action
     private GameSystem _game;
     private GameSystem.Player _player;
     Dictionary<CardData.Pillar, float> dico;
+    
+    [SerializeField] private bool aggro;
+    
     public override void Awake()
     {
         base.Awake();
@@ -26,7 +29,7 @@ public class DecideCard : UniBT.Action
 
             return Status.Running;
         }
-        bool aggro = BT_Blackboard.Bools[aggroKey];
+         
         var h = _game.getDeckBehaviour(1).MHand;
         dico = BT_Blackboard.Objects[DecidePillarWeight.weightsKey] as Dictionary<CardData.Pillar, float>;
         var seq = h.Where(c => _player.CanAffordCard(c)).Select(c => PonderateSumCard(c.CardData));
@@ -39,6 +42,9 @@ public class DecideCard : UniBT.Action
                 topCard = null;
             else
                 topCard = h.First(c => PonderateSumCard(c.CardData) == topScore);
+            
+            BT_Blackboard.GameObjects[PlaceCard.CtPOffkey] =
+                topCard == null ? null : topCard.gameObject;
         }
         else
         {
@@ -47,10 +53,11 @@ public class DecideCard : UniBT.Action
                 topCard = null;
             else
                 topCard = h.First(c => PonderateSumCard(c.CardData) == topScore);
+            
+            BT_Blackboard.GameObjects[PlaceCard.CtPDefkey] =
+                topCard == null ? null : topCard.gameObject;
         }
         //We potentially don't want to play anything, i.e 0 score 0 cost card, that doesn't exist in hand, in this case we forward null
-        BT_Blackboard.GameObjects[PlaceCard.CtPkey] =
-            topCard == null ? null : topCard.gameObject;
         Debug.Log(topCard + " with pillars : " + dico + " <- top is, from : " + string.Join('\n', seq));
         return Status.Success;
     }

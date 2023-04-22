@@ -14,7 +14,7 @@ public class MenuInGame : MonoBehaviour
     private GameObject mainUIElements;
 
     [SerializeField]
-    private PlayerStatUI _playerStat, _opponentStat, _statPerTurn;
+    private PlayerStatUI _playerStat, _opponentStat, _statPerTurn, _opponentStatPerTurn;
 
     [SerializeField]
     private GameObject subMenu;
@@ -92,7 +92,7 @@ public class MenuInGame : MonoBehaviour
     public void OnPlayerUpdates((int, GameSystem.Player p) player)
     {
         (player.Item1 == 0 ? _playerStat : _opponentStat).UpdateView(player.p);
-        _statPerTurn.UpdateView(_game.GetResourcesForNextRound(player.p));
+        (player.Item1 == 0 ? _statPerTurn : _opponentStatPerTurn).UpdateView(_game.GetResourcesForNextRound(player.p));
     }
 
     public void ToggleVisibilitySubMenu()

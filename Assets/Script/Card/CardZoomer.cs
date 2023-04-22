@@ -5,6 +5,7 @@ public class CardZoomer : MonoBehaviour
 {
     private Camera _mainCamera;
     [SerializeField] private CardOnlyDisplay _cardToDisplayInfo;
+    [SerializeField] private GameObject gameObject;
     private Vector3 _newScale;
 
     private Card _card;
@@ -33,6 +34,7 @@ public class CardZoomer : MonoBehaviour
 
                 if (_card.transform.parent.name == "PlayerHand" || _card.transform.parent.parent.name == "Zone")
                 {
+                    gameObject.SetActive(false);
                     soundManager.PlaySound(zoomBeginSound);
                     _cardToDisplayInfo.CardData = _card.CardData;
                     _cardToDisplayInfo.gameObject.SetActive(true);
@@ -48,6 +50,7 @@ public class CardZoomer : MonoBehaviour
             // Add a zoom-out animation to the CardOnlyDisplay game object
             _cardToDisplayInfo.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() => {
                 _cardToDisplayInfo.gameObject.SetActive(false);
+                gameObject.SetActive(true);
             });
         }
     }

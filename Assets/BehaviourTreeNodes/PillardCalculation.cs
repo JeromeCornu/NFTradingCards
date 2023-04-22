@@ -7,8 +7,9 @@ using static CardData;
 
 public abstract class PillardCalculation : Action
 {
+    [SerializeField]
     private bool _aggro;
-    protected const string AggroKey = "bAggro";
+    public const string AggroKey = "bAggro";
     protected GameSystem _game { get; private set; }
     protected GameSystem.Player player { get; private set; }
     protected abstract string outputKey { get; }
@@ -18,7 +19,6 @@ public abstract class PillardCalculation : Action
     }
     protected override Status OnUpdate()
     {
-        _aggro = BT_Blackboard.Bools[AggroKey];
         _game = BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>();
         player = _game[PlayerIndex()];
         BT_Blackboard.Floats[outputKey] = Mathf.Clamp01(DeterminOutputPriority());

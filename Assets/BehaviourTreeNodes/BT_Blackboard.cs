@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
 
 public class BT_Blackboard : MonoBehaviour
 {
@@ -28,8 +30,8 @@ public class BT_Blackboard : MonoBehaviour
         public T key;
         public V value;
     }
-    public void SetDifficulty(float value)
+    public void SetDifficulty(Slider slider)
     {
-        Floats[DifficultyKey] = 1f - value;
+        Floats[DifficultyKey] = 1f - slider.value;
     }
 }

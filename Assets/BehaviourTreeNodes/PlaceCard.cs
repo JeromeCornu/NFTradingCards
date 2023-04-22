@@ -7,6 +7,8 @@ namespace BehaviourTreeNodes
     public class PlaceCard : Action
     {
         private SelectableCard _card;
+        public const string CtPDefkey = "CardToPlayDef";
+        public const string CtPOffkey = "CardToPlayOff";
         public const string CtPkey = "CardToPlay";
         private const Status ErrorStatus = Status.Failure; //for go next turn but not ruin exe Status.Running;//For debug, and 
 
@@ -20,7 +22,7 @@ namespace BehaviourTreeNodes
                 return Status.Failure;
             }
 
-            if (BT_Blackboard.Bools["bAggro"])
+            if (BT_Blackboard.Bools[PillardCalculation.AggroKey])
             {
                 if (!BT_Blackboard.GameObjects["PlayerZone"].GetComponent<CardZone>().AddCard(_card))
                 {
