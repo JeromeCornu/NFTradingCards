@@ -119,7 +119,7 @@ public class GameSystem : MonoBehaviour
 
     public Vector3Int GetResourcesForNextRound(Player prmPlayer) 
     {
-        int Money = 1;
+        int Money = 5;
         int Temp = 0;
         int PplSat = 0;
 
@@ -130,7 +130,7 @@ public class GameSystem : MonoBehaviour
             PplSat += card.CardData[CardData.Pillar.Social].Val;
         }
 
-        Money = Money <= 0 ? 1 : Money;
+        Money = Money <= 4 ? 5 : Money;
         Mathf.Clamp(PplSat, 0, 100);
 
         return new Vector3Int(Money, Temp, PplSat);

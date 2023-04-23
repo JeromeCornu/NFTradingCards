@@ -90,7 +90,7 @@ namespace BehaviourTreeNodes
                 return offCardCardData;
             }
             
-            def = Random.value >= 0.5f ? true : false;
+            def = Random.value >= BT_Blackboard.Floats["Aggro"];
 
             if (def)
             {
