@@ -60,7 +60,7 @@ public class CardUI : MonoBehaviour
         SetCardEcologieStat(_card[CardData.Pillar.Ecologic].Val);
         SetCardSocialStat(_card[CardData.Pillar.Social].Val);
         SetColor(Colors[(int)_card.GetRarity].value);
-        Debug.Log(_card.Color.ToString());
+        //Debug.Log(_card.Color.ToString());
     }
 
     private void SetCardName(string prmName)
