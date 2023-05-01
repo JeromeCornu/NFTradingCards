@@ -1,16 +1,26 @@
+using System.Collections;
 using UnityEngine;
 
-public class BackgroundAligner : MonoBehaviour
+public class ResolutionAdapter : MonoBehaviour
 {
+    [SerializeField]
+    private Transform _backgroundToScale;
     private void Awake()
     {
+        Debug.Log(Screen.resolutions.Length + " total supported resolutions, list : " + string.Join(',', Screen.resolutions));
+        /*var last = Screen.resolutions[Screen.resolutions.Length - 1];
+        Screen.SetResolution(last.width, last.height, true);
+        yield return new WaitForSeconds(3f);*/
+        Screen.SetResolution(1920, 1080, true);
         AdjustDepth();
     }
     void AdjustDepth(Vector2 _originalScreenSize, Vector2 _originalScale, Vector2 _adjustedScreenSize, Vector2 _adjustedScale)
     {
-        var x = LerpRelative(_originalScreenSize.x, _adjustedScreenSize.x, _originalScale.x, _adjustedScale.x, Screen.width);
-        //var y = LerpRelative(_originalScreenSize.y, _adjustedScreenSize.y, _originalScale.y, _originalScale.y, Screen.width);
-        transform.localScale = new Vector3(x, 1,1);
+        //We use max because sometimes this get called before or after landscape mode has been forced that inverts things
+        var x = LerpRelative(_originalScreenSize.x, _adjustedScreenSize.x, _originalScale.x, _adjustedScale.x, Mathf.Max(Screen.width,Screen.height));
+        //var y = LerpRelative(_originalScreenSize.y, _adjustedScreenSize.y, _originalScale.y, _originalScale.y, Screen.height);
+        _backgroundToScale.localScale = new Vector3(x, 1, 1);
+        Debug.Log(Mathf.Max(Screen.width, Screen.height) + " adjusted to : " + x);
     }
     /// <summary>
     /// Inverses lerp tToRelativize beetween v1 and v2, and lerp with this obtained value beetween a and b
@@ -35,5 +45,6 @@ public class BackgroundAligner : MonoBehaviour
     {
         //Reference values, found iteratively, to always scale the background correctly, change here if the background size tend to change
         AdjustDepth(new Vector2(1920, 1080), Vector3.one, new Vector2(2400, 1080), new Vector3(1.17f, 1, 1));
+        //1.17f,1,1
     }
 }
