@@ -1,4 +1,3 @@
-#define HandleBoth
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,11 +10,12 @@ public class InputInterface
     {
         get
         {
-#if HandleBoth
-            return Input.touchCount > 0 ? Input.GetTouch(0).position : Vector3.zero + Input.mousePosition;
-#endif
 #if UNITY_ANDROID
+#if UNITY_EDITOR
+            return Input.touchCount > 0 ? Input.GetTouch(0).position : Vector3.zero + Input.mousePosition;
+#else
             return Input.touchCount > 0 ? Input.GetTouch(0).position : Vector3.zero;
+#endif
 #else
             return Input.mousePosition;
 #endif
@@ -40,22 +40,37 @@ public class InputInterface
 
     private static bool CheckMainInput()
     {
-#if HandleBoth
-        return (Input.touchCount > 0 && Input.GetTouch(0).phase != TouchPhase.Began) || Input.GetMouseButtonDown(0);
-#endif
 #if UNITY_ANDROID
-        return Input.touchCount > 0 && Input.GetTouch(0).phase != TouchPhase.Began;
+#if UNITY_EDITOR
+        return FingerRemains() || Input.GetMouseButtonDown(0);
+#else
+        return FingerRemains();
+#endif
 #else
         return Input.GetMouseButtonDown(0);
 #endif
     }
+
+    private static bool FingerRemains()
+    {
+        if (Input.touchCount > 0)
+        {
+            var phase = Input.GetTouch(0).phase;
+            //Every valid phase excpet for began
+            return phase == TouchPhase.Stationary || phase == TouchPhase.Moved;
+        }
+        else
+            return false;
+    }
+
     private static bool CheckSecondaryInput()
     {
-#if HandleBoth
-        return (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(1);
-#endif
 #if UNITY_ANDROID
+#if UNITY_EDITOR
+        return (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || Input.GetMouseButtonDown(1);
+#else
         return Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
+#endif
 #else
         Input.return GetMouseButtonDown(1);
 #endif
