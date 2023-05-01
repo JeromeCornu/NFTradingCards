@@ -13,10 +13,10 @@ public class SelectableCard : LeanSelectableBehaviour
     [SerializeField]
     private LeanDragTranslate _drag;
     [SerializeField]
-    private LayerMask _layerMask;
+    private LayerMask _cardZoneLayerMask;
     [SerializeField, Range(.01f, 2f)]
     private float BoxCastSize = .75f;
-    Transform _origin;
+    Transform _originalParent;
     private CardAnimator _animator;
     [HideInInspector]
     public CardData cardData;
@@ -28,13 +28,16 @@ public class SelectableCard : LeanSelectableBehaviour
     private float selectedDepth;
 
     [Header("Sound")]
-    [SerializeField]
     private SoundManager soundManager;
     public AudioClip placeCardSound;
     public AudioClip SelectCardSound;
 
+    private Camera _camera;
 
     public CardAnimator Animator { get => _animator; set => _animator = value; }
+    public bool IsInAZone => (transform.parent.gameObject.layer << 0b1 & _cardZoneLayerMask.value) != 0b0;
+    //Checks if the original parent, i.e the hand, belongs to the player
+    public bool IsInPlayerHand => _originalParent.GetComponent<PlayerID>().IsPlayer;
 
     public bool IsSelectable
     {
@@ -47,7 +50,9 @@ public class SelectableCard : LeanSelectableBehaviour
 
     private void Start()
     {
-        soundManager = Camera.main.GetComponent<SoundManager>();
+        _camera = Camera.main;
+        _drag.Camera = _camera;
+        soundManager = _camera.GetComponent<SoundManager>();
     }
 
     protected override void OnSelected(LeanSelect select)
@@ -56,7 +61,7 @@ public class SelectableCard : LeanSelectableBehaviour
             return;
 
         base.OnSelected(select);
-        _origin = transform.parent;
+        _originalParent = transform.parent;
         AdjustDepth(false);
         transform.parent = null;
     }
@@ -73,8 +78,19 @@ public class SelectableCard : LeanSelectableBehaviour
     {
         _animator.AdjustDepth(normal ? normalDepth : selectedDepth);
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 halfExtents = BoxCastSize * transform.lossyScale;
+        halfExtents.z = .1f;
+        Gizmos.DrawCube(transform.position, halfExtents);
+    }
     private void Release()
     {
+        /* for (float i = 0f; i < 3f; i += .1f)
+         {
+             Debug.Log(i + " => scaled : " + CastBoxUpAndDown(out RaycastHit _, i));
+         }*/
         if (CheckAreaToLockIn(out CardZone zone))
         {
             if (zone.AddCard(this))
@@ -86,7 +102,7 @@ public class SelectableCard : LeanSelectableBehaviour
             else
                 _animator.CostTooHigh(cardData.Cost);
         }
-        _animator.Reparent(_origin);
+        _animator.Reparent(_originalParent);
     }
     private bool CheckAreaToLockIn(out CardZone zone)
     {
@@ -94,10 +110,17 @@ public class SelectableCard : LeanSelectableBehaviour
         return CastBoxUpAndDown(out RaycastHit info) && info.transform.parent.TryGetComponent<CardZone>(out zone);
     }
 
+    private bool CastBoxUpAndDown(out RaycastHit info, float size)
+    {
+        var forward = transform.position - _camera.transform.position;
+        Vector3 halfExtents = BoxCastSize * transform.lossyScale;
+        halfExtents.z = .1f;
+        return Physics.BoxCast(transform.position, halfExtents, -forward, out info, Quaternion.identity, 10f, _cardZoneLayerMask.value)
+               || Physics.BoxCast(transform.position, halfExtents, forward, out info, Quaternion.identity, 10f, _cardZoneLayerMask.value);
+    }
     private bool CastBoxUpAndDown(out RaycastHit info)
     {
-        return Physics.BoxCast(transform.position, BoxCastSize * Vector3.one, -transform.forward, out info, Quaternion.identity, 10f, _layerMask.value)
-               || Physics.BoxCast(transform.position, BoxCastSize * Vector3.one, transform.forward, out info, Quaternion.identity, 10f, _layerMask.value);
+        return CastBoxUpAndDown(out info, BoxCastSize);
     }
 
 

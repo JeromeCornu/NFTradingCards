@@ -1,11 +1,14 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Assertions;
+using Lean.Touch;
 
 public class CardZoomer : MonoBehaviour
 {
     private Camera _mainCamera;
     [SerializeField] private CardOnlyDisplay _cardToDisplayInfo;
-    [SerializeField] private GameObject gameObject;
+    [SerializeField] private GameObject gameObjectToHide;
+    [SerializeField] private LeanSelectByFinger _selector;
     private Vector3 _newScale;
 
     private Card _card;
@@ -18,40 +21,53 @@ public class CardZoomer : MonoBehaviour
     private void Start()
     {
         _newScale = new Vector3(1.5f, 1.5f, 1.5f);
-        _cardToDisplayInfo.gameObject.SetActive(false);
+        _cardToDisplayInfo.ChangeVisibility(false);
         _mainCamera = Camera.main;
+    }
+    public void OnCardTapped()
+    {
+
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        switch (_selector.Selectables.Count)
         {
-            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 1<<6))
-            {
-                _card = hit.collider.transform.parent.parent.GetComponent<Card>();
-
-                if (_card.transform.parent.name == "PlayerHand" || _card.transform.parent.parent.name == "Zone")
+            //If we have nothing selected
+            case 0:
+                //And if we have a click somewhere (which is not a selectable thing, other wise we wouln't be here
+                if (InputInterface.GetInputDown(0) || InputInterface.GetInputDown(1))
                 {
-                    gameObject.SetActive(false);
+                    HideZoomedCard();
+                }              
+                break;
+            case 1:
+                _card = _selector.Selectables[0].GetComponent<Card>();
+                Assert.IsTrue(_card != null);
+                if (_card.Selectable.IsInPlayerHand || _card.Selectable.IsInAZone)
+                {
+                    gameObjectToHide.SetActive(false);
                     soundManager.PlaySound(zoomBeginSound);
                     _cardToDisplayInfo.CardData = _card.CardData;
-                    _cardToDisplayInfo.gameObject.SetActive(true);
+                    _cardToDisplayInfo.ChangeVisibility(true);
                     // Add a zoom-in animation to the CardOnlyDisplay game object
                     _cardToDisplayInfo.transform.localScale = Vector3.zero;
                     _cardToDisplayInfo.transform.DOScale(_newScale, 0.5f);
                 }
-            }
+                break;
+            default: Debug.LogWarning("Unhandled number of selectables objects currently selected");
+                    break;
         }
-        else if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+    }
+
+    private void HideZoomedCard()
+    {
+        _card = null;
+        // Add a zoom-out animation to the CardOnlyDisplay game object
+        _cardToDisplayInfo.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
         {
-            _card = null;
-            // Add a zoom-out animation to the CardOnlyDisplay game object
-            _cardToDisplayInfo.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() => {
-                _cardToDisplayInfo.gameObject.SetActive(false);
-                gameObject.SetActive(true);
-            });
-        }
+            _cardToDisplayInfo.ChangeVisibility(false);
+            gameObjectToHide.SetActive(true);
+        });
     }
 }

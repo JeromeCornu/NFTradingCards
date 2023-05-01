@@ -10,8 +10,12 @@ public class CardOnlyDisplay : MonoBehaviour
     [Header("References")]
     [SerializeField]
     CardUI _cardUI;
+    
     internal object canvasGroup;
-
+    public void ChangeVisibility(bool visible)
+    {
+        _cardUI.gameObject.SetActive(visible);
+    }
     private void Start()
     {
         _cardUI.SetVisuals(_cardData);
