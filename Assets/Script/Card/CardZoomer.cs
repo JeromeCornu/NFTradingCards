@@ -17,7 +17,7 @@ public class CardZoomer : MonoBehaviour
 
     private (Lean.Common.LeanSelectable selected, LeanFinger finger) _selected;
 
-    private TweenerCore<Vector3, Vector3, Options.VectorOptions> unzoomTween;
+    private Tween _runningTween;
 
     [Header("Sound")]
     [SerializeField]
@@ -25,7 +25,7 @@ public class CardZoomer : MonoBehaviour
     public AudioClip zoomBeginSound;
     private void Awake()
     {
-        LeanFingerDown fgDown=null;
+        LeanFingerDown fgDown = null;
         //We find the LeanFingerDown object (which appears to be on same object as the selector but could be elswhere, in case we find one in scene, if not, there should be one)
         if (!_selector.gameObject.TryGetComponent<LeanFingerDown>(out fgDown))
             if ((fgDown = FindObjectOfType<LeanFingerDown>()) == null)
@@ -48,7 +48,7 @@ public class CardZoomer : MonoBehaviour
     public void UpdateCardUnderFinger(LeanFinger finger)
     {
         _selected = (_selector.ScreenQuery.Query<LeanSelectable>(null/* null is ok as long as the query has a camera, which we made sure was the case*/, finger.ScreenPosition), finger);
-        Debug.Log("Queried : "+(_selected.selected==null));
+        Debug.Log("Queried : " + (_selected.selected == null));
     }
     private void Update()
     {
@@ -61,19 +61,19 @@ public class CardZoomer : MonoBehaviour
             Assert.IsTrue(card != null);
             if (card.Selectable.BelongsToPlayer || card.Selectable.IsInAZone)
             {
-                //If we happen to be still unzooming from a card, we kill the tween to make sure nothing weird happens
-                unzoomTween.Kill();
+                //If we happen to be still tweening the card (like rezooming or zooming when unzooming... We kill it to avoid weird behaviours
+                _runningTween.Kill();
                 gameObjectToHide.SetActive(false);
                 soundManager.PlaySound(zoomBeginSound);
                 _cardToDisplayInfo.CardData = card.CardData;
                 _cardToDisplayInfo.ChangeVisibility(true);
                 _cardToDisplayInfo.transform.localScale = Vector3.zero;
-                _cardToDisplayInfo.transform.DOScale(_newScale, 0.5f);
+                _runningTween = _cardToDisplayInfo.transform.DOScale(_newScale, 0.5f);
                 Debug.Log("Selec zooming");
             }
         }
         //Else we unzoom it, and set everything to null to make sure we don't enter here again before a new zoom
-        else if (_selected.finger.Up )
+        else if (_selected.finger.Up)
         {
             //Just as a safe if we try to acces the finger from elswere than this if
             _selected.selected = null;
@@ -83,8 +83,10 @@ public class CardZoomer : MonoBehaviour
     }
     private void HideZoomedCard()
     {
+        //If we happen to be still tweening the card (like rezooming or zooming when unzooming... We kill it to avoid weird behaviours
+        _runningTween.Kill();
         // Add a zoom-out animation to the CardOnlyDisplay game object
-       unzoomTween =_cardToDisplayInfo.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
+        _runningTween = _cardToDisplayInfo.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
         {
             _cardToDisplayInfo.ChangeVisibility(false);
             gameObjectToHide.SetActive(true);
