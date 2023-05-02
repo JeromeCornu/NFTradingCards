@@ -11,9 +11,7 @@ public class TurnManager : MonoBehaviour
     public UnityEvent<bool> TurnChanged;
     [SerializeField, Tag] private string _playerTag;
     [SerializeField, Tag] private string _otherTag;
-    [SerializeField]
     public static string PlayerTag;
-    [SerializeField]
     public static string OtherTag;
     public const string Untagged = "Untagged";
     public static string GetTag(bool playerTag) => playerTag ? PlayerTag : OtherTag;
