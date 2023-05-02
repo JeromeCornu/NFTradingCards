@@ -47,7 +47,9 @@ public class CardZoomer : MonoBehaviour
     /// <param name="screenPosition"></param>
     public void UpdateCardUnderFinger(LeanFinger finger)
     {
-        _selected = (_selector.ScreenQuery.Query<LeanSelectable>(null/* null is ok as long as the query has a camera, which we made sure was the case*/, finger.ScreenPosition), finger);
+        var query = _selector.ScreenQuery;
+        query.RequiredTag = "";
+        _selected = (query.Query<LeanSelectable>(null/* null is ok as long as the query has a camera, which we made sure was the case*/, finger.ScreenPosition), finger);
     }
     private void Update()
     {
