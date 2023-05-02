@@ -48,11 +48,9 @@ public class CardZoomer : MonoBehaviour
     public void UpdateCardUnderFinger(LeanFinger finger)
     {
         _selected = (_selector.ScreenQuery.Query<LeanSelectable>(null/* null is ok as long as the query has a camera, which we made sure was the case*/, finger.ScreenPosition), finger);
-        Debug.Log("Queried : " + (_selected.selected == null));
     }
     private void Update()
     {
-        Debug.Log("Queried finger ;" + _selected.finger.Down);
         if (_selected.selected == null)
             return;
         if (_selected.finger.Down/* i.e the selected card is selected by a finger still down*/)
