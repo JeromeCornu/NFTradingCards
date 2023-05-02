@@ -35,7 +35,7 @@ public class SelectableCard : LeanSelectableBehaviour
     private Camera _camera;
 
     public CardAnimator Animator { get => _animator; set => _animator = value; }
-    public bool IsInAZone => (transform.parent.gameObject.layer << 0b1 & _cardZoneLayerMask.value) != 0b0;
+    public bool IsInAZone => ((0b1<<transform.parent.gameObject.layer) & _cardZoneLayerMask.value) != 0b0;
     //Checks if the original parent, i.e the hand, belongs to the player
     public bool ComesFromPlayerHand => _originalParent.GetComponent<PlayerID>().IsPlayer;
     public bool BelongsToPlayer => gameObject.CompareTag(TurnManager.PlayerTag);
