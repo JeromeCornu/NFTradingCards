@@ -16,7 +16,8 @@ public class CardZoomer : MonoBehaviour
     private Vector3 _newScale;
 
     private (Lean.Common.LeanSelectable selected, LeanFinger finger) _selected;
-
+    [SerializeField]
+    LeanScreenQuery query;
     private Tween _runningTween;
 
     [Header("Sound")]
@@ -34,6 +35,8 @@ public class CardZoomer : MonoBehaviour
         fgDown.OnFinger.AddListener(UpdateCardUnderFinger);
         //We are going to use the query so we make sure it has a camera set
         _selector.ScreenQuery.Camera ??= Camera.main;
+        query = _selector.ScreenQuery;
+        query.RequiredTag = "";
     }
     private void Start()
     {
@@ -46,9 +49,7 @@ public class CardZoomer : MonoBehaviour
     /// <param name="finger"></param>
     /// <param name="screenPosition"></param>
     public void UpdateCardUnderFinger(LeanFinger finger)
-    {
-        var query = _selector.ScreenQuery;
-        query.RequiredTag = "";
+    {       
         _selected = (query.Query<LeanSelectable>(null/* null is ok as long as the query has a camera, which we made sure was the case*/, finger.ScreenPosition), finger);
     }
     private void Update()
