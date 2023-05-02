@@ -16,7 +16,6 @@ public class CardZoomer : MonoBehaviour
     private Vector3 _newScale;
 
     private (Lean.Common.LeanSelectable selected, LeanFinger finger) _selected;
-    private Lean.Common.LeanSelectable _lastZoomed;
 
     private TweenerCore<Vector3, Vector3, Options.VectorOptions> unzoomTween;
 
@@ -26,7 +25,7 @@ public class CardZoomer : MonoBehaviour
     public AudioClip zoomBeginSound;
     private void Awake()
     {
-        LeanFingerDown fgDown;
+        LeanFingerDown fgDown=null;
         //We find the LeanFingerDown object (which appears to be on same object as the selector but could be elswhere, in case we find one in scene, if not, there should be one)
         if (!_selector.gameObject.TryGetComponent<LeanFingerDown>(out fgDown))
             if ((fgDown = FindObjectOfType<LeanFingerDown>()) == null)
@@ -56,12 +55,9 @@ public class CardZoomer : MonoBehaviour
         Debug.Log("Queried finger ;" + _selected.finger.Down);
         if (_selected.selected == null)
             return;
-        if (_selected.finger.Set/* i.e the selected card is selected by a finger still down*/)
+        if (_selected.finger.Down/* i.e the selected card is selected by a finger still down*/)
         {
-            //Assign the _lastZoomed, if it changed, we effectively trigger zoom, if not we return
-            if (_lastZoomed == (_lastZoomed = _selected.selected))
-                return;
-            var card = _lastZoomed.GetComponent<Card>();
+            var card = _selected.selected.GetComponent<Card>();
             Assert.IsTrue(card != null);
             if (card.Selectable.BelongsToPlayer || card.Selectable.IsInAZone)
             {
@@ -77,9 +73,8 @@ public class CardZoomer : MonoBehaviour
             }
         }
         //Else we unzoom it, and set everything to null to make sure we don't enter here again before a new zoom
-        else
+        else if (_selected.finger.Up )
         {
-            _lastZoomed = null;
             //Just as a safe if we try to acces the finger from elswere than this if
             _selected.selected = null;
             _selected.finger = null;
