@@ -19,7 +19,7 @@ public class CardAnimator : MonoBehaviour
     public void Flip(bool upwards)
     {
         float dir = upwards ? 180f : 0f;
-        transform.DOScale(.5f*Vector3.one, 0.2f)
+        transform.DOScale(.5f * Vector3.one, 0.2f)
             .SetEase(Ease.InQuad)
             .OnComplete(() =>
             {
@@ -40,7 +40,7 @@ public class CardAnimator : MonoBehaviour
                             });
                     });
             });
-        
+
     }
 
 
@@ -61,8 +61,10 @@ public class CardAnimator : MonoBehaviour
         transform.DOShakePosition(1f, 0.4f, 20, 90f, false);
     }
 
-    internal void Reparent(Transform parent)
+    internal void Reparent(Transform parent, int siblingIndex = -1)
     {
         transform.parent = parent;
+        if (siblingIndex >= 0 && siblingIndex < parent.childCount)
+            transform.SetSiblingIndex(siblingIndex);
     }
 }
