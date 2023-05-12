@@ -97,9 +97,18 @@ public class SelectableCard : LeanSelectableBehaviour
          {
              Debug.Log(i + " => scaled : " + CastBoxUpAndDown(out RaycastHit _, i));
          }*/
-        if (CheckAreaToLockIn(out CardZone zone))
+        if (CheckAreaToLockIn(out CardZone zone, out Vector3 point))
         {
-            if (zone.AddCard(this))
+            int child = 0;
+            foreach (var card in zone.ChildsInZone)
+            {
+                if (card.position.x < point.x)
+                {
+                    break;
+                }
+                child++;
+            }
+            if (zone.AddCard(this, child))
             {
                 soundManager.PlaySound(placeCardSound);
                 AdjustDepth(true);
@@ -110,10 +119,16 @@ public class SelectableCard : LeanSelectableBehaviour
         }
         _animator.Reparent(_originalParent.parent, _originalParent.indexInParent);
     }
-    private bool CheckAreaToLockIn(out CardZone zone)
+    private bool CheckAreaToLockIn(out CardZone zone, out Vector3 hitPoint)
     {
         zone = null;
-        return CastBoxUpAndDown(out RaycastHit info) && info.transform.parent.TryGetComponent<CardZone>(out zone);
+        hitPoint = Vector3.zero;
+        if (CastBoxUpAndDown(out RaycastHit info))
+        {
+            hitPoint = info.point;
+            return info.transform.parent.TryGetComponent<CardZone>(out zone);
+        }
+        return false;
     }
 
     private bool CastBoxUpAndDown(out RaycastHit info, float size)
