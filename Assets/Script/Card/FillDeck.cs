@@ -17,7 +17,7 @@ public class FillDeck : MonoBehaviour
     {
         // Get all CardData
         var loaded = LoadCardData();
-        Debug.Log(loaded);
+        //Debug.Log(loaded);
 
         // Get all Cards3D
         List<GameObject> allChildObjects = new List<GameObject>();

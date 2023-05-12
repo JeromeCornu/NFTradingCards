@@ -20,7 +20,7 @@ public class ResolutionAdapter : MonoBehaviour
         var x = LerpRelative(_originalScreenSize.x, _adjustedScreenSize.x, _originalScale.x, _adjustedScale.x, Mathf.Max(Screen.width,Screen.height));
         //var y = LerpRelative(_originalScreenSize.y, _adjustedScreenSize.y, _originalScale.y, _originalScale.y, Screen.height);
         _backgroundToScale.localScale = new Vector3(x, 1, 1);
-        Debug.Log(Mathf.Max(Screen.width, Screen.height) + " adjusted to : " + x);
+        //Debug.Log(Mathf.Max(Screen.width, Screen.height) + " adjusted to : " + x);
     }
     /// <summary>
     /// Inverses lerp tToRelativize beetween v1 and v2, and lerp with this obtained value beetween a and b

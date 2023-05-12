@@ -14,7 +14,7 @@ public class MovingInSpace : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         int var = Random.Range(0, 3);
-        print(var);
+        //print(var);
         switch (var)
         {
             case 0:

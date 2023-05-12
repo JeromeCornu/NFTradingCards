@@ -19,7 +19,7 @@ public class cow : MonoBehaviour
     public void PlaySound()
     {
         var rand = Random.Range(0, 2);
-        Debug.Log(rand);
+        //Debug.Log(rand);
         if(rand == 0)
         {
             audioSource.PlayOneShot(humanMoo);

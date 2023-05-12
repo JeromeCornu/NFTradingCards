@@ -32,11 +32,7 @@ public class CardAnimator : MonoBehaviour
                             .OnComplete(() =>
                             {
                                 transform.DOScale(transformInit, 0.2f)
-                                    .SetEase(Ease.OutBounce)
-                                    .OnComplete(() =>
-                                    {
-                                        Debug.Log("Card flipped");
-                                    });
+                                    .SetEase(Ease.OutBounce);
                             });
                     });
             });

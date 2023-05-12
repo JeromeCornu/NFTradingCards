@@ -49,7 +49,7 @@ public class MainMenu : MonoBehaviour
 
     public void ChangeVolumeSFX()
     {
-        Debug.Log("Ca commence sfx");
+        //Debug.Log("Ca commence sfx");
         float volumeSFX = volumeSliderSFX.value;
         // set sound in game
 
