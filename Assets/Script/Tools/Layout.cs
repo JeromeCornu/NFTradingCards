@@ -1,11 +1,13 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
+using static UnityEditor.PlayerSettings;
 
-public class Layout : MonoBehaviour,IEnumerable<Transform>
+public class Layout : MonoBehaviour, IEnumerable<Transform>
 {
     [SerializeField]
     private bool _updateAuto = false;
@@ -17,36 +19,41 @@ public class Layout : MonoBehaviour,IEnumerable<Transform>
             return;
         UpdateLayout();
     }
+    public int GetCorrectIndex(Vector3 position)
+    {
+        int i = 0;
+        foreach (var layout in _layouts)
+        {
+            i = 0;
+            foreach (var child in this)
+            {
+                if (layout.IsAfter(position, child.position, i))
+                    break;
+                i++;
+            }
+        }
+        return i;
+    }
     [Button("Force Update Layout")]
     public void UpdateLayout()
     {
         int count = transform.childCount;
+        bool center = count % 2 == 0;
         foreach (var layout in _layouts)
         {
             for (int i = 0; i < count; i++)
             {
                 var ch = transform.GetChild(i);
                 var pos = ch.transform.localPosition;
-                float dir = i % 2 == 0 ? 1f : -1f;
-                int step = (i + 1) / 2;
-                float val = layout.layout.x + layout.layout.y * dir * step;
-                if (count % 2 == 0)
-                    val += layout.layout.y / 2f;
-                //Mathf.Lerp(layout.layout.x, layout.layout.y, (count != 1 ? (float)i / (count - 1) : (layout.center ? .5f : 0f)));
-                if ((layout.axis & Axis.X) != 0b0)
-                    pos.x = val;
-                if ((layout.axis & Axis.Y) != 0b0)
-                    pos.y = val;
-                if ((layout.axis & Axis.Z) != 0b0)
-                    pos.z = val;
-                ch.transform.localPosition = pos;
+
+                ch.transform.localPosition = layout.CalculatePosition(pos, i, center);
             }
         }
     }
 
     public IEnumerator<Transform> GetEnumerator()
     {
-        var enumerator= transform.GetEnumerator();
+        var enumerator = transform.GetEnumerator();
         while (enumerator.MoveNext())
         {
             yield return (Transform)enumerator.Current;
@@ -62,14 +69,39 @@ public class Layout : MonoBehaviour,IEnumerable<Transform>
 public class LayoutElement
 {
     [SerializeField]
-    public bool center = false;
-    [SerializeField, MinMaxSlider(-10, 10)/*, OnValueChanged(nameof(Symetrize))*/]
-    [Tooltip("Will set x to -y if symetrizez")]
-    public Vector2 layout;
+    private float _center;
+    [SerializeField]
+    private float _spread;
     [SerializeField]
     public Axis axis;
-    public void Symetrize()
+
+    public bool IsAfter(Vector3 v1, Vector3 v2, int i)
     {
-        layout.x = -layout.y;
+        return IsSuperior(CalculatePosition(v1, i), CalculatePosition(v2, i));
+    }
+
+    private bool IsSuperior(Vector3 v1, Vector3 v2)
+    {
+        if ((axis & Axis.X) != 0b0)
+            return v1.x > v2.x;
+        if ((axis & Axis.Y) != 0b0)
+            return v1.y > v2.y;
+        if ((axis & Axis.Z) != 0b0)
+            return v1.z > v2.z;
+        return false;
+    }
+
+    public Vector3 CalculatePosition(Vector3 initialPos, int index, bool offsetHalfAstep = false)
+    {
+        float dir = index % 2 == 0 ? 1f : -1f;
+        int step = Mathf.FloorToInt((index + 1) / 2);
+        float val = _center + _spread * dir * step + (offsetHalfAstep ? _spread / 2f : 0);
+        if ((axis & Axis.X) != 0b0)
+            initialPos.x = val;
+        if ((axis & Axis.Y) != 0b0)
+            initialPos.y = val;
+        if ((axis & Axis.Z) != 0b0)
+            initialPos.z = val;
+        return initialPos;
     }
 }
