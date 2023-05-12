@@ -91,8 +91,8 @@ public class LayoutElement
     }
     public Vector3 DistributeFromLeft(Vector3 initialPos, int index, int totalNbOfElement, bool offsetHalfAstep = false)
     {
-        float step = (-totalNbOfElement / 2f) + index;
-        float val = _center - _spread * step /*+ (offsetHalfAstep ? _spread / 2f : 0)*/;
+        float step = -Mathf.FloorToInt(totalNbOfElement / 2f) + index+(totalNbOfElement%2==0 ? .5f : 0);
+        float val = _center + _spread * step;
         return OverwritePos(initialPos, val); ;
     }
 
