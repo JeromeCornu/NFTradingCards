@@ -11,6 +11,7 @@ public class CardZone : MonoBehaviour
     private GameSystem _game;
     [SerializeField]
     private PlayerID _id;
+    public IEnumerable<Transform> ChildsInZone => _layout;
     private void OnValidate()
     {
         if (_game == null)
@@ -21,7 +22,7 @@ public class CardZone : MonoBehaviour
     /// </summary>
     /// <param name="selectableCard"></param>
     /// <returns>True if the player could effectively afford</returns>
-    internal bool AddCard(SelectableCard selectableCard)
+    internal bool AddCard(SelectableCard selectableCard,int childIndex)
     {
         var card = selectableCard.GetComponentInParent<Card>();
         if (!_game.AddCard(_id.AsInt, card))
@@ -32,5 +33,9 @@ public class CardZone : MonoBehaviour
         selectableCard.AdjustDepth(true);
         return true;
         // Debug try : FindObjectOfType<TurnManager>().SwitchTurn();
+    }
+    internal bool AddCard(SelectableCard selectableCard)
+    {
+        return AddCard(selectableCard,_layout.transform.childCount);
     }
 }
