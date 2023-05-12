@@ -99,16 +99,7 @@ public class SelectableCard : LeanSelectableBehaviour
          }*/
         if (CheckAreaToLockIn(out CardZone zone, out Vector3 point))
         {
-            int child = 0;
-            foreach (var card in zone.ChildsInZone)
-            {
-                if (card.position.x < point.x)
-                {
-                    break;
-                }
-                child++;
-            }
-            if (zone.AddCard(this, child))
+            if (zone.AddCard(this/*, point*/))
             {
                 soundManager.PlaySound(placeCardSound);
                 AdjustDepth(true);
