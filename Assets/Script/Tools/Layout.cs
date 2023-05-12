@@ -90,11 +90,30 @@ public class LayoutElement
     /// <returns></returns>
     public bool IsAfterInLayoutOrder(Vector3 v1, Vector3 v2)
     {
-        return IsAfterInLayoutOrder(v1, v2, Axis.X, Axis.Y, Axis.Z);
+#pragma warning disable CS0618 // We provided correctly the priority
+        return IsAfterInLayoutOrder(v1, v2, new Axis[] { Axis.X, Axis.Y, Axis.Z });
+#pragma warning restore CS0618 // We provided correctly the priority
     }
-    public bool IsAfterInLayoutOrder(Vector3 v1, Vector3 v2, params Axis[] priority)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <param name="sort">Specify comparer to imply specific sort order</param>
+    /// <returns></returns>
+    public bool IsAfterInLayoutOrder(Vector3 v1, Vector3 v2, Comparison<Axis> sort)
     {
-        Assert.IsTrue(priority.Length==Enum.GetValues(typeof(Axis)).Length && priority.Contains(Axis.X) && priority.Contains(Axis.Y) && priority.Contains(Axis.Z));
+#pragma warning disable CS0618 // We provided correctly the priority by sorting a list of all the possible elements
+        var priority = Enum.GetValues(typeof(Axis)).OfType<Axis>().ToList();
+        priority.Sort(sort);
+        return IsAfterInLayoutOrder(v1, v2, priority);
+#pragma warning restore CS0618 // We provided correctly the priority by sorting a list of all the possible elements
+    }
+#pragma warning disable BCC2000 //The Assert causing it
+    [Obsolete("Should be carefully use with an enumerable containing all the elements of the Axis enum")]
+    private bool IsAfterInLayoutOrder(Vector3 v1, Vector3 v2, IEnumerable<Axis> priority)
+    {
+        Assert.IsTrue(priority.Intersect(Enum.GetValues(typeof(Axis)).OfType<Axis>()).Count()== Enum.GetValues(typeof(Axis)).OfType<Axis>().Count());
         foreach (var ax in priority)
         {
             if ((axis & ax & Axis.X) != 0b0)
@@ -106,6 +125,7 @@ public class LayoutElement
         }
         return false;
     }
+#pragma warning restore BCC2000 //The Assert causing it
     public Vector3 CalculatePosition(Vector3 initialPos, int index, bool offsetHalfAstep = false)
     {
         float dir = index % 2 == 0 ? 1f : -1f;
