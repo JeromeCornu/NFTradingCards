@@ -46,7 +46,6 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
     public void UpdateLayout()
     {
         int count = transform.childCount;
-        bool center = count % 2 == 0;
         foreach (var layout in _layouts)
         {
             for (int i = 0; i < count; i++)
@@ -54,7 +53,7 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
                 var ch = transform.GetChild(i);
                 var pos = ch.transform.localPosition;
 
-                ch.transform.localPosition = layout.CalculatePosition(pos, i, center);
+                ch.transform.localPosition = layout.DistributeFromLeft(pos, i, count);
             }
         }
     }
@@ -82,6 +81,32 @@ public class LayoutElement
     private float _spread;
     [SerializeField]
     public Axis axis;
+    private float _beginning;
+    public Vector3 DistributeAlternatively(Vector3 initialPos, int index)
+    {
+        float dir = index % 2 == 0 ? 1f : -1f;
+        int step = Mathf.FloorToInt((index + 1) / 2);
+        float val = _center - _spread * dir * step;
+        return OverwritePos(initialPos, val);
+    }
+    public Vector3 DistributeFromLeft(Vector3 initialPos, int index, int totalNbOfElement, bool offsetHalfAstep = false)
+    {
+        float step = (-totalNbOfElement / 2f) + index;
+        float val = _center - _spread * step /*+ (offsetHalfAstep ? _spread / 2f : 0)*/;
+        return OverwritePos(initialPos, val); ;
+    }
+
+    private Vector3 OverwritePos(Vector3 initialPos, float val)
+    {
+        if ((axis & Axis.X) != 0b0)
+            initialPos.x = val;
+        if ((axis & Axis.Y) != 0b0)
+            initialPos.y = val;
+        if ((axis & Axis.Z) != 0b0)
+            initialPos.z = val;
+        return initialPos;
+    }
+
     /// <summary>
     /// The axis are priorized in their natural x y z order
     /// </summary>
@@ -113,7 +138,7 @@ public class LayoutElement
     [Obsolete("Should be carefully use with an enumerable containing all the elements of the Axis enum")]
     private bool IsAfterInLayoutOrder(Vector3 v1, Vector3 v2, IEnumerable<Axis> priority)
     {
-        Assert.IsTrue(priority.Intersect(Enum.GetValues(typeof(Axis)).OfType<Axis>()).Count()== Enum.GetValues(typeof(Axis)).OfType<Axis>().Count());
+        Assert.IsTrue(priority.Intersect(Enum.GetValues(typeof(Axis)).OfType<Axis>()).Count() == Enum.GetValues(typeof(Axis)).OfType<Axis>().Count(a=>a!=0x0));
         foreach (var ax in priority)
         {
             if ((axis & ax & Axis.X) != 0b0)
@@ -126,17 +151,4 @@ public class LayoutElement
         return false;
     }
 #pragma warning restore BCC2000 //The Assert causing it
-    public Vector3 CalculatePosition(Vector3 initialPos, int index, bool offsetHalfAstep = false)
-    {
-        float dir = index % 2 == 0 ? 1f : -1f;
-        int step = Mathf.FloorToInt((index + 1) / 2);
-        float val = _center + _spread * dir * step + (offsetHalfAstep ? _spread / 2f : 0);
-        if ((axis & Axis.X) != 0b0)
-            initialPos.x = val;
-        if ((axis & Axis.Y) != 0b0)
-            initialPos.y = val;
-        if ((axis & Axis.Z) != 0b0)
-            initialPos.z = val;
-        return initialPos;
-    }
 }
