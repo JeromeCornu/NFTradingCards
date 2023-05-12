@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class Layout : MonoBehaviour
+public class Layout : MonoBehaviour,IEnumerable<Transform>
 {
     [SerializeField]
     private bool _updateAuto = false;
@@ -44,6 +44,19 @@ public class Layout : MonoBehaviour
         }
     }
 
+    public IEnumerator<Transform> GetEnumerator()
+    {
+        var enumerator= transform.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            yield return (Transform)enumerator.Current;
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }
 [System.Serializable]
 public class LayoutElement
