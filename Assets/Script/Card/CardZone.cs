@@ -24,9 +24,10 @@ public class CardZone : MonoBehaviour
     /// <returns>True if the player could effectively afford</returns>
     internal bool AddCard(SelectableCard selectableCard, Vector3 childDesiredPosition)
     {
+        var ind = _layout.GetCorrectIndex(childDesiredPosition);
         if (AddCard(selectableCard))
         {
-            selectableCard.transform.SetSiblingIndex(_layout.GetCorrectIndex(childDesiredPosition));
+            selectableCard.transform.SetSiblingIndex(ind);
             return true;
         }
         else
