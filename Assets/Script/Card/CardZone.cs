@@ -22,7 +22,17 @@ public class CardZone : MonoBehaviour
     /// </summary>
     /// <param name="selectableCard"></param>
     /// <returns>True if the player could effectively afford</returns>
-    internal bool AddCard(SelectableCard selectableCard,int childIndex)
+    internal bool AddCard(SelectableCard selectableCard, Vector3 childDesiredPosition)
+    {
+        if (AddCard(selectableCard))
+        {
+            selectableCard.transform.SetSiblingIndex(_layout.GetCorrectIndex(childDesiredPosition));
+            return true;
+        }
+        else
+            return false;
+    }
+    internal bool AddCard(SelectableCard selectableCard)
     {
         var card = selectableCard.GetComponentInParent<Card>();
         if (!_game.AddCard(_id.AsInt, card))
@@ -32,10 +42,5 @@ public class CardZone : MonoBehaviour
         selectableCard.Animator.Flip(true);
         selectableCard.AdjustDepth(true);
         return true;
-        // Debug try : FindObjectOfType<TurnManager>().SwitchTurn();
-    }
-    internal bool AddCard(SelectableCard selectableCard)
-    {
-        return AddCard(selectableCard,_layout.transform.childCount);
     }
 }
