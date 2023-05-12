@@ -13,7 +13,7 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
 {
     [SerializeField]
     private bool _updateAuto = false;
-    [SerializeField, AllowNesting, OnValueChanged(nameof(UpdateLayout)),Tooltip("They will be used in this specific order of priority when trying to estimate at which sibiling index a point at a given position would have compared to the other cards")]
+    [SerializeField, AllowNesting, OnValueChanged(nameof(UpdateLayout)), Tooltip("The very first layout will be used when trying to estimate at which sibiling index a point at a given position would have compared to the other cards, and it's axises will be used in XYZ order, consider adding two seperates identical layout sepearating XYZ and ordering them in the order you want if you wish precise control over the parentin prediction")]
     private List<LayoutElement> _layouts;
     private void Update()
     {
@@ -25,20 +25,17 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
     {
         position = transform.InverseTransformPoint(position);
         int i = 0;
-        //We check layouts first like that we treat them in order of priority for every child
-        foreach (var layout in _layouts)
+        //First layout is obviously the one that should be checked, in case of equality we don't necessarelly check the other layouts we just place the card before the other
+        var layout = _layouts[0];
+        foreach (var child in this)
         {
-            i = 0;
-            foreach (var child in this)
+            Debug.Log(layout.axis + " In layout, comparing with childIndex : " + i + " which name is ; " + child.gameObject.name + " trying to find pos : " + position + " against current child : " + child.localPosition);
+            if (!layout.IsAfterInLayoutOrder(position, child.localPosition))
             {
-                //Debug.Log(layout.axis + " In layout, comparing with childIndex : " + i + " which name is ; " + child.gameObject.name + " trying to find pos : " + position);
-                if (!layout.IsAfterInLayoutOrder(position, child.localPosition))
-                {
-                    //We return here to break out of the two loops
-                    return i;
-                }
-                i++;
+                //We return here to break out of the two loops
+                return i;
             }
+            i++;
         }
         return i;
     }
@@ -91,7 +88,7 @@ public class LayoutElement
     }
     public Vector3 DistributeFromLeft(Vector3 initialPos, int index, int totalNbOfElement, bool offsetHalfAstep = false)
     {
-        float step = -Mathf.FloorToInt(totalNbOfElement / 2f) + index+(totalNbOfElement%2==0 ? .5f : 0);
+        float step = -Mathf.FloorToInt(totalNbOfElement / 2f) + index + (totalNbOfElement % 2 == 0 ? .5f : 0);
         float val = _center + _spread * step;
         return OverwritePos(initialPos, val); ;
     }
@@ -138,7 +135,7 @@ public class LayoutElement
     [Obsolete("Should be carefully use with an enumerable containing all the elements of the Axis enum")]
     private bool IsAfterInLayoutOrder(Vector3 v1, Vector3 v2, IEnumerable<Axis> priority)
     {
-        Assert.IsTrue(priority.Intersect(Enum.GetValues(typeof(Axis)).OfType<Axis>()).Count() == Enum.GetValues(typeof(Axis)).OfType<Axis>().Count(a=>a!=0x0));
+        Assert.IsTrue(priority.Intersect(Enum.GetValues(typeof(Axis)).OfType<Axis>()).Count() == Enum.GetValues(typeof(Axis)).OfType<Axis>().Count(a => a != 0x0));
         foreach (var ax in priority)
         {
             if ((axis & ax & Axis.X) != 0b0)
