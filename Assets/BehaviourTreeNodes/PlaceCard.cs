@@ -42,7 +42,7 @@ namespace BehaviourTreeNodes
                 }
             }
 
-            Debug.Log("CardPlaced");
+            //Debug.Log("CardPlaced");
             //Debug.Log(BT_Blackboard.GameObjects?["Game"].GetComponent<GameSystem>().getDeckBehaviour(1).MHand.Count);
 
             return Status.Success;

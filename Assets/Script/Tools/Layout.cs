@@ -13,7 +13,7 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
 {
     [SerializeField]
     private bool _updateAuto = false;
-    [SerializeField, AllowNesting, OnValueChanged(nameof(UpdateLayout))]
+    [SerializeField, AllowNesting, OnValueChanged(nameof(UpdateLayout)),Tooltip("They will be used in this specific order of priority when trying to estimate at which sibiling index a point at a given position would have compared to the other cards")]
     private List<LayoutElement> _layouts;
     private void Update()
     {
@@ -31,7 +31,7 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
             i = 0;
             foreach (var child in this)
             {
-                Debug.Log(layout.axis + " In layout, comparing with childIndex : " + i + " which name is ; " + child.gameObject.name + " trying to find pos : " + position);
+                //Debug.Log(layout.axis + " In layout, comparing with childIndex : " + i + " which name is ; " + child.gameObject.name + " trying to find pos : " + position);
                 if (!layout.IsAfterInLayoutOrder(position, child.localPosition))
                 {
                     //We return here to break out of the two loops

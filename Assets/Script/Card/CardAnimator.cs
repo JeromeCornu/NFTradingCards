@@ -51,7 +51,7 @@ public class CardAnimator : MonoBehaviour
 
     internal void CostTooHigh(int cost)
     {
-        Debug.Log("Cost " + cost + " too high to play this card");
+        //Debug.Log("Cost " + cost + " too high to play this card");
 
         // Add shake animation
         transform.DOShakePosition(1f, 0.4f, 20, 90f, false);

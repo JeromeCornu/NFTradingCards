@@ -70,7 +70,7 @@ public class CardZoomer : MonoBehaviour
                 _cardToDisplayInfo.ChangeVisibility(true);
                 _cardToDisplayInfo.transform.localScale = Vector3.zero;
                 _runningTween = _cardToDisplayInfo.transform.DOScale(_newScale, 0.5f);
-                Debug.Log("Selec zooming");
+                //Debug.Log("Selec zooming");
             }
         }
         //Else we unzoom it, and set everything to null to make sure we don't enter here again before a new zoom
