@@ -21,14 +21,13 @@ public class SelectableCard : LeanSelectableBehaviour
     [HideInInspector]
     public CardData cardData;
 
-    [Header("Deph of the card")]
+    //[SerializeField] private float normalDepth=-1;
     [SerializeField]
-    private float normalDepth;
-    [SerializeField]
+    [Header("Depht of the card when selected")]
     private float selectedDepth;
 
-    [Header("Sound")]
     private SoundManager soundManager;
+    [Header("Sound")]
     public AudioClip placeCardSound;
     public AudioClip SelectCardSound;
 
@@ -62,7 +61,7 @@ public class SelectableCard : LeanSelectableBehaviour
 
         base.OnSelected(select);
         _originalParent = new Origin(transform);
-        AdjustDepth(false);
+        PullOnForeground();
         transform.parent = null;
     }
     protected override void OnDeselected(LeanSelect select)
@@ -74,9 +73,10 @@ public class SelectableCard : LeanSelectableBehaviour
         Release(Get_originalParent());
     }
 
-    public void AdjustDepth(bool normal)
+    public void PullOnForeground()
     {
-        _animator.AdjustDepth(normal ? normalDepth : selectedDepth);
+        _animator.AdjustDepth(selectedDepth);
+        //_animator.AdjustDepth(normal ? normalDepth : selectedDepth);
     }
     private void OnDrawGizmos()
     {
@@ -102,7 +102,6 @@ public class SelectableCard : LeanSelectableBehaviour
             if (zone.AddCard(this, point))
             {
                 soundManager.PlaySound(placeCardSound);
-                AdjustDepth(true);
                 return;
             }
             else
