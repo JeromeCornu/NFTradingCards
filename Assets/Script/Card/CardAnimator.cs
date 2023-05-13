@@ -56,7 +56,11 @@ public class CardAnimator : MonoBehaviour
         // Add shake animation
         transform.DOShakePosition(1f, 0.4f, 20, 90f, false);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="siblingIndex">Don"t use if you want normal reparentin behaviour i.e last child</param>
     internal void Reparent(Transform parent, int siblingIndex = -1)
     {
         transform.parent = parent;
