@@ -9,34 +9,17 @@ public class CardAnimator : MonoBehaviour
 {
     [SerializeField, Label("Transform override")]
     private new Transform transform;
-    private Vector3 transformInit;
-
+    [SerializeField]
+    PositionTweener _tweener;
+    private Vector3 scaleInit;
     private void Start()
     {
-        transformInit = transform.localScale;
+        scaleInit = transform.localScale;
     }
 
     public void Flip(bool upwards)
     {
-        float dir = upwards ? 180f : 0f;
-        transform.DOScale(.5f * Vector3.one, 0.2f)
-            .SetEase(Ease.InQuad)
-            .OnComplete(() =>
-            {
-                transform.DORotate(new Vector3(0, dir, 0), 0.5f)
-                    .SetEase(Ease.OutBack)
-                    .OnComplete(() =>
-                    {
-                        transform.DOScale(Vector3.one * 1.2f, 0.2f)
-                            .SetEase(Ease.InQuad)
-                            .OnComplete(() =>
-                            {
-                                transform.DOScale(transformInit, 0.2f)
-                                    .SetEase(Ease.OutBounce);
-                            });
-                    });
-            });
-
+        _tweener.ScaleInOut(transform, upwards ? 180f : 0f,scaleInit);       
     }
 
 
