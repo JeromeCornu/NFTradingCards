@@ -27,7 +27,7 @@ public class CardZone : MonoBehaviour
         var card = selectableCard.GetComponentInParent<Card>();
         if (!_game.AddCard(_id.AsInt, card))
             return false;
-        var ind = _layout.GetCorrectIndex(childDesiredPosition);
+        var ind = _layout.GetPredictIndex(childDesiredPosition);
         //We use intense transition tween
         selectableCard.Animator.Reparent(_layout, ind,1);
         selectableCard.tag = TurnManager.Untagged;

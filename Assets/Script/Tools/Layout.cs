@@ -22,16 +22,16 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
             return;
         UpdateLayout();
     }
-    public int GetCorrectIndex(Vector3 position)
+    public int GetPredictIndex(Vector3 WorldPositionToCompare)
     {
-        position = transform.InverseTransformPoint(position);
+        WorldPositionToCompare = transform.InverseTransformPoint(WorldPositionToCompare);
         int i = 0;
         //First layout is obviously the one that should be checked, in case of equality we don't necessarelly check the other layouts we just place the card before the other
         var layout = _layouts[0];
         foreach (var child in this)
         {
-            Debug.Log(layout.axis + " In layout, comparing with childIndex : " + i + " which name is ; " + child.gameObject.name + " trying to find pos : " + position + " against current child : " + child.localPosition);
-            if (!layout.IsAfterInLayoutOrder(position, child.localPosition))
+            Debug.Log(layout.axis + " In layout, comparing with childIndex : " + i + " which name is ; " + child.gameObject.name + " trying to find pos : " + WorldPositionToCompare + " against current child : " + child.localPosition);
+            if (!layout.IsAfterInLayoutOrder(WorldPositionToCompare, child.localPosition))
             {
                 //We return here to break out of the two loops
                 return i;
@@ -89,6 +89,7 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
     }
     public Vector3 PredictPos(Vector3 initialPos, int i, int count, LayoutElement layout)
     {
+        //return layout.DistributeAlternatively(initialPos, i, count);
         return layout.DistributeFromLeft(initialPos, i, count);
     }
 }
