@@ -44,10 +44,21 @@ public class CardAnimator : MonoBehaviour
     /// </summary>
     /// <param name="parent"></param>
     /// <param name="siblingIndex">Don"t use if you want normal reparentin behaviour i.e last child</param>
-    internal void Reparent(Transform parent, int siblingIndex = -1)
+    internal void Reparent(Transform parent, int siblingIndex = -1,int tweenIndex=0)
     {
-        transform.parent = parent;
-        if (siblingIndex >= 0 && siblingIndex < parent.childCount)
-            transform.SetSiblingIndex(siblingIndex);
+        transform.DOSpiral(2f, new Vector3(0, 1, 1)).OnComplete(() =>
+        {
+            transform.parent = parent;
+            if (siblingIndex >= 0 && siblingIndex < parent.childCount)
+                transform.SetSiblingIndex(siblingIndex);
+        });
+        transform.DORotate(new Vector3(0, 360, 0), 2f, RotateMode.FastBeyond360).SetLoops(5);
+        /* _tweener.PlayTween(0, transform, transform.parent.position).OnComplete(() =>
+         {
+             transform.parent = parent;
+             if (siblingIndex >= 0 && siblingIndex < parent.childCount)
+                 transform.SetSiblingIndex(siblingIndex);
+         });
+         _tweener.PlayTween(1, transform, transform.parent.position);*/
     }
 }
