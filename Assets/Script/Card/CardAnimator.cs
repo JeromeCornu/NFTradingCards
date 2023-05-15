@@ -45,7 +45,8 @@ public class CardAnimator : MonoBehaviour
     {
         public Layout parent;
         public int indexInParent;
-        public Vector3 Position => parent.PredictPos(indexInParent);
+        public Vector3 WorldFinalPosition => parent.transform.TransformPoint(LocalFinalPosition);
+        public Vector3 LocalFinalPosition => parent.PredictPos(indexInParent);
 
         public Transform transform => parent.transform;
 
@@ -89,7 +90,7 @@ public class CardAnimator : MonoBehaviour
         }
         public static implicit operator Vector3(ParentingOption value)
         {
-            return value.Position;
+            return value.WorldFinalPosition;
         }
     }
     internal void Reparent(Layout parent,int targetSiblingIndex,int tweenIndex=0)=> Reparent(new ParentingOption(parent,targetSiblingIndex),tweenIndex);
@@ -108,12 +109,12 @@ public class CardAnimator : MonoBehaviour
         };
         if (tweenIndex == 0)
         {
-            transform.DOSpiral(2f, new Vector3(0, 1, 1)).OnComplete(OnComplete);
-            transform.DORotate(new Vector3(0, 360, 0), 2f, RotateMode.FastBeyond360).SetLoops(5);
+            transform.DOMove(option, 1f).SetEase(Ease.InOutSine).OnComplete(OnComplete);
         }
         else
         {
-            transform.DOMove(option,1f).SetEase(Ease.InOutSine);
+            transform.DOSpiral(2f, new Vector3(0, 1, 1)).OnComplete(OnComplete);
+            transform.DORotate(new Vector3(0, 360, 0), 2f, RotateMode.FastBeyond360).SetLoops(5);
         }
 
         /* _tweener.PlayTween(0, transform, transform.parent.position).OnComplete(() =>
