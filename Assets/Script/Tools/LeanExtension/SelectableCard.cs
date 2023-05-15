@@ -107,7 +107,8 @@ public class SelectableCard : LeanSelectableBehaviour
             else
                 _animator.CostTooHigh(cardData.Cost);
         }
-        _animator.Reparent(_originalParent.parent, _originalParent.indexInParent);
+        //We use default "sliding" tween
+        _animator.Reparent(_originalParent.parent, _originalParent.indexInParent,0);
     }
     private bool CheckAreaToLockIn(out CardZone zone, out Vector3 hitPoint)
     {
