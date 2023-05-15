@@ -24,23 +24,19 @@ public class CardZone : MonoBehaviour
     /// <returns>True if the player could effectively afford</returns>
     internal bool AddCard(SelectableCard selectableCard, Vector3 childDesiredPosition)
     {
-        var ind = _layout.GetCorrectIndex(childDesiredPosition);
-        if (AddCard(selectableCard))
-        {
-            selectableCard.transform.SetSiblingIndex(ind);
-            return true;
-        }
-        else
-            return false;
-    }
-    internal bool AddCard(SelectableCard selectableCard)
-    {
         var card = selectableCard.GetComponentInParent<Card>();
         if (!_game.AddCard(_id.AsInt, card))
             return false;
-        selectableCard.transform.parent = _layout.transform;
+        var ind = _layout.GetCorrectIndex(childDesiredPosition);
+        //We use intense transition tween
+        selectableCard.Animator.Reparent(_layout.transform, ind,1);
         selectableCard.tag = TurnManager.Untagged;
-        selectableCard.Animator.Flip(true);
+        //selectableCard.Animator.Flip(true);
+        selectableCard.transform.SetSiblingIndex(ind);
         return true;
+    }
+    internal bool AddCard(SelectableCard selectableCard)
+    {
+        return AddCard(selectableCard, _layout.transform.position);
     }
 }
