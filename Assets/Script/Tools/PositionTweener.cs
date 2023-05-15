@@ -10,7 +10,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PositionTweener : MonoBehaviour
 {
-    public TweenParameter[] _availablePredefinedTweens;
+    [SerializeField]
+    private TweenParameter[] _availablePredefinedTweens;
     public List<Tweener> _tweens = new List<Tweener>();
     //In case we don't override the duration when trying to call a tween
     private const float DEFAULTTWEENDURATION = 1f;
@@ -57,7 +58,7 @@ public class PositionTweener : MonoBehaviour
 public struct TweenParameter
 {
     [SerializeField]
-    public readonly float _duration;
+    public float _duration;
     [SerializeField]
-    public readonly Ease _ease;
+    public Ease _ease;
 }
