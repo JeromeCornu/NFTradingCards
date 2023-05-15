@@ -16,7 +16,7 @@ public class SelectableCard : LeanSelectableBehaviour
     private LayerMask _cardZoneLayerMask;
     [SerializeField, Range(.01f, 2f)]
     private float BoxCastSize = .75f;
-    Origin _originalParent;
+    CardAnimator.ParentingOption _originalParent;
     private CardAnimator _animator;
     [HideInInspector]
     public CardData cardData;
@@ -60,7 +60,7 @@ public class SelectableCard : LeanSelectableBehaviour
             return;
 
         base.OnSelected(select);
-        _originalParent = new Origin(transform);
+        _originalParent = new CardAnimator.ParentingOption(transform);
         PullOnForeground();
         transform.parent = null;
     }
@@ -86,12 +86,12 @@ public class SelectableCard : LeanSelectableBehaviour
         Gizmos.DrawCube(transform.position, halfExtents);
     }
 
-    private Origin Get_originalParent()
+    private CardAnimator.ParentingOption Get_originalParent()
     {
         return _originalParent;
     }
 
-    private void Release(Origin _originalParent)
+    private void Release(CardAnimator.ParentingOption _originalParent)
     {
         /* for (float i = 0f; i < 3f; i += .1f)
          {
@@ -108,7 +108,7 @@ public class SelectableCard : LeanSelectableBehaviour
                 _animator.CostTooHigh(cardData.Cost);
         }
         //We use default "sliding" tween
-        _animator.Reparent(_originalParent.parent, _originalParent.indexInParent,0);
+        _animator.Reparent(_originalParent,0);
     }
     private bool CheckAreaToLockIn(out CardZone zone, out Vector3 hitPoint)
     {
@@ -133,50 +133,6 @@ public class SelectableCard : LeanSelectableBehaviour
     private bool CastBoxUpAndDown(out RaycastHit info)
     {
         return CastBoxUpAndDown(out info, BoxCastSize);
-    }
-    //Generated wrapper for origin
-    public struct Origin
-    {
-        public Transform parent;
-        public int indexInParent;
-        public Origin(Transform transform) : this(transform.parent, transform.GetSiblingIndex()) { }
-        public Origin(Transform parent, int item2)
-        {
-            this.parent = parent;
-            indexInParent = item2;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Origin other &&
-                   EqualityComparer<Transform>.Default.Equals(parent, other.parent) &&
-                   indexInParent == other.indexInParent;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(parent, indexInParent);
-        }
-
-        public void Deconstruct(out Transform item1, out int item2)
-        {
-            item1 = parent;
-            item2 = indexInParent;
-        }
-
-        public static implicit operator (Transform, int)(Origin value)
-        {
-            return (value.parent, value.indexInParent);
-        }
-
-        public static implicit operator Origin((Transform, int) value)
-        {
-            return new Origin(value.Item1, value.Item2);
-        }
-        public static implicit operator Origin(Transform value)
-        {
-            return new Origin(value);
-        }
     }
 
     /*[SerializeField]

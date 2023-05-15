@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Assertions;
 using static UnityEditor.PlayerSettings;
+using static UnityEditor.Progress;
 
 public class Layout : MonoBehaviour, IEnumerable<Transform>
 {
@@ -50,9 +51,14 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
                 var ch = transform.GetChild(i);
                 var pos = ch.transform.localPosition;
 
-                ch.transform.localPosition = layout.DistributeFromLeft(pos, i, count);
+                ch.transform.localPosition = PredictPos(pos, i, count, layout);
             }
         }
+    }
+
+    private static Vector3 NewMethod(int count, LayoutElement layout, int i, Vector3 pos)
+    {
+        return layout.DistributeFromLeft(pos, i, count);
     }
 
     public IEnumerator<Transform> GetEnumerator()
@@ -67,6 +73,23 @@ public class Layout : MonoBehaviour, IEnumerable<Transform>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+    public Vector3 PredictPos(int i)
+    {
+        return PredictPos(i, transform.childCount + 1);
+    }
+    public Vector3 PredictPos(int i, int count)
+    {
+        var pos = new Vector3();
+        foreach (var item in _layouts)
+        {
+            pos = PredictPos(pos, i, count, item);
+        }
+        return pos;
+    }
+    public Vector3 PredictPos(Vector3 initialPos, int i, int count, LayoutElement layout)
+    {
+        return layout.DistributeFromLeft(initialPos, i, count);
     }
 }
 [System.Serializable]

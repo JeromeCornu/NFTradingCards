@@ -29,7 +29,7 @@ public class CardZone : MonoBehaviour
             return false;
         var ind = _layout.GetCorrectIndex(childDesiredPosition);
         //We use intense transition tween
-        selectableCard.Animator.Reparent(_layout.transform, ind,1);
+        selectableCard.Animator.Reparent(_layout, ind,1);
         selectableCard.tag = TurnManager.Untagged;
         //selectableCard.Animator.Flip(true);
         selectableCard.transform.SetSiblingIndex(ind);
