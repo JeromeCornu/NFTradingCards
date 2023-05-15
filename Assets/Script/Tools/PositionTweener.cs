@@ -25,17 +25,15 @@ public class PositionTweener : MonoBehaviour
         tween.target = null;
         _tweens.Add(tween);
     }
-    public Tween PlayTween(int registeredTween, Transform target, Vector3 worldDest, TweenCallback onComplete = null)
+    public Tween PlayTween(int registeredTween, Transform target, Vector3 worldDest)
     {
-        return StartTween(_tweens[registeredTween], target, worldDest, _availablePredefinedTweens[0], onComplete);
+        return StartTween(_tweens[registeredTween], target, worldDest, _availablePredefinedTweens[0]);
     }
-    public Tween StartTween(Tweener tween, Transform target, Vector3 worldDest, TweenParameter parameter, TweenCallback onComplete = null)
+    public Tween StartTween(Tweener tween, Transform target, Vector3 worldDest, TweenParameter parameter)
     {
         tween.target = target;
         tween.ChangeEndValue(worldDest, parameter._duration);
         tween.SetEase(parameter._ease);
-        if (onComplete != null)
-            tween.OnComplete(onComplete);
         tween.OnComplete(() => tween.Rewind());
         tween.Restart();
         return tween;
