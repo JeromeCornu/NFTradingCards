@@ -22,6 +22,7 @@ public class PositionTweener : MonoBehaviour
     }
     private void RegisterReplayableTween(Tweener tween)
     {
+        tween.SetAutoKill(false);
         tween.Pause();
         tween.target = null;
         _tweens.Add(tween);
