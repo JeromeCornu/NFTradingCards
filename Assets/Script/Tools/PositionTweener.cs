@@ -41,18 +41,22 @@ public class PositionTweener : MonoBehaviour
         return tween;
     }
 
-    internal Tween ScaleInFlipScaleOut(Transform transform,float dir,Vector3 finalValue)
+    internal Tween ScaleInFlipScaleOut(Transform transform, float rotationTarget, Vector3 finalValue)
     {
         var seq = DOTween.Sequence();
         seq.Append(transform.DOScale(.5f * Vector3.one, 0.2f)
             .SetEase(Ease.InQuad));
-        seq.Append(transform.DORotate(new Vector3(0, dir, 0), 0.5f)
-                    .SetEase(Ease.OutBack));
+        seq.Append(RotateOnY(transform, rotationTarget));
         seq.Append(transform.DOScale(Vector3.one * 1.2f, 0.2f)
                             .SetEase(Ease.InQuad));
         seq.Append(transform.DOScale(finalValue, 0.2f)
                                     .SetEase(Ease.OutBounce));
         return seq;
+    }
+    internal Tween RotateOnY(Transform transform, float rotationTarget)
+    {
+        Vector3 target = new Vector3(0, rotationTarget, 0);
+        return transform.DORotate(target, (transform.rotation.eulerAngles - target).magnitude > 001f ? 0.5f : 0f).SetEase(Ease.OutBack);
     }
 }
 [System.Serializable]
