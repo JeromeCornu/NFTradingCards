@@ -115,10 +115,10 @@ public class CardAnimator : MonoBehaviour
         else
         {
             float duration = 2f;
-            mainTween = transform.DOMove(option, duration*1.25f).SetEase(Ease.InOutSine);
-            transform.DOSpiral(duration, new Vector3(0, 1, 1),SpiralMode.ExpandThenContract);
+            mainTween = transform.DOMove(option, duration).SetEase(Ease.InOutSine);
+            //transform.DOSpiral(duration, new Vector3(0, 1, 1),SpiralMode.Expand);
             var initRot = transform.eulerAngles;
-            int nbOfLoops = 5;
+            int nbOfLoops = 1;
             transform.DORotate(initRot + new Vector3(0, 360, 0), duration / nbOfLoops, RotateMode.FastBeyond360)
                 //We snap back to modulused initiarotation before looping again so we can get exact same behaviour
                 .OnComplete(() => transform.eulerAngles = initRot)
