@@ -40,7 +40,7 @@ public class PositionTweener : MonoBehaviour
         return tween;
     }
 
-    internal Tween ScaleInOut(Transform transform,float dir,Vector3 finalValue)
+    internal Tween ScaleInFlipScaleOut(Transform transform,float dir,Vector3 finalValue)
     {
         var seq = DOTween.Sequence();
         seq.Append(transform.DOScale(.5f * Vector3.one, 0.2f)

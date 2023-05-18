@@ -20,7 +20,7 @@ public class CardAnimator : MonoBehaviour
 
     public void Flip(bool upwards)
     {
-        _tweener.ScaleInOut(transform, upwards ? 180f : 0f, scaleInit);
+        _tweener.ScaleInFlipScaleOut(transform, upwards ? 180f : 0f, scaleInit);
     }
 
 
@@ -93,7 +93,7 @@ public class CardAnimator : MonoBehaviour
             return value.WorldFinalPosition;
         }
     }
-    internal void Reparent(Layout parent,int targetSiblingIndex,int tweenIndex=0)=> Reparent(new ParentingOption(parent,targetSiblingIndex),tweenIndex);
+    internal void Reparent(Layout parent, int targetSiblingIndex, int tweenIndex = 0) => Reparent(new ParentingOption(parent, targetSiblingIndex), tweenIndex);
     /// <summary>
     /// 
     /// </summary>
@@ -107,16 +107,25 @@ public class CardAnimator : MonoBehaviour
             if (option.indexInParent >= 0 && option.indexInParent < option.transform.childCount)
                 transform.SetSiblingIndex(option.indexInParent);
         };
+        Tween mainTween;
         if (tweenIndex == 0)
         {
-            transform.DOMove(option, 1f).SetEase(Ease.InOutSine).OnComplete(OnComplete);
+            mainTween = transform.DOMove(option, 1f).SetEase(Ease.InOutSine);
         }
         else
         {
-            transform.DOSpiral(2f, new Vector3(0, 1, 1)).OnComplete(OnComplete);
-            transform.DORotate(new Vector3(0, 360, 0), 2f, RotateMode.FastBeyond360).SetLoops(5);
+            float duration = 2f;
+            mainTween = transform.DOMove(option, duration*1.25f).SetEase(Ease.InOutSine);
+            transform.DOSpiral(duration, new Vector3(0, 1, 1),SpiralMode.ExpandThenContract);
+            var initRot = transform.eulerAngles;
+            int nbOfLoops = 5;
+            transform.DORotate(initRot + new Vector3(0, 360, 0), duration / nbOfLoops, RotateMode.FastBeyond360)
+                //We snap back to modulused initiarotation before looping again so we can get exact same behaviour
+                .OnComplete(() => transform.eulerAngles = initRot)
+                .SetEase(Ease.Linear)
+                .SetLoops(nbOfLoops);
         }
-
+        mainTween.OnComplete(OnComplete);
         /* _tweener.PlayTween(0, transform, transform.parent.position).OnComplete(() =>
          {
              transform.parent = parent;
