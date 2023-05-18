@@ -20,10 +20,13 @@ public class CardAnimator : MonoBehaviour
 
     public void Flip(bool upwards)
     {
-        _tweener.ScaleInFlipScaleOut(transform, upwards ? 180f : 0f, scaleInit);
+        _tweener.ScaleInFlipScaleOut(transform, GetRotation(upwards), scaleInit);
     }
 
-
+    private static float GetRotation(bool upwards)
+    {
+        return upwards ? 180f : 0f;
+    }
 
     internal void AdjustDepth(float newPosZ)
     {
@@ -94,11 +97,6 @@ public class CardAnimator : MonoBehaviour
         }
     }
     internal void Reparent(Layout parent, int targetSiblingIndex, int tweenIndex = 0) => Reparent(new ParentingOption(parent, targetSiblingIndex), tweenIndex);
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="parent"></param>
-    /// <param name="siblingIndex">Don"t use if you want normal reparentin behaviour i.e last child</param>
     internal void Reparent(ParentingOption option, int tweenIndex = 0)
     {
         TweenCallback OnComplete = () =>
@@ -115,15 +113,23 @@ public class CardAnimator : MonoBehaviour
         else
         {
             float duration = 2f;
-            mainTween = transform.DOMove(option, duration).SetEase(Ease.InOutSine);
             //transform.DOSpiral(duration, new Vector3(0, 1, 1),SpiralMode.Expand);
-            var initRot = transform.eulerAngles;
             int nbOfLoops = 1;
-            transform.DORotate(initRot + new Vector3(0, 360, 0), duration / nbOfLoops, RotateMode.FastBeyond360)
-                //We snap back to modulused initiarotation before looping again so we can get exact same behaviour
-                .OnComplete(() => transform.eulerAngles = initRot)
-                .SetEase(Ease.Linear)
-                .SetLoops(nbOfLoops);
+            var rotateSequence = DOTween.Sequence();
+            rotateSequence.Append(_tweener.RotateOnY(transform, GetRotation(true)));
+            //We store the tween but do not trigger it (we pause it and not auto kill)
+            mainTween = transform.DOMove(option, duration).SetEase(Ease.InOutSine).SetAutoKill(false).Pause();
+            //When the rotate is finished we start the position and spinning twin in parralel
+            rotateSequence.AppendCallback(() =>
+            {
+                mainTween.Play();
+                var initRot = transform.eulerAngles;
+                transform.DORotate(initRot + new Vector3(0, 360, 0), duration / nbOfLoops, RotateMode.FastBeyond360)
+                    //We snap back to modulused initiarotation before looping again so we can get exact same behaviour
+                    .OnComplete(() => transform.eulerAngles = initRot)
+                    .SetEase(Ease.Linear)
+                    .SetLoops(nbOfLoops);
+            });
         }
         mainTween.OnComplete(OnComplete);
         /* _tweener.PlayTween(0, transform, transform.parent.position).OnComplete(() =>
