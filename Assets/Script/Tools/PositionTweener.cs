@@ -26,7 +26,7 @@ public class PositionTweener : MonoBehaviour
 {
     [SerializeField]
     private TweenParameter[] _availablePredefinedTweens;
-    public List<Tweener> _tweens = new List<Tweener>();
+    private Dictionary<TweenPreset, Tweener> _registeredTweens;
     //In case we don't override the duration when trying to call a tween
     private const float DEFAULTTWEENDURATION = 1f;
     private void Start()
@@ -39,7 +39,7 @@ public class PositionTweener : MonoBehaviour
         tween.SetAutoKill(false);
         tween.Pause();
         tween.target = null;
-        _tweens.Add(tween);
+        _registeredTweens.Add(key, tween);
     }
     /// <summary>
     /// 
