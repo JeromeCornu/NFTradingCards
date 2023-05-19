@@ -7,7 +7,11 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
-
+public enum TweenPreset
+{
+    MoveTo = 0, Spiral = 1, Flip = 2, RotateNTimes = 3
+    , CustomTween1 = 101, CustomTween2 = 102, CustomTween3 = 103, CustomTween4 = 104, CustomTween5 = 105
+}
 public class PositionTweener : MonoBehaviour
 {
     [SerializeField]
