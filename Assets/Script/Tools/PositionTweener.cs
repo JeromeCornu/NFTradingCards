@@ -28,13 +28,16 @@ public class PositionTweener : MonoBehaviour
     private TweenParameter[] _availablePredefinedTweens;
     private Dictionary<TweenPreset, Tweener> _registeredTweens;
     //In case we don't override the duration when trying to call a tween
-    private const float DEFAULTTWEENDURATION = 1f;
     private void Start()
     {
-        RegisterReplayableTween(DOTweenProShortcuts.DOSpiral((Transform)null, DEFAULTTWEENDURATION, new Vector3(0, 1, 1)));
-        RegisterReplayableTween(ShortcutExtensions.DORotate(transform, new Vector3(0, 360, 0), DEFAULTTWEENDURATION, RotateMode.FastBeyond360));
+        DOTween.defaultEaseType = TweenParameter.Default._ease;
+        //DefaultTweenRotation & target will be rewritten when passing parameters
+        RegisterTween(TweenPreset.MoveTo, ShortcutExtensions.DOMove((Transform)null, Vector3.zero, TweenParameter.DEFAULTTWEENDURATION).SetEase(Ease.InOutSine));
+        RegisterTween(TweenPreset.Flip, RotateOnY(null, 180f));
+        RegisterTween(TweenPreset.Spiral, DOTweenProShortcuts.DOSpiral((Transform)null, TweenParameter.DEFAULTTWEENDURATION, new Vector3(0, 1, 1)));
+        RegisterTween(TweenPreset.RotateNTimes, ShortcutExtensions.DORotate((Transform)null, new Vector3(0, 360, 0), TweenParameter.DEFAULTTWEENDURATION, RotateMode.FastBeyond360));
     }
-    private void RegisterReplayableTween(Tweener tween)
+    private void RegisterTween(TweenPreset key, Tweener tween)
     {
         tween.SetAutoKill(false);
         tween.Pause();
