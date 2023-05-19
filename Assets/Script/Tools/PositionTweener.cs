@@ -12,6 +12,14 @@ public enum TweenPreset
     MoveTo = 0, Spiral = 1, Flip = 2, RotateNTimes = 3
     , CustomTween1 = 101, CustomTween2 = 102, CustomTween3 = 103, CustomTween4 = 104, CustomTween5 = 105
 }
+[System.Serializable]
+public struct TweenParameter
+{
+    [SerializeField]
+    public float _duration;
+    [SerializeField]
+    public Ease _ease;
+}
 public class PositionTweener : MonoBehaviour
 {
     [SerializeField]
@@ -62,12 +70,4 @@ public class PositionTweener : MonoBehaviour
         Vector3 target = new Vector3(0, rotationTarget, 0);
         return transform.DORotate(target, (transform.rotation.eulerAngles - target).magnitude > 001f ? 0.5f : 0f).SetEase(Ease.OutBack);
     }
-}
-[System.Serializable]
-public struct TweenParameter
-{
-    [SerializeField]
-    public float _duration;
-    [SerializeField]
-    public Ease _ease;
 }
