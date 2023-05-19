@@ -19,6 +19,8 @@ public struct TweenParameter
     public float _duration;
     [SerializeField]
     public Ease _ease;
+    public static TweenParameter Default => new TweenParameter() { _duration = DEFAULTTWEENDURATION, _ease = Ease.Linear };
+    public const float DEFAULTTWEENDURATION = 1f;
 }
 public class PositionTweener : MonoBehaviour
 {
