@@ -77,7 +77,7 @@ public class PositionTweener : MonoBehaviour
                                     .SetEase(Ease.OutBounce));
         return seq;
     }
-    internal Tween RotateOnY(Transform transform, float rotationTarget)
+    internal Tweener RotateOnY(Transform transform, float rotationTarget)
     {
         Vector3 target = new Vector3(0, rotationTarget, 0);
         return transform.DORotate(target, (transform.rotation.eulerAngles - target).magnitude > 001f ? 0.5f : 0f).SetEase(Ease.OutBack);
