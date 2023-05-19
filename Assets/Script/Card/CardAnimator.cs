@@ -108,7 +108,7 @@ public class CardAnimator : MonoBehaviour
         Tween mainTween;
         if (tweenIndex == 0)
         {
-            mainTween = transform.DOMove(option, 1f).SetEase(Ease.InOutSine);
+            mainTween = _tweener.PlayTween(TweenPreset.MoveTo, transform, option);
         }
         else
         {
@@ -124,7 +124,8 @@ public class CardAnimator : MonoBehaviour
             {
                 mainTween.Play();
                 var initRot = transform.eulerAngles;
-                transform.DORotate(initRot + new Vector3(0, 360, 0), duration / nbOfLoops, RotateMode.FastBeyond360)
+                //We want total tween to take place in half the duration of the main tween
+                transform.DORotate(initRot + new Vector3(0, 360, 0), (duration/2f) / nbOfLoops, RotateMode.FastBeyond360)
                     //We snap back to modulused initiarotation before looping again so we can get exact same behaviour
                     .OnComplete(() => transform.eulerAngles = initRot)
                     .SetEase(Ease.Linear)
