@@ -41,15 +41,25 @@ public class PositionTweener : MonoBehaviour
         tween.target = null;
         _tweens.Add(tween);
     }
-    public Tween PlayTween(int registeredTween, Transform target, Vector3 worldDest)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T">Mostly Vector3 ,but might be anything you know a tweens uses as end value</typeparam>
+    /// <param name="registeredTween"></param>
+    /// <param name="target"></param>
+    /// <param name="worldDest"></param>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
+    public Tweener PlayTween<T>(TweenPreset registeredTween, Transform target, T worldDest, TweenParameter? parameter = null)
     {
-        return StartTween(_tweens[registeredTween], target, worldDest, _availablePredefinedTweens[0]);
+        return StartTween(_registeredTweens[registeredTween], target, worldDest, parameter);
     }
-    public Tween StartTween(Tweener tween, Transform target, Vector3 worldDest, TweenParameter parameter)
+    private Tweener StartTween(Tweener tween, Transform target, object endValue, TweenParameter? parameter)
     {
         tween.target = target;
-        tween.ChangeEndValue(worldDest, parameter._duration);
-        tween.SetEase(parameter._ease);
+        tween.ChangeEndValue(endValue, parameter.HasValue ? parameter.Value._duration : TweenParameter.DEFAULTTWEENDURATION);
+        if (parameter.HasValue)
+            tween.SetEase(parameter.Value._ease);
         tween.OnComplete(() => tween.Rewind());
         tween.Restart();
         return tween;
