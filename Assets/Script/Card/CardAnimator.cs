@@ -125,11 +125,10 @@ public class CardAnimator : MonoBehaviour
                 mainTween.Play();
                 var initRot = transform.eulerAngles;
                 //We want total tween to take place in half the duration of the main tween
-                transform.DORotate(initRot + new Vector3(0, 360, 0), (duration/2f) / nbOfLoops, RotateMode.FastBeyond360)
-                    //We snap back to modulused initiarotation before looping again so we can get exact same behaviour
+                _tweener.PlayTween<Vector3>(TweenPreset.RotateNTimes, transform, initRot + new Vector3(0, 360, 0))
+                    .SetLoops(1)
                     .OnComplete(() => transform.eulerAngles = initRot)
-                    .SetEase(Ease.Linear)
-                    .SetLoops(nbOfLoops);
+                    .SetEase(Ease.Linear);
             });
         }
         mainTween.OnComplete(OnComplete);
