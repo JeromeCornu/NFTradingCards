@@ -116,7 +116,7 @@ public class CardAnimator : MonoBehaviour
             //transform.DOSpiral(duration, new Vector3(0, 1, 1),SpiralMode.Expand);
             int nbOfLoops = 1;
             var rotateSequence = DOTween.Sequence();
-            rotateSequence.Append(_tweener.RotateOnY(transform, GetRotation(true)));
+            rotateSequence.Append(_tweener.PlayTween<Vector3>(TweenPreset.Flip, transform, new(0, GetRotation(true), 0)));
             //We store the tween but do not trigger it (we pause it and not auto kill)
             mainTween = _tweener.PlayTween<Vector3>(TweenPreset.MoveTo, transform, option).Pause();
             //When the rotate is finished we start the position and spinning twin in parralel
