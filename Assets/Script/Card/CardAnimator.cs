@@ -108,7 +108,7 @@ public class CardAnimator : MonoBehaviour
         Tween mainTween;
         if (tweenIndex == 0)
         {
-            mainTween = _tweener.PlayTween(TweenPreset.MoveTo, transform, option);
+            mainTween = _tweener.PlayTween<Vector3>(TweenPreset.MoveTo, transform, option);
         }
         else
         {
