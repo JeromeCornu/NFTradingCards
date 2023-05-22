@@ -118,7 +118,7 @@ public class CardAnimator : MonoBehaviour
             var rotateSequence = DOTween.Sequence();
             rotateSequence.Append(_tweener.RotateOnY(transform, GetRotation(true)));
             //We store the tween but do not trigger it (we pause it and not auto kill)
-            mainTween = transform.DOMove(option, duration).SetEase(Ease.InOutSine).SetAutoKill(false).Pause();
+            mainTween = _tweener.PlayTween<Vector3>(TweenPreset.MoveTo, transform, option).Pause();
             //When the rotate is finished we start the position and spinning twin in parralel
             rotateSequence.AppendCallback(() =>
             {
