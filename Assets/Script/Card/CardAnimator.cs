@@ -11,7 +11,7 @@ public class CardAnimator : MonoBehaviour
     [SerializeField, Label("Transform override")]
     private new Transform transform;
     [SerializeField]
-    PositionTweener _tweener;
+    TweenHelper _tweener;
     private Vector3 scaleInit;
     private void Start()
     {
