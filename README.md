@@ -1,2 +1,1 @@
-# NFTradingCards
-Blockchain &amp; développement durable
+# Durable Deck Duel
